@@ -1,0 +1,50 @@
+---
+import { servicos } from '../data/servicos.js';
+
+const path = Astro.url.pathname;
+const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+
+const links = [
+  { href: '/quem-somos/', label: 'Quem somos' },
+  { href: '/servicos/', label: 'Serviços' },
+  { href: '/treinamentos/', label: 'Treinamentos' },
+  { href: '/contato/', label: 'Contato' },
+];
+---
+
+<header class="site-header" data-header>
+  <div class="site-header__row">
+    <a class="site-header__logo" href="/" aria-label="PharmaUtility, página inicial">
+      <img src="/assets/logo/logo-horizontal-cor-fundo-claro.svg" alt="PharmaUtility — Engenharia e Automação" width="210" height="36" />
+    </a>
+
+    <div class="site-header__nav">
+      <nav aria-label="Principal" class="nav-list-wrap">
+        <ul class="nav-list">
+          <li><a class="nav-link" href="/" aria-current={isCurrent('/') ? 'page' : undefined}>Início</a></li>
+          {links.map((l) => (
+            <li>
+              <a class="nav-link" href={l.href} aria-current={isCurrent(l.href) ? 'page' : undefined}>{l.label}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <a class="btn btn--primary btn--sm site-header__cta" href="/contato/">
+        <span>Solicitar proposta</span>
+        <span class="btn__icon"><svg class="icon" aria-hidden="true"><use href="#i-arrow" /></svg></span>
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="menu-panel" aria-label="Abrir menu" data-menu-toggle>
+        <span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="menu-panel" id="menu-panel" data-menu-panel>
+    <a class="menu-panel__link" href="/" aria-current={isCurrent('/') ? 'page' : undefined}>Início</a>
+    <a class="menu-panel__link" href="/quem-somos/" aria-current={isCurrent('/quem-somos/') ? 'page' : undefined}>Quem somos</a>
+    <a class="menu-panel__link" href="/servicos/" aria-current={isCurrent('/servicos/') ? 'page' : undefined}>Serviços <span class="muted">{servicos.length}</span></a>
+    <a class="menu-panel__link" href="/treinamentos/" aria-current={isCurrent('/treinamentos/') ? 'page' : undefined}>Treinamentos</a>
+    <a class="menu-panel__link" href="/contato/" aria-current={isCurrent('/contato/') ? 'page' : undefined}>Contato</a>
+    <a class="btn btn--primary" href="/contato/"><span>Solicitar proposta técnica</span><span class="btn__icon"><svg class="icon" aria-hidden="true"><use href="#i-arrow" /></svg></span></a>
+  </div>
+</header>

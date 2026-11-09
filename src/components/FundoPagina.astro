@@ -1,0 +1,32 @@
+---
+/*
+ * Imagem de fundo fixa da primeira dobra (Quem somos, HVAC, Ar comprimido, Água, Vapor).
+ * Usa WebP em duas larguras: o navegador baixa só a versão adequada à tela.
+ * Arquivos esperados em public/: `${nome}-960.webp` e `${nome}-1920.webp`.
+ * Os JPGs originais ficam em assets-originais/imagens/ para nova exportação.
+ */
+interface Props {
+  nome: string;          // caminho sem sufixo, ex.: "/assets/images/hvac-fundo"
+  largura: number;       // largura original da imagem (px)
+  altura: number;        // altura original da imagem (px)
+  destacarTexto?: boolean; // véu à esquerda + imagem menos clara (páginas de Água e Vapor)
+}
+
+const { nome, largura, altura, destacarTexto = false } = Astro.props;
+const grande = Math.min(1920, largura);
+const alturaGrande = Math.round((altura * grande) / largura);
+---
+
+<div class:list={['page-fixed-bg', { 'page-fixed-bg--texto': destacarTexto }]} aria-hidden="true">
+  <img
+    src={`${nome}-1920.webp`}
+    srcset={`${nome}-960.webp 960w, ${nome}-1920.webp ${grande}w`}
+    sizes="100vw"
+    alt=""
+    width={grande}
+    height={alturaGrande}
+    loading="eager"
+    fetchpriority="high"
+    decoding="async"
+  />
+</div>

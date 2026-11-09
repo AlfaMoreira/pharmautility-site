@@ -1,0 +1,30 @@
+---
+/*
+ * Espaço de mídia de uma página de serviço.
+ * Nesta etapa exibe uma imagem estática. Na integração do vídeo, basta passar
+ * `video` (caminho do MP4): a imagem vira o poster e o vídeo ocupa o mesmo quadro,
+ * sem alterar o layout. A animação por scroll não está implementada aqui.
+ */
+interface Props {
+  id: string;          // identificador do vídeo esperado (ex.: "vapor-puro")
+  imagem: string;      // imagem estática / poster
+  alt: string;
+  legenda?: string;
+  video?: string;      // reservado para a próxima etapa
+  largura?: number;
+  altura?: number;
+}
+
+const { id, imagem, alt, legenda, video, largura = 1600, altura = 900 } = Astro.props;
+---
+
+<figure class="util-midia" data-video-slot={id}>
+  <div class="util-midia__quadro">
+    {video ? (
+      <video src={video} poster={imagem} muted playsinline preload="metadata" aria-label={alt}></video>
+    ) : (
+      <img src={imagem} alt={alt} width={largura} height={altura} loading="eager" decoding="async" />
+    )}
+  </div>
+  {legenda && <figcaption>{legenda}</figcaption>}
+</figure>

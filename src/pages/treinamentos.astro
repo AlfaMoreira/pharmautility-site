@@ -1,0 +1,292 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { destaques, diferenciais, cursos, metodo, equipe, normas, pontosContato, opcoesCurso } from '../data/treinamentos.js';
+import '../styles/treinamentos.css';
+
+const nomeCurso = Object.fromEntries(cursos.map((c) => [c.id, c.sigla === 'GLP' ? 'Curso de GLP' : `Curso de ${c.sigla}`]));
+const chipsTopo = ['NR-12', 'NR-20', 'NR-23', 'NR-33', 'NR-35'];
+const whatsapp = 'https://wa.me/5511944744013?text=' + encodeURIComponent('Olá, PharmaUtility! Tenho dúvidas sobre os treinamentos de segurança do trabalho.');
+---
+
+<Layout title="Treinamentos em Segurança do Trabalho | PharmaUtility" description="Treinamentos de Normas Regulamentadoras construídos a partir da realidade operacional de cada cliente, com conteúdo modular, avaliação, certificado e responsabilidade técnica formal.">
+  <div class="tr">
+    <!-- ===== Topo ===== -->
+    <section class="page-hero tr-hero">
+      <div class="container tr-hero__grid">
+        <div>
+          <nav class="crumbs reveal" aria-label="Você está em">
+            <a href="/">Início</a><span aria-hidden="true">/</span><span>Treinamentos</span>
+          </nav>
+          <p class="eyebrow reveal">Treinamentos em segurança do trabalho</p>
+          <h1 class="reveal" style="margin-top:18px; --d: 0.1s">Capacitação com rigor de <span class="tr-destaque">engenharia</span>, não apenas de formulário.</h1>
+          <p class="lead reveal" style="--d: 0.2s">
+            A PharmaUtility projeta treinamentos de Normas Regulamentadoras a partir da realidade operacional de cada cliente — máquinas reais, procedimentos reais, riscos reais — conduzidos por profissionais com registro técnico e responsabilidade formal pelo conteúdo.
+          </p>
+          <div class="btn-row reveal" style="--d: 0.3s">
+            <a class="btn btn--primary" href="#contato-treinamento">
+              <span>Solicitar treinamento para minha empresa</span>
+              <span class="btn__icon"><svg class="icon" aria-hidden="true"><use href="#i-arrow" /></svg></span>
+            </a>
+            <a class="btn btn--ghost" href="#cursos"><span>Ver catálogo de cursos</span></a>
+          </div>
+          <dl class="tr-numeros reveal" style="--d: 0.4s">
+            {destaques.map((d) => (
+              <div class="tr-numeros__item">
+                <dt class="tr-numeros__valor">{d.numero}</dt>
+                <dd>{d.texto}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+
+        <aside class="tr-painel reveal" style="--d: 0.2s" aria-label="Normas em destaque">
+          <img class="tr-painel__simbolo" src="/assets/logo/simbolo-branco.svg" alt="" width="64" height="64" />
+          <ul class="tr-painel__chips">
+            {chipsTopo.map((nr) => <li>{nr}</li>)}
+            <li class="tr-painel__mais">+ 8 outras</li>
+          </ul>
+          <blockquote class="tr-painel__citacao">
+            <p><strong>Cada curso parte do procedimento real da máquina ou da atividade</strong> — não de um slide genérico de norma. O conteúdo técnico é complementado pelos manuais e pelos riscos específicos de cada equipamento existente na empresa.</p>
+          </blockquote>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ===== Por que ===== -->
+    <section class="section" style="padding-top:0" aria-labelledby="porque">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">Por que PharmaUtility</p>
+          <h2 id="porque" style="margin-top:18px">Know-how de engenharia aplicado à segurança do trabalho.</h2>
+          <p>Não entregamos uma apresentação genérica de norma. Cada treinamento é construído em módulos, com objetivos de aprendizagem mensuráveis, avaliação e material de apoio — do jeito que um departamento de engenharia documentaria um procedimento crítico.</p>
+        </header>
+        <div class="grid grid--4 tr-diferenciais">
+          {diferenciais.map((d, i) => (
+            <article class="card reveal" style={`--d: ${i * 0.08}s`}>
+              <span class="card__icon"><svg class="icon" aria-hidden="true"><use href={`#${d.icone}`} /></svg></span>
+              <h3>{d.titulo}</h3>
+              <p>{d.texto}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Catálogo ===== -->
+    <section class="section" style="padding-top:0" id="cursos" aria-labelledby="catalogo">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">Catálogo</p>
+          <h2 id="catalogo" style="margin-top:18px">Cursos estruturados por Norma Regulamentadora.</h2>
+          <p>Cada curso abaixo já existe como estrutura modular, com conteúdo técnico, avaliação e material de apoio. A carga horária é um ponto de partida: ajustamos a cada máquina, processo e nível de risco da empresa contratante.</p>
+        </header>
+
+        <div class="tr-cursos">
+          {cursos.map((c, i) => (
+            <article class="tr-curso reveal" style={`--d: ${(i % 2) * 0.08}s`} id={`curso-${c.id}`} aria-labelledby={`curso-${c.id}-titulo`}>
+              <header class="tr-curso__topo">
+                <div>
+                  <p class="tr-curso__sigla">{c.sigla}</p>
+                  <p class="tr-curso__area">{c.area}</p>
+                </div>
+                <span class:list={['tr-status', `tr-status--${c.status}`]}>{c.rotuloStatus}</span>
+              </header>
+              <div class="tr-curso__corpo">
+                <h3 id={`curso-${c.id}-titulo`}>{c.titulo}</h3>
+                <ul class="tr-curso__meta" aria-label="Formato">
+                  {c.meta.map((m) => (
+                    <li>
+                      {m.tipo === 'tempo' && <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 3" /></svg>}
+                      {m.tipo === 'modulos' && <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" /></svg>}
+                      {m.tipo === 'pratica' && <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 12l2 2 4-4" /><circle cx="12" cy="12" r="9" /></svg>}
+                      {m.texto}
+                    </li>
+                  ))}
+                </ul>
+                <p class="tr-curso__desc">{c.descricao}</p>
+                <ol class="tr-curso__modulos">
+                  {c.modulos.map((m) => (
+                    <li>{m.rotulo && <span class="tr-curso__mod">{m.rotulo}</span>}<span>{m.texto}</span></li>
+                  ))}
+                </ol>
+              </div>
+              <footer class="tr-curso__normas">
+                <span class="tr-curso__normas-rotulo">Normas relacionadas</span>
+                <ul>
+                  {c.normas.map((n) => <li>{n}</li>)}
+                </ul>
+              </footer>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Metodologia ===== -->
+    <section class="section" style="padding-top:0" id="metodo" aria-labelledby="metodologia">
+      <div class="container">
+        <div class="cta-dark tr-metodo reveal">
+          <p class="eyebrow" style="color:var(--pu-copper-300)">Metodologia</p>
+          <h2 id="metodologia" style="margin-top:16px">Do diagnóstico ao certificado, em cinco etapas.</h2>
+          <p>O mesmo processo de engenharia aplicado a qualquer projeto crítico — levantamento, especificação, execução, verificação e registro.</p>
+          <ol class="tr-etapas">
+            {metodo.map((m, i) => (
+              <li>
+                <span class="tr-etapas__num" aria-hidden="true">{i + 1}</span>
+                <h3>{m.titulo}</h3>
+                <p>{m.texto}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Equipe ===== -->
+    <section class="section" style="padding-top:0" id="equipe" aria-labelledby="equipe-titulo">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">Equipe técnica</p>
+          <h2 id="equipe-titulo" style="margin-top:18px">Conteúdo conduzido por quem responde tecnicamente por ele.</h2>
+          <p>Cada curso do catálogo tem um responsável identificado — não um material anônimo de terceiros.</p>
+        </header>
+        <div class="grid grid--2">
+          {equipe.map((p, i) => (
+            <article class="card tr-pessoa reveal" style={`--d: ${i * 0.08}s`}>
+              <span class="tr-pessoa__avatar" aria-hidden="true">{p.iniciais}</span>
+              <div>
+                <h3>{p.nome}</h3>
+                <p class="tr-pessoa__funcao">{p.funcao}</p>
+                <p>{p.bio}</p>
+                <p class="tr-pessoa__registro">{p.registro}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Normas atendidas ===== -->
+    <section class="section" style="padding-top:0" id="normas" aria-labelledby="normas-titulo">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">Normas atendidas</p>
+          <h2 id="normas-titulo" style="margin-top:18px">13 Normas Regulamentadoras, já distribuídas nos cursos do catálogo.</h2>
+          <p>Cobertura regulatória ampla — da segurança em máquinas ao trabalho em altura — com cada norma associada ao curso em que é efetivamente trabalhada.</p>
+        </header>
+
+        <!-- Filtro por curso: destaca as normas trabalhadas em cada um. Sem JavaScript, todas aparecem normalmente. -->
+        <div class="tr-filtro reveal" role="group" aria-label="Filtrar normas por curso" data-filtro-normas hidden>
+          <button type="button" aria-pressed="true" data-curso="todos">Todos os cursos</button>
+          {cursos.map((c) => <button type="button" aria-pressed="false" data-curso={c.id}>{c.sigla}</button>)}
+        </div>
+
+        <ul class="tr-normas reveal" data-lista-normas>
+          {normas.map((n) => (
+            <li class="tr-norma" data-cursos={n.cursos.join(' ')}>
+              <span class="tr-norma__nr">{n.nr}</span>
+              <span class="tr-norma__titulo">{n.titulo}</span>
+              <span class="tr-norma__onde">
+                {n.cursos.map((id) => nomeCurso[id]).join(' · ')}{n.correlata && ' (correlata)'}
+              </span>
+            </li>
+          ))}
+        </ul>
+        <p class="tr-filtro__status" data-filtro-status aria-live="polite"></p>
+      </div>
+    </section>
+
+    <!-- ===== Contato ===== -->
+    <section class="section" style="padding-top:0" id="contato-treinamento" aria-labelledby="contato-titulo">
+      <div class="container">
+        <div class="cta-dark tr-contato reveal">
+          <div>
+            <p class="eyebrow" style="color:var(--pu-copper-300)">Fale com a PharmaUtility</p>
+            <h2 id="contato-titulo" style="margin-top:16px">Pronto para estruturar o treinamento da sua equipe?</h2>
+            <p>Conte um pouco sobre as máquinas, atividades e normas aplicáveis à sua operação. Retornamos com uma proposta de carga horária, módulos e material de apoio.</p>
+            <ul class="checklist checklist--dark tr-contato__pontos">
+              {pontosContato.map((p) => <li>{p}</li>)}
+            </ul>
+            <a class="btn btn--whatsapp tr-contato__wa" href={whatsapp} target="_blank" rel="noopener">
+              <svg class="icon" aria-hidden="true"><use href="#i-whatsapp" /></svg>
+              <span>Tire suas dúvidas pelo WhatsApp</span>
+            </a>
+          </div>
+
+          <div class="card tr-contato__form">
+            <h3>Solicitar treinamento</h3>
+            <p class="muted" style="margin-top:8px">Os campos com <span style="color:var(--accent-text); font-weight:600">*</span> são obrigatórios. O envio abre o WhatsApp com a sua mensagem.</p>
+            <form class="form" data-whatsapp-form novalidate aria-labelledby="contato-titulo" style="margin-top:24px">
+              <div class="form__row">
+                <div class="field">
+                  <label for="tr-nome">Nome <span class="req" aria-hidden="true">*</span></label>
+                  <input id="tr-nome" name="nome" type="text" autocomplete="name" required aria-describedby="tr-nome-erro" />
+                  <p class="field__error" id="tr-nome-erro" hidden>Informe seu nome.</p>
+                </div>
+                <div class="field">
+                  <label for="tr-empresa">Empresa <span class="req" aria-hidden="true">*</span></label>
+                  <input id="tr-empresa" name="empresa" type="text" autocomplete="organization" required aria-describedby="tr-empresa-erro" />
+                  <p class="field__error" id="tr-empresa-erro" hidden>Informe o nome da empresa.</p>
+                </div>
+              </div>
+              <div class="form__row">
+                <div class="field">
+                  <label for="tr-telefone">Telefone ou WhatsApp <span class="req" aria-hidden="true">*</span></label>
+                  <input id="tr-telefone" name="telefone" type="tel" autocomplete="tel" inputmode="tel" required aria-describedby="tr-telefone-erro" />
+                  <p class="field__error" id="tr-telefone-erro" hidden>Informe um telefone com DDD.</p>
+                </div>
+                <div class="field">
+                  <label for="tr-email">E-mail <span class="field__hint">(opcional)</span></label>
+                  <input id="tr-email" name="email" type="email" autocomplete="email" />
+                </div>
+              </div>
+              <div class="field">
+                <label for="tr-curso">Curso de interesse</label>
+                <select id="tr-curso" name="assunto">
+                  {opcoesCurso.map((o) => <option value={`Treinamento: ${o}`}>{o}</option>)}
+                </select>
+              </div>
+              <div class="field">
+                <label for="tr-msg">Mensagem</label>
+                <textarea id="tr-msg" name="detalhes" rows="4" placeholder="Conte brevemente sobre as máquinas, equipe e prazo desejado."></textarea>
+              </div>
+              <div class="form__actions">
+                <button class="btn btn--primary" type="submit">
+                  <span>Enviar pelo WhatsApp</span>
+                  <span class="btn__icon"><svg class="icon" aria-hidden="true"><use href="#i-arrow" /></svg></span>
+                </button>
+                <p class="form__status" data-form-status role="status" aria-live="polite"></p>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<script>
+  // Filtro de normas por curso (melhoria progressiva: sem JS a lista completa continua visível).
+  const filtro = document.querySelector<HTMLElement>('[data-filtro-normas]');
+  const lista = document.querySelector<HTMLElement>('[data-lista-normas]');
+  const status = document.querySelector<HTMLElement>('[data-filtro-status]');
+  if (filtro && lista) {
+    filtro.hidden = false;
+    const botoes = filtro.querySelectorAll<HTMLButtonElement>('button');
+    const itens = lista.querySelectorAll<HTMLElement>('[data-cursos]');
+    botoes.forEach((botao) => {
+      botao.addEventListener('click', () => {
+        const curso = botao.dataset.curso;
+        botoes.forEach((b) => b.setAttribute('aria-pressed', String(b === botao)));
+        let total = 0;
+        itens.forEach((item) => {
+          const ativo = curso === 'todos' || (item.dataset.cursos || '').split(' ').includes(curso || '');
+          item.classList.toggle('is-apagada', !ativo);
+          if (ativo) total += 1;
+        });
+        lista.classList.toggle('is-filtrada', curso !== 'todos');
+        if (status) status.textContent = curso === 'todos' ? '' : `${total} ${total === 1 ? 'norma trabalhada' : 'normas trabalhadas'} neste curso.`;
+      });
+    });
+  }
+</script>

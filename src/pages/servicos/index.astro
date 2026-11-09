@@ -1,0 +1,40 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { servicos } from '../../data/servicos.js';
+---
+
+<Layout title="Serviços | PharmaUtility" description="Qualificação de utilidades, HVAC e salas limpas, ar comprimido e gases, contenção, calibração, cadeia fria, validação GxP e qualificação térmica.">
+  <section class="page-hero">
+    <div class="container">
+      <nav class="crumbs reveal" aria-label="Você está em">
+        <a href="/">Início</a><span aria-hidden="true">/</span><span>Serviços</span>
+      </nav>
+      <p class="eyebrow reveal">Serviços</p>
+      <h1 class="reveal" style="margin-top:18px; --d: 0.1s">Oito frentes para sistemas críticos.</h1>
+      <p class="lead reveal" style="--d: 0.2s">
+        Cada serviço tem página própria, com necessidade atendida, escopo, etapas e entregáveis. Se o seu caso não aparece aqui, descreva a demanda e avaliamos juntos.
+      </p>
+      <div class="btn-row reveal" style="--d: 0.3s">
+        <a class="btn btn--primary" href="/contato/">
+          <span>Solicitar proposta técnica</span>
+          <span class="btn__icon"><svg class="icon" aria-hidden="true"><use href="#i-arrow" /></svg></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0" aria-label="Lista de serviços">
+    <div class="container">
+      <div class="grid grid--2">
+        {servicos.map((s, i) => (
+          <a class="card card--link reveal" href={`/servicos/${s.slug}/`} style={`--d: ${(i % 2) * 0.08}s`}>
+            <span class="card__num">{s.numero}</span>
+            <h2 style="font-size:clamp(1.15rem, 1rem + 0.5vw, 1.45rem)">{s.nome}</h2>
+            <p>{s.chamada}</p>
+            <span class="card__more">Ver serviço <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow" /></svg></span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>

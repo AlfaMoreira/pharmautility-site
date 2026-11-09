@@ -1,0 +1,156 @@
+/*
+ * Estilos das páginas de serviço independentes:
+ * Qualificação de Sistemas de Água — PW e WFI e Qualificação de Vapor Puro.
+ * Complementa o site.css usando apenas os tokens existentes.
+ */
+
+/* ---------- Fundo da primeira dobra com véu atrás do texto ---------- */
+/* Imagem um pouco mais escura que o padrão (site.css usa brightness 1.36), deixando-a aparecer entre o texto. */
+.page-fixed-bg--texto img {
+  filter: brightness(1.14) contrast(0.92) saturate(0.85);
+}
+/* Véu leve à esquerda: suaviza a área do título sem esconder a imagem. */
+.page-fixed-bg--texto::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(90deg,
+    rgba(246, 247, 249, 0.62) 0%,
+    rgba(246, 247, 249, 0.5) 38%,
+    rgba(246, 247, 249, 0.18) 64%,
+    rgba(246, 247, 249, 0) 82%);
+}
+@media (max-width: 900px) {
+  .page-fixed-bg--texto::before {
+    background: rgba(246, 247, 249, 0.55);
+  }
+}
+/* Halo claro no texto da primeira dobra: mantém o destaque sobre a imagem. */
+.util-pagina .page-hero :is(h1, .lead, .crumbs, .eyebrow) {
+  text-shadow:
+    0 0 2px rgba(246, 247, 249, 0.95),
+    0 0 12px rgba(246, 247, 249, 0.95),
+    0 0 28px rgba(246, 247, 249, 0.85);
+}
+.util-pagina .page-hero .lead {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+/* ---------- Link discreto para o serviço relacionado ---------- */
+.util-relacionado {
+  font-size: 0.95rem;
+  color: var(--pu-gray-600);
+}
+.util-relacionado a {
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--pu-copper-300);
+  text-underline-offset: 4px;
+}
+.util-relacionado a:hover {
+  color: var(--accent-text);
+}
+
+/* ---------- Espaço de mídia (imagem provisória, vídeo na próxima etapa) ---------- */
+.util-midia {
+  margin: 0;
+}
+.util-midia__quadro {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-card);
+  background: var(--pu-gray-100);
+  box-shadow: var(--ring-solid), var(--shadow-card);
+}
+.util-midia__quadro img,
+.util-midia__quadro video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.util-midia figcaption {
+  margin-top: 12px;
+  font-size: 0.85rem;
+  color: var(--pu-gray-500);
+}
+
+/* ---------- Cartões comparativos (PW × WFI, vapor industrial × vapor puro) ---------- */
+.util-tipo .eyebrow {
+  display: inline-flex;
+}
+
+/* ---------- Ciclo do sistema de água ---------- */
+.util-ciclo {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px;
+}
+.util-ciclo li {
+  position: relative;
+  padding: 22px 20px;
+  border-radius: var(--radius-field);
+  background: var(--pu-white);
+  box-shadow: var(--ring-solid), var(--shadow-card);
+}
+.util-ciclo__num {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--pu-navy-500);
+  color: var(--pu-white);
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+}
+.util-ciclo h3 {
+  margin-top: 14px;
+  font-size: 1rem;
+}
+.util-ciclo p {
+  margin-top: 6px;
+  font-size: 0.9rem;
+}
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 1080px) {
+  .util-ciclo {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 640px) {
+  .util-ciclo {
+    grid-template-columns: 1fr;
+  }
+  .util-ciclo li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 16px;
+    align-items: start;
+  }
+  .util-ciclo h3 {
+    margin-top: 6px;
+  }
+  .util-ciclo li p {
+    grid-column: 2;
+  }
+  .util-pagina .grid--2,
+  .util-pagina .grid--3 {
+    grid-template-columns: 1fr;
+  }
+  .util-pagina .phase {
+    padding: 22px;
+    gap: 16px;
+  }
+  .util-pagina .phase__tag {
+    justify-self: start;
+    min-width: 52px;
+    height: 52px;
+    border-radius: 16px;
+  }
+}

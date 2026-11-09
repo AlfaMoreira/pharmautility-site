@@ -1,0 +1,222 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { servicos } from '../../data/servicos.js';
+import FundoPagina from '../../components/FundoPagina.astro';
+import '../../styles/utilidades.css';
+
+const servico = servicos.find((s) => s.slug === 'qualificacao-vapor-puro')!;
+const outros = servicos.filter((s) => s.slug !== servico.slug);
+const nomeServico = servico.nome;
+
+const tiposVapor = [
+  {
+    eyebrow: 'Vapor industrial',
+    titulo: 'Energia e aquecimento',
+    itens: [
+      'Produzido em caldeira, para aquecimento e transferência de calor.',
+      'Não é destinado ao contato direto com produto ou superfícies críticas.',
+      'Não substitui o vapor puro em esterilização e SIP.',
+    ],
+  },
+  {
+    eyebrow: 'Vapor puro',
+    titulo: 'Contato com o processo',
+    itens: [
+      'Produzido em gerador próprio, a partir de água com qualidade definida no projeto.',
+      'Usado em SIP (Sterilization-in-Place), autoclaves e outros pontos críticos.',
+      'Condensado com requisitos de qualidade definidos no projeto e nas normas aplicáveis.',
+    ],
+  },
+];
+
+const planejamento = [
+  { icone: 'i-doc', titulo: 'Requisitos do usuário (URS)', texto: 'Definem o que o sistema de vapor puro precisa entregar aos pontos de uso.' },
+  { icone: 'i-layers', titulo: 'Especificações', texto: 'Especificações técnica e funcional descrevem a construção e a operação do sistema.' },
+  { icone: 'i-shield', titulo: 'Análise de risco', texto: 'Identifica os pontos críticos e define a prioridade e a profundidade dos estudos.' },
+  { icone: 'i-target', titulo: 'Plano de qualificação', texto: 'Organiza as etapas, as responsabilidades e os critérios de aceitação.' },
+];
+
+const fases = [
+  { tag: 'IQ', titulo: 'Qualificação de instalação', texto: 'Verificação da instalação, dos materiais, dos componentes e da documentação.' },
+  { tag: 'OQ', titulo: 'Qualificação de operação', texto: 'Avaliação das funções, dos controles, dos alarmes e das condições operacionais previstas.' },
+  { tag: 'PQ', titulo: 'Qualificação de desempenho', texto: 'Avaliação do desempenho nas condições de uso definidas.' },
+];
+
+const entregaveis = [
+  'Protocolos e relatórios IQ, OQ e PQ',
+  'Registros de ensaios',
+  'Matriz de rastreabilidade',
+  'Relatório final consolidado',
+];
+
+const continuidade = [
+  { titulo: 'Monitoramento', texto: 'Acompanhamento dos parâmetros e da qualidade do condensado nos pontos definidos.' },
+  { titulo: 'Manutenção', texto: 'Inspeções e intervenções planejadas, com registro e avaliação de impacto.' },
+  { titulo: 'Investigação de desvios', texto: 'Análise de causa, ação corretiva e avaliação do efeito sobre o estado qualificado.' },
+  { titulo: 'Gestão de mudanças', texto: 'Avaliação de impacto antes de alterações, com testes e atualização da documentação.' },
+  { titulo: 'Requalificação', texto: 'Revisão do desempenho em intervalos definidos e após mudanças relevantes.' },
+];
+
+const whatsapp = 'https://wa.me/5511944744013?text=' + encodeURIComponent('Olá, PharmaUtility! Tenho dúvidas sobre a qualificação de vapor puro.');
+---
+
+<Layout title={`${nomeServico} | PharmaUtility`} description="Qualificação de sistemas de geração, distribuição e pontos de uso de vapor puro, com planejamento, estudos IQ, OQ e PQ e documentação rastreável.">
+  <!-- Imagem de fundo fixa só na primeira dobra (mesmo padrão da página de HVAC). Ilustrativa. -->
+  <FundoPagina nome="/assets/images/vapor-fundo" largura={1678} altura={937} destacarTexto />
+  <div class="page-content util-pagina">
+    <!-- 1. Apresentação -->
+    <section class="page-hero">
+      <div class="container">
+        <nav class="crumbs reveal" aria-label="Você está em">
+          <a href="/">Início</a><span aria-hidden="true">/</span><a href="/servicos/">Serviços</a><span aria-hidden="true">/</span><span>Vapor puro</span>
+        </nav>
+        <p class="eyebrow reveal">Serviço {servico.numero}</p>
+        <h1 class="reveal" style="margin-top:18px; --d: 0.1s">{nomeServico}</h1>
+        <p class="lead reveal" style="--d: 0.2s">
+          Qualificação dos sistemas de geração, distribuição e pontos de uso de vapor puro, conforme os requisitos do projeto, com planejamento, estudos e documentação rastreável.
+        </p>
+        <div class="btn-row reveal" style="--d: 0.3s">
+          <a class="btn btn--primary" href="/contato/" data-proposta={nomeServico}>
+            <span>Solicitar proposta técnica</span>
+            <span class="btn__icon"><svg class="icon" aria-hidden="true"><use href="#i-arrow" /></svg></span>
+          </a>
+          <a class="btn btn--whatsapp" href={whatsapp} target="_blank" rel="noopener">
+            <svg class="icon" aria-hidden="true"><use href="#i-whatsapp" /></svg>
+            <span>Tire suas dúvidas pelo WhatsApp</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0" aria-labelledby="tipos">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">Vapor industrial e vapor puro</p>
+          <h2 id="tipos" style="margin-top:18px">Dois vapores, dois propósitos.</h2>
+          <p>A qualificação trata do vapor puro. O vapor industrial pode alimentar o gerador como fonte de calor, mas não deve ser confundido com ele.</p>
+        </header>
+        <div class="grid grid--2">
+          {tiposVapor.map((t, i) => (
+            <article class="card util-tipo reveal" style={`--d: ${i * 0.08}s`}>
+              <p class="eyebrow">{t.eyebrow}</p>
+              <h3 style="margin-top:12px">{t.titulo}</h3>
+              <ul class="checklist" style="margin-top:20px">
+                {t.itens.map((item) => <li>{item}</li>)}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Planejamento -->
+    <section class="section" style="padding-top:0" aria-labelledby="planejamento">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">Planejamento</p>
+          <h2 id="planejamento" style="margin-top:18px">Requisitos antes dos estudos.</h2>
+          <p>Esses documentos orientam o escopo, os estudos e os critérios de aceitação da qualificação.</p>
+        </header>
+        <div class="grid grid--2">
+          {planejamento.map((p, i) => (
+            <article class="card reveal" style={`--d: ${(i % 2) * 0.08}s`}>
+              <span class="card__icon"><svg class="icon" aria-hidden="true"><use href={`#${p.icone}`} /></svg></span>
+              <h3>{p.titulo}</h3>
+              <p>{p.texto}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Etapas de qualificação -->
+    <section class="section" style="padding-top:0" aria-labelledby="etapas">
+      <div class="container split">
+        <div class="reveal">
+          <p class="eyebrow">Etapas de qualificação</p>
+          <h2 id="etapas" style="margin-top:18px">Instalação, operação e desempenho.</h2>
+          <p class="lead" style="margin-top:20px">Os estudos cobrem a geração, a distribuição e os pontos de uso, nos limites definidos pelo plano de qualificação.</p>
+        </div>
+        <div class="stack reveal" style="--d: 0.1s">
+          {fases.map((f) => (
+            <article class="card phase">
+              <span class="phase__tag">{f.tag}</span>
+              <div>
+                <h3>{f.titulo}</h3>
+                <p>{f.texto}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Entregáveis -->
+    <section class="section" style="padding-top:0" aria-labelledby="entregaveis">
+      <div class="container split">
+        <div class="reveal">
+          <p class="eyebrow">Entregáveis</p>
+          <h2 id="entregaveis" style="margin-top:18px">Documentação entregue.</h2>
+          <p class="lead" style="margin-top:20px">Organizada para análise técnica e para consulta em auditorias e inspeções.</p>
+        </div>
+        <div class="card reveal" style="--d: 0.1s">
+          <ul class="checklist">
+            {entregaveis.map((e) => <li>{e}</li>)}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Continuidade -->
+    <section class="section" style="padding-top:0" aria-labelledby="continuidade">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">Continuidade</p>
+          <h2 id="continuidade" style="margin-top:18px">Manter o vapor puro sob controle.</h2>
+          <p>Serviços organizados conforme o uso e o risco de cada sistema.</p>
+        </header>
+        <div class="grid grid--3">
+          {continuidade.map((c, i) => (
+            <article class="card reveal" style={`--d: ${(i % 3) * 0.08}s`}>
+              <h3>{c.titulo}</h3>
+              <p>{c.texto}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Contato -->
+    <section class="section" style="padding-top:0" aria-labelledby="contato">
+      <div class="container">
+        <div class="cta-dark reveal">
+          <p class="eyebrow" style="color:var(--pu-copper-300)">Contato</p>
+          <h2 id="contato" style="margin-top:16px">Converse sobre o seu sistema de vapor puro.</h2>
+          <p>Informe o gerador, a quantidade de pontos de uso, a localização e o objetivo do trabalho. Nossa equipe retorna com a avaliação da demanda e o escopo proposto.</p>
+          <div class="btn-row">
+            <a class="btn btn--on-dark" href="/contato/" data-proposta={nomeServico}><span>Solicitar proposta técnica</span><span class="btn__icon"><svg class="icon" aria-hidden="true"><use href="#i-arrow" /></svg></span></a>
+          </div>
+        </div>
+        <p class="util-relacionado reveal" style="margin-top:28px">Serviço relacionado: <a href="/servicos/qualificacao-sistemas-agua-pw-wfi/">Qualificação de Sistemas de Água — PW e WFI</a></p>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0" aria-labelledby="outros">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">Outros serviços</p>
+          <h2 id="outros" style="margin-top:18px">Conheça as demais frentes.</h2>
+        </header>
+        <div class="grid grid--3 service-nav">
+          {outros.slice(0, 6).map((s, i) => (
+            <a class="card card--link reveal" href={`/servicos/${s.slug}/`} style={`--d: ${(i % 3) * 0.08}s`}>
+              <span class="card__num">{s.numero}</span>
+              <h3>{s.nome}</h3>
+              <span class="card__more">Ver serviço <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow" /></svg></span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>

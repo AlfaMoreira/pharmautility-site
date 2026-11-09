@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="Ilustração esquemática de linhas de vapor (provisória)">
+  <!-- Ilustração provisória: substituir pela imagem aprovada de vapor. Não representa um equipamento específico. -->
+  <defs>
+    <linearGradient id="fundo" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F6F7F9"/>
+      <stop offset="1" stop-color="#E3E7ED"/>
+    </linearGradient>
+    <linearGradient id="cobre" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#EAB080"/>
+      <stop offset="1" stop-color="#BE7334"/>
+    </linearGradient>
+    <linearGradient id="inox" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#C9D0DA"/>
+      <stop offset="0.5" stop-color="#FAFBFC"/>
+      <stop offset="1" stop-color="#C9D0DA"/>
+    </linearGradient>
+    <radialGradient id="nevoa" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#fundo)"/>
+  <!-- piso -->
+  <rect y="720" width="1600" height="180" fill="#C9D0DA" opacity="0.45"/>
+  <!-- equipamento vertical genérico -->
+  <rect x="240" y="250" width="220" height="470" rx="40" fill="url(#inox)" stroke="#8A94A6" stroke-width="3"/>
+  <rect x="270" y="320" width="160" height="12" rx="6" fill="#8A94A6" opacity="0.5"/>
+  <rect x="270" y="640" width="160" height="12" rx="6" fill="#8A94A6" opacity="0.5"/>
+  <!-- linhas de vapor -->
+  <path d="M460 360 H760 V300 H1380" fill="none" stroke="url(#cobre)" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M760 300 V520 H1100 V600" fill="none" stroke="url(#cobre)" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M1380 300 V560" fill="none" stroke="url(#cobre)" stroke-width="18" stroke-linecap="round"/>
+  <!-- válvulas -->
+  <g fill="#40506A">
+    <rect x="600" y="340" width="30" height="40" rx="6"/>
+    <rect x="1040" y="282" width="30" height="36" rx="6"/>
+    <rect x="1085" y="560" width="30" height="40" rx="6"/>
+  </g>
+  <!-- pontos de uso -->
+  <rect x="1020" y="600" width="170" height="120" rx="18" fill="url(#inox)" stroke="#8A94A6" stroke-width="3"/>
+  <rect x="1300" y="560" width="160" height="160" rx="22" fill="url(#inox)" stroke="#8A94A6" stroke-width="3"/>
+  <circle cx="1380" cy="640" r="40" fill="none" stroke="#8A94A6" stroke-width="4"/>
+  <!-- névoa de vapor -->
+  <g>
+    <circle cx="1380" cy="250" r="70" fill="url(#nevoa)"/>
+    <circle cx="1430" cy="200" r="55" fill="url(#nevoa)"/>
+    <circle cx="1340" cy="190" r="45" fill="url(#nevoa)"/>
+  </g>
+</svg>

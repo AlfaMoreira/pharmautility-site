@@ -1,0 +1,249 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { servicos } from '../../data/servicos.js';
+import FundoPagina from '../../components/FundoPagina.astro';
+import '../../styles/utilidades.css';
+
+const servico = servicos.find((s) => s.slug === 'qualificacao-sistemas-agua-pw-wfi')!;
+const outros = servicos.filter((s) => s.slug !== servico.slug);
+const nomeServico = servico.nome;
+
+const tiposAgua = [
+  {
+    eyebrow: 'PW',
+    titulo: 'Água Purificada',
+    itens: [
+      'Usada em etapas de fabricação e limpeza que não exigem a qualidade de injetáveis.',
+      'Tecnologia de produção definida no projeto, por exemplo osmose reversa e/ou desionização.',
+      'Requisitos físico-químicos e microbiológicos conforme a monografia aplicável.',
+    ],
+  },
+  {
+    eyebrow: 'WFI',
+    titulo: 'Água para Injetáveis',
+    itens: [
+      'Usada em produtos parenterais e em etapas que exigem essa qualidade.',
+      'Requisitos adicionais, incluindo o limite de endotoxinas.',
+      'Rota de produção definida na monografia vigente e no processo validado do cliente.',
+    ],
+  },
+];
+
+const ciclo = [
+  { titulo: 'Pré-tratamento', texto: 'Condicionamento da água de alimentação antes do tratamento principal.' },
+  { titulo: 'Tratamento', texto: 'Remoção de sais e íons conforme a tecnologia definida no projeto.' },
+  { titulo: 'Polimento', texto: 'Etapa final de controle da qualidade, quando aplicável.' },
+  { titulo: 'Armazenamento', texto: 'Tanque e respiro com controles de contaminação e sanitização.' },
+  { titulo: 'Distribuição', texto: 'Loop, retorno e pontos de uso avaliados quanto à estabilidade.' },
+];
+
+const planejamento = [
+  { icone: 'i-doc', titulo: 'Requisitos do usuário (URS)', texto: 'Definem a qualidade, a vazão e os pontos de uso que o sistema deve atender.' },
+  { icone: 'i-layers', titulo: 'Especificações técnica e funcional', texto: 'Descrevem como o sistema é construído e como cada função deve operar.' },
+  { icone: 'i-shield', titulo: 'Análise de risco', texto: 'Identifica os pontos críticos de qualidade e define a prioridade dos estudos.' },
+  { icone: 'i-target', titulo: 'Plano de qualificação', texto: 'Organiza as etapas, as responsabilidades e os critérios de aceitação.' },
+];
+
+const fases = [
+  { tag: 'IQ', titulo: 'Qualificação de instalação', texto: 'Verificação da instalação, dos materiais, dos componentes e da documentação contra o projeto.' },
+  { tag: 'OQ', titulo: 'Qualificação de operação', texto: 'Avaliação das funções, dos controles, dos alarmes e dos intertravamentos nas faixas previstas.' },
+  { tag: 'PQ', titulo: 'Qualificação de desempenho', texto: 'Avaliação da qualidade da água nos pontos de uso, ao longo de um período definido no plano.' },
+];
+
+const controle = [
+  { icone: 'i-drop', titulo: 'Estratégia de sanitização', texto: 'Método, frequência e critérios definidos para manter o sistema sob controle.' },
+  { icone: 'i-flask', titulo: 'Controle microbiológico', texto: 'Amostragem nos pontos definidos, com limites de alerta e de ação.' },
+  { icone: 'i-gauge', titulo: 'Monitoramento', texto: 'Acompanhamento dos parâmetros críticos e análise de tendências.' },
+  { icone: 'i-thermo', titulo: 'Requalificação', texto: 'Revisão do desempenho em intervalos definidos e após mudanças relevantes.' },
+];
+
+const entregaveis = [
+  'Protocolos de qualificação IQ, OQ e PQ',
+  'Relatórios dos estudos',
+  'Registros dos ensaios e das amostragens',
+  'Documentação de rastreabilidade',
+];
+
+const whatsapp = 'https://wa.me/5511944744013?text=' + encodeURIComponent('Olá, PharmaUtility! Tenho dúvidas sobre a qualificação de sistemas de água PW e WFI.');
+---
+
+<Layout title={`${nomeServico} | PharmaUtility`} description="Qualificação de sistemas de Água Purificada (PW) e Água para Injetáveis (WFI), com planejamento, estudos IQ, OQ e PQ, controle microbiológico e documentação rastreável.">
+  <!-- Imagem de fundo fixa só na primeira dobra (mesmo padrão da página de HVAC). Ilustrativa. -->
+  <FundoPagina nome="/assets/images/agua-fundo" largura={2752} altura={1536} destacarTexto />
+  <div class="page-content util-pagina">
+    <!-- 1. Apresentação -->
+    <section class="page-hero">
+      <div class="container">
+        <nav class="crumbs reveal" aria-label="Você está em">
+          <a href="/">Início</a><span aria-hidden="true">/</span><a href="/servicos/">Serviços</a><span aria-hidden="true">/</span><span>Água PW e WFI</span>
+        </nav>
+        <p class="eyebrow reveal">Serviço {servico.numero}</p>
+        <h1 class="reveal" style="margin-top:18px; --d: 0.1s">{nomeServico}</h1>
+        <p class="lead reveal" style="--d: 0.2s">
+          Qualificação de sistemas de Água Purificada e de Água para Injetáveis, considerando os requisitos e os usos específicos de cada um, com planejamento, estudos e documentação rastreável.
+        </p>
+        <div class="btn-row reveal" style="--d: 0.3s">
+          <a class="btn btn--primary" href="/contato/" data-proposta="Sistemas de Água (PW e WFI)">
+            <span>Solicitar proposta técnica</span>
+            <span class="btn__icon"><svg class="icon" aria-hidden="true"><use href="#i-arrow" /></svg></span>
+          </a>
+          <a class="btn btn--whatsapp" href={whatsapp} target="_blank" rel="noopener">
+            <svg class="icon" aria-hidden="true"><use href="#i-whatsapp" /></svg>
+            <span>Tire suas dúvidas pelo WhatsApp</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0" aria-labelledby="tipos">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">PW e WFI</p>
+          <h2 id="tipos" style="margin-top:18px">Qualidades diferentes, sistemas avaliados separadamente.</h2>
+          <p>PW e WFI têm requisitos e usos próprios. A configuração de cada sistema, inclusive se são instalações independentes, é confirmada pelo projeto antes da proposta.</p>
+        </header>
+        <div class="grid grid--2">
+          {tiposAgua.map((t, i) => (
+            <article class="card util-tipo reveal" style={`--d: ${i * 0.08}s`}>
+              <p class="eyebrow">{t.eyebrow}</p>
+              <h3 style="margin-top:12px">{t.titulo}</h3>
+              <ul class="checklist" style="margin-top:20px">
+                {t.itens.map((item) => <li>{item}</li>)}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Ciclo do sistema -->
+    <section class="section" style="padding-top:0" aria-labelledby="ciclo">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">Ciclo do sistema</p>
+          <h2 id="ciclo" style="margin-top:18px">Da água de alimentação ao ponto de uso.</h2>
+          <p>As etapas aplicáveis variam conforme a tecnologia e a qualidade de água de cada sistema.</p>
+        </header>
+        <ol class="util-ciclo">
+          {ciclo.map((c, i) => (
+            <li class="reveal" style={`--d: ${i * 0.06}s`}>
+              <span class="util-ciclo__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <h3>{c.titulo}</h3>
+              <p>{c.texto}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- 3. Planejamento -->
+    <section class="section" style="padding-top:0" aria-labelledby="planejamento">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">Planejamento</p>
+          <h2 id="planejamento" style="margin-top:18px">Requisitos antes dos estudos.</h2>
+          <p>Esses documentos orientam o escopo, os estudos e os critérios de aceitação da qualificação.</p>
+        </header>
+        <div class="grid grid--2">
+          {planejamento.map((p, i) => (
+            <article class="card reveal" style={`--d: ${(i % 2) * 0.08}s`}>
+              <span class="card__icon"><svg class="icon" aria-hidden="true"><use href={`#${p.icone}`} /></svg></span>
+              <h3>{p.titulo}</h3>
+              <p>{p.texto}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Qualificação -->
+    <section class="section" style="padding-top:0" aria-labelledby="qualificacao">
+      <div class="container split">
+        <div class="reveal">
+          <p class="eyebrow">Qualificação</p>
+          <h2 id="qualificacao" style="margin-top:18px">Estudos IQ, OQ e PQ.</h2>
+          <p class="lead" style="margin-top:20px">Inclui a avaliação de instrumentos, controles, alarmes e intertravamentos, com a calibração dos instrumentos críticos verificada.</p>
+        </div>
+        <div class="stack reveal" style="--d: 0.1s">
+          {fases.map((f) => (
+            <article class="card phase">
+              <span class="phase__tag">{f.tag}</span>
+              <div>
+                <h3>{f.titulo}</h3>
+                <p>{f.texto}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Controle e acompanhamento -->
+    <section class="section" style="padding-top:0" aria-labelledby="controle">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">Controle e acompanhamento</p>
+          <h2 id="controle" style="margin-top:18px">Manter a qualidade da água ao longo do uso.</h2>
+        </header>
+        <div class="grid grid--2">
+          {controle.map((c, i) => (
+            <article class="card reveal" style={`--d: ${(i % 2) * 0.08}s`}>
+              <span class="card__icon"><svg class="icon" aria-hidden="true"><use href={`#${c.icone}`} /></svg></span>
+              <h3>{c.titulo}</h3>
+              <p>{c.texto}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Entregáveis -->
+    <section class="section" style="padding-top:0" aria-labelledby="entregaveis">
+      <div class="container split">
+        <div class="reveal">
+          <p class="eyebrow">Entregáveis</p>
+          <h2 id="entregaveis" style="margin-top:18px">Documentação entregue.</h2>
+          <p class="lead" style="margin-top:20px">Organizada para análise técnica e para consulta em auditorias e inspeções.</p>
+        </div>
+        <div class="card reveal" style="--d: 0.1s">
+          <ul class="checklist">
+            {entregaveis.map((e) => <li>{e}</li>)}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Contato -->
+    <section class="section" style="padding-top:0" aria-labelledby="contato">
+      <div class="container">
+        <div class="cta-dark reveal">
+          <p class="eyebrow" style="color:var(--pu-copper-300)">Contato</p>
+          <h2 id="contato" style="margin-top:16px">Converse sobre o seu sistema de água.</h2>
+          <p>Informe o tipo de água (PW, WFI ou ambos), a tecnologia instalada, a localização e o objetivo do trabalho. Nossa equipe retorna com a avaliação da demanda e o escopo proposto.</p>
+          <div class="btn-row">
+            <a class="btn btn--on-dark" href="/contato/" data-proposta="Sistemas de Água (PW e WFI)"><span>Solicitar proposta técnica</span><span class="btn__icon"><svg class="icon" aria-hidden="true"><use href="#i-arrow" /></svg></span></a>
+          </div>
+        </div>
+        <p class="util-relacionado reveal" style="margin-top:28px">Serviço relacionado: <a href="/servicos/qualificacao-vapor-puro/">Qualificação de Vapor Puro</a></p>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0" aria-labelledby="outros">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">Outros serviços</p>
+          <h2 id="outros" style="margin-top:18px">Conheça as demais frentes.</h2>
+        </header>
+        <div class="grid grid--3 service-nav">
+          {outros.slice(0, 6).map((s, i) => (
+            <a class="card card--link reveal" href={`/servicos/${s.slug}/`} style={`--d: ${(i % 3) * 0.08}s`}>
+              <span class="card__num">{s.numero}</span>
+              <h3>{s.nome}</h3>
+              <span class="card__more">Ver serviço <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow" /></svg></span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>

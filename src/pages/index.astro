@@ -1,11 +1,277 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import { servicos } from '../data/servicos.js';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const POSTER = '/assets/images/medical_ampoule_production_line_at_pharmaceutical-_factory.webp';
+
+const setores = [
+  { icon: 'i-flask', nome: 'Farmacêutico', texto: 'Utilidades, HVAC, salas limpas, equipamentos de contenção e sistemas computadorizados em ambientes GxP.' },
+  { icon: 'i-drop', nome: 'Alimentício', texto: 'Ar comprimido e gases em contato com o produto, utilidades e monitoramento ambiental de áreas controladas.' },
+  { icon: 'i-shield', nome: 'Hospitalar', texto: 'Autoclaves, centros de preparo, unidades de esterilização e controle térmico de equipamentos críticos.' },
+  { icon: 'i-gauge', nome: 'Industrial', texto: 'Instrumentação, calibração, utilidades e processos que exigem medições rastreáveis e documentadas.' },
+];
+
+const faq = [
+  {
+    pergunta: 'Qual a diferença entre qualificação e validação?',
+    resposta: 'A qualificação está relacionada a equipamentos, sistemas e utilidades, como HVAC e água PW/WFI. A validação está mais ligada a processos, métodos e sistemas computadorizados. Ambas buscam garantir conformidade, segurança e qualidade do produto final.',
+  },
+  {
+    pergunta: 'O que significam IQ, OQ e PQ?',
+    resposta: 'São as etapas da qualificação. IQ (Qualificação de Instalação) verifica se o sistema foi instalado conforme as especificações. OQ (Qualificação de Operação) avalia se ele opera conforme o esperado. PQ (Qualificação de Desempenho) comprova o desempenho em condições reais de uso.',
+  },
+  {
+    pergunta: 'Por que a qualificação de HVAC é importante?',
+    resposta: 'O sistema HVAC controla temperatura, umidade, pressão e fluxo de ar em áreas classificadas. Sua qualificação documenta que esse controle se mantém, reduzindo o risco de contaminação e protegendo a integridade dos processos produtivos.',
+  },
+  {
+    pergunta: 'Quando é necessária a requalificação?',
+    resposta: 'A requalificação deve ocorrer de forma periódica e sempre que houver mudanças significativas no sistema, manutenção crítica, desvios relevantes ou exigências regulatórias específicas. A periodicidade é definida com base no risco e nas exigências aplicáveis a cada caso.',
+  },
+  {
+    pergunta: 'O que é qualificação de utilidades?',
+    resposta: 'É o processo que comprova, por meio de evidências documentadas, que sistemas como água purificada (PW), água para injetáveis (WFI), vapor puro, ar comprimido e HVAC operam de forma controlada e conforme os requisitos GxP.',
+  },
+];
+
+const whatsapp = 'https://wa.me/5511944744013?text=' + encodeURIComponent('Olá, PharmaUtility! Gostaria de conversar sobre a qualificação de um sistema.');
 ---
 
 <Layout>
-	<Welcome />
+  <!-- ============ PRIMEIRA E SEGUNDA DOBRA: vídeo fixo, conteúdo rola por cima ============
+       A seção tem 300vh. O palco (vídeo) fica fixo durante 200vh de rolagem, que é a sequência.
+       O conteúdo é fluxo normal: o hero rola para cima e o bloco "Quem somos" entra sobre o vídeo.
+       Ao final, o palco solta e a página segue para as próximas seções. -->
+  <section class="hero hero--scrub scrub" data-scrub data-static="poster" aria-label="Apresentação da PharmaUtility">
+    <!-- Trilho: ocupa a seção inteira; o palco sticky solta exatamente ao fim dos 200vh da sequência. -->
+    <div class="scrub__track">
+    <div class="scrub__sticky">
+      <div class="scrub__frame" data-scrub-frame>
+        <video class="scrub__video" data-scrub-video muted playsinline preload="metadata" aria-hidden="true">
+          <source src="/assets/video/hero.mp4" type="video/mp4" />
+        </video>
+        <div class="scrub__bar" aria-hidden="true"><span data-scrub-bar></span></div>
+      </div>
+      <div class="hero__scroll" aria-hidden="true"><span></span>Role</div>
+    </div>
+    </div>
+
+    <div class="scrub__content">
+      <div class="container hero__inner">
+        <p class="eyebrow reveal">Estudos, qualificações e validações</p>
+        <h1 id="hero-titulo" class="reveal" style="--d: 0.1s">
+          Qualificação e validação para a <span class="tone">confiabilidade</span> dos seus sistemas críticos.
+        </h1>
+        <p class="lead reveal" style="--d: 0.2s">
+          A PharmaUtility atua com estudos, qualificações e validações de sistemas, equipamentos e ambientes para os setores farmacêutico, alimentício, hospitalar e industrial. Soluções técnicas alinhadas às necessidades de cada projeto, com rigor na execução e documentação dos resultados.
+        </p>
+        <div class="btn-row hero__actions reveal" style="--d: 0.3s">
+          <a class="btn btn--primary" href="/contato/">
+            <span>Solicitar proposta técnica</span>
+            <span class="btn__icon"><svg class="icon" aria-hidden="true"><use href="#i-arrow" /></svg></span>
+          </a>
+          <a class="btn btn--ghost" href="/servicos/">
+            <span>Conhecer nossos serviços</span>
+            <span class="btn__icon"><svg class="icon" aria-hidden="true"><use href="#i-arrow" /></svg></span>
+          </a>
+        </div>
+        <ul class="chips reveal" style="--d: 0.4s" aria-label="Setores atendidos">
+          <li class="chip">Farmacêutico</li>
+          <li class="chip">Alimentício</li>
+          <li class="chip">Hospitalar</li>
+          <li class="chip">Industrial</li>
+        </ul>
+      </div>
+
+      <!-- Segunda dobra: entra sobre o vídeo fixo -->
+      <section class="section section--over-video" aria-labelledby="sobre-titulo">
+        <div class="container">
+          <div class="scrub__panel split">
+            <div class="reveal">
+              <p class="eyebrow">Quem somos</p>
+              <h2 id="sobre-titulo" style="margin-top:18px">Precisão técnica em cada etapa do seu projeto.</h2>
+              <p class="lead" style="margin-top:22px">
+                Apoiamos empresas que precisam conhecer, controlar e documentar o desempenho de seus sistemas críticos. Nossa atuação reúne avaliação técnica, execução de estudos e documentação para apoiar a qualidade dos processos e as atividades de auditoria.
+              </p>
+              <div class="btn-row" style="margin-top:32px">
+                <a class="btn btn--ghost" href="/quem-somos/">
+                  <span>Conhecer a empresa</span>
+                  <span class="btn__icon"><svg class="icon" aria-hidden="true"><use href="#i-arrow" /></svg></span>
+                </a>
+              </div>
+            </div>
+
+            <div class="stack">
+              <article class="card reveal" style="--d: 0.05s">
+                <span class="card__icon"><svg class="icon" aria-hidden="true"><use href="#i-target" /></svg></span>
+                <div>
+                  <h3>Rigor técnico</h3>
+                  <p>Atenção aos parâmetros, critérios e registros definidos para cada trabalho.</p>
+                </div>
+              </article>
+              <article class="card reveal" style="--d: 0.15s">
+                <span class="card__icon"><svg class="icon" aria-hidden="true"><use href="#i-layers" /></svg></span>
+                <div>
+                  <h3>Soluções personalizadas</h3>
+                  <p>Escopo alinhado ao sistema e às condições de uso do cliente.</p>
+                </div>
+              </article>
+              <article class="card reveal" style="--d: 0.25s">
+                <span class="card__icon"><svg class="icon" aria-hidden="true"><use href="#i-doc" /></svg></span>
+                <div>
+                  <h3>Documentação organizada</h3>
+                  <p>Resultados e evidências estruturados para análise técnica e auditorias.</p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <!-- ============ SERVIÇOS ============ -->
+  <section class="section" id="servicos" aria-labelledby="servicos-titulo">
+    <div class="container">
+      <header class="section__head reveal">
+        <p class="eyebrow">Serviços</p>
+        <h2 id="servicos-titulo" style="margin-top:18px">Frentes de qualificação, validação e calibração.</h2>
+        <p>Cada serviço tem página própria, com necessidade atendida, escopo, etapas e entregáveis.</p>
+      </header>
+
+      <div class="grid grid--4">
+        {servicos.map((s, i) => (
+          <a class="card card--link reveal" href={`/servicos/${s.slug}/`} style={`--d: ${(i % 4) * 0.08}s`}>
+            <span class="card__num">{s.numero}</span>
+            <h3>{s.nome}</h3>
+            <p>{s.chamada}</p>
+            <span class="card__more">Ver serviço <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow" /></svg></span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SETORES ============ -->
+  <section class="section sectors-section" aria-labelledby="setores-titulo">
+    <div class="container sectors-layout">
+      <header class="sectors-head reveal">
+        <p class="eyebrow">Setores atendidos</p>
+        <h2 id="setores-titulo" style="margin-top:18px">Para ambientes onde a precisão é indispensável.</h2>
+        <p class="lead" style="margin-top:20px">Atuamos onde a medição precisa ser rastreável e a documentação precisa sustentar auditorias.</p>
+      </header>
+
+      <div class="grid grid--2 sectors-grid reveal" style="--d: 0.1s">
+        {setores.map((s, i) => (
+          <article class="card sector reveal" style={`--d: ${i * 0.08}s`}>
+            <span class="card__icon"><svg class="icon" aria-hidden="true"><use href={`#${s.icon}`} /></svg></span>
+            <h3>{s.nome}</h3>
+            <p>{s.texto}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROCESSO ============ -->
+  <section class="section" aria-labelledby="processo-titulo">
+    <div class="container">
+      <header class="section__head reveal">
+        <p class="eyebrow">Como funciona o atendimento</p>
+        <h2 id="processo-titulo" style="margin-top:18px">Do entendimento da demanda à entrega documental.</h2>
+      </header>
+
+      <ol class="steps">
+        <li class="card step reveal" style="--d: 0s">
+          <span class="step__index">01</span>
+          <h3>Entendimento da demanda</h3>
+          <p>Conhecemos o sistema ou equipamento, a localização e o objetivo do trabalho.</p>
+        </li>
+        <li class="card step reveal" style="--d: 0.1s">
+          <span class="step__index">02</span>
+          <h3>Definição do escopo</h3>
+          <p>Estabelecemos parâmetros, critérios de aceitação e cronograma em conjunto com o cliente.</p>
+        </li>
+        <li class="card step reveal" style="--d: 0.2s">
+          <span class="step__index">03</span>
+          <h3>Execução</h3>
+          <p>Realizamos os estudos, ensaios e medições com instrumentação calibrada e rastreável.</p>
+        </li>
+        <li class="card step reveal" style="--d: 0.3s">
+          <span class="step__index">04</span>
+          <h3>Entrega documental</h3>
+          <p>Relatórios, protocolos e evidências organizados para análise técnica e auditoria.</p>
+        </li>
+      </ol>
+
+      <div class="grid grid--2" style="margin-top:28px">
+        <article class="card card--dark reveal">
+          <p class="eyebrow" style="color:var(--pu-copper-300)">O que você recebe</p>
+          <h2 style="margin-top:16px; font-size:clamp(1.3rem, 1rem + 1vw, 1.8rem)">Pacote documental pronto para auditoria.</h2>
+          <ul class="checklist checklist--dark" style="margin-top:24px">
+            <li>Protocolos e relatórios IQ/OQ/PQ</li>
+            <li>Matriz de rastreabilidade e evidências</li>
+            <li>Certificados e rastreabilidade dos instrumentos</li>
+            <li>Identificação do responsável técnico</li>
+          </ul>
+        </article>
+        <article class="card reveal" style="--d: 0.1s; display:flex; flex-direction:column; justify-content:center; gap:16px">
+          <p class="eyebrow">Atendimento</p>
+          <h3 style="font-size:1.35rem">Online para todo o Brasil e América Latina.</h3>
+          <p>Suporte presencial mediante agendamento, com agilidade e alto nível de especialização.</p>
+          <div class="btn-row" style="margin-top:8px">
+            <a class="btn btn--primary btn--sm" href="/contato/"><span>Falar com a equipe</span><span class="btn__icon"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow" /></svg></span></a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PERGUNTAS FREQUENTES ============ -->
+  <section class="section" aria-labelledby="faq-titulo">
+    <div class="container split" style="align-items:start">
+      <header class="reveal">
+        <p class="eyebrow">Perguntas frequentes</p>
+        <h2 id="faq-titulo" style="margin-top:18px">Dúvidas comuns sobre qualificação.</h2>
+        <p class="lead" style="margin-top:20px">Se a sua pergunta não estiver aqui, fale com a nossa equipe técnica.</p>
+      </header>
+
+      <div class="faq reveal" style="--d: 0.1s">
+        {faq.map((item) => (
+          <details>
+            <summary>
+              {item.pergunta}
+              <span class="plus" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><use href="#i-plus" /></svg></span>
+            </summary>
+            <div class="faq__answer"><p>{item.resposta}</p></div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA FINAL ============ -->
+  <section class="section" style="padding-top:0" aria-labelledby="cta-titulo">
+    <div class="container">
+      <div class="cta-dark reveal">
+        <img class="cta-dark__logo" src="/assets/logo/simbolo-cor.svg" alt="" aria-hidden="true" width="124" height="203" loading="lazy" decoding="async" />
+        <p class="eyebrow" style="color:var(--pu-copper-300)">Contato</p>
+        <h2 id="cta-titulo" style="margin-top:16px">Conte à nossa equipe o que seu projeto precisa.</h2>
+        <p>Informe o sistema ou equipamento, a localização e o objetivo do trabalho para iniciarmos a avaliação da sua demanda.</p>
+        <div class="btn-row">
+          <a class="btn btn--on-dark" href={whatsapp} target="_blank" rel="noopener">
+            <span>Falar com a PharmaUtility</span>
+            <span class="btn__icon"><svg class="icon" aria-hidden="true"><use href="#i-arrow" /></svg></span>
+          </a>
+          <a class="btn btn--ghost" href="/contato/" style="background:transparent; color:#fff; box-shadow: inset 0 0 0 1px rgba(255,255,255,.35)">
+            <span>Ir para o formulário</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import '../scripts/scrub.js';
+  </script>
 </Layout>

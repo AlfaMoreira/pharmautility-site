@@ -1,0 +1,540 @@
+/*
+ * Página de Treinamentos em Segurança do Trabalho.
+ * Usa somente os tokens do site.css (navy, cobre, cinzas, Nasalization e Montserrat).
+ */
+
+/* ---------- Topo ---------- */
+.tr-hero__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+  gap: clamp(36px, 5vw, 72px);
+  align-items: center;
+}
+/* Impede que um conteúdo largo (ex.: botão de texto longo) alargue a coluna além da tela. */
+.tr-hero__grid > *,
+.tr-contato > * {
+  min-width: 0;
+}
+.tr-destaque {
+  background: linear-gradient(135deg, var(--pu-copper-500), var(--pu-copper-700));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.tr-numeros {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  margin: clamp(36px, 5vw, 52px) 0 0;
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
+}
+.tr-numeros__valor {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 1.6rem + 2vw, 3.2rem);
+  line-height: 1;
+  color: var(--pu-navy-500);
+}
+.tr-numeros dd {
+  margin: 10px 0 0;
+  max-width: 18ch;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: var(--text);
+}
+
+.tr-painel {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(28px, 3.5vw, 40px);
+  border-radius: var(--radius-card);
+  background: radial-gradient(120% 120% at 100% 0%, var(--pu-navy-500) 0%, var(--pu-navy-950) 75%);
+  color: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 0 0 8px var(--ring), 0 30px 60px -30px rgba(23, 32, 48, 0.5);
+}
+.tr-painel::after {
+  /* brilho cobre discreto no canto, ecoando o degradê da marca */
+  content: "";
+  position: absolute;
+  right: -30%;
+  bottom: -40%;
+  width: 80%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(233, 142, 64, 0.22), transparent 65%);
+  pointer-events: none;
+}
+.tr-painel__simbolo {
+  width: 56px;
+  height: auto;
+  opacity: 0.95;
+}
+.tr-painel__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 26px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.tr-painel__chips li {
+  padding: 7px 13px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--pu-white);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.tr-painel__chips .tr-painel__mais {
+  border-color: rgba(234, 176, 128, 0.5);
+  color: var(--pu-copper-300);
+}
+.tr-painel__citacao {
+  margin: 26px 0 0;
+  padding-top: 22px;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  font-size: 0.97rem;
+  line-height: 1.6;
+}
+.tr-painel__citacao strong {
+  color: var(--pu-white);
+  font-weight: 600;
+}
+
+/* ---------- Catálogo ---------- */
+.tr-cursos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(18px, 2.4vw, 28px);
+}
+.tr-curso {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  background: var(--pu-white);
+  box-shadow: var(--ring-solid), var(--shadow-card);
+  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+}
+.tr-curso:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--ring-solid), var(--shadow-card-hover);
+}
+.tr-curso__topo {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 24px clamp(22px, 3vw, 30px);
+  background: linear-gradient(135deg, var(--pu-gray-50), var(--pu-gray-100));
+  border-bottom: 1px solid var(--line);
+}
+.tr-curso__sigla {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 1.3rem + 1vw, 2.1rem);
+  line-height: 1;
+  color: var(--pu-navy-500);
+}
+.tr-curso__area {
+  margin: 8px 0 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-text);
+}
+.tr-status {
+  flex: none;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.tr-status--pronto {
+  background: #E6F2EA;
+  color: #22603B;
+}
+.tr-status--consulta {
+  background: #FBEFE3;
+  color: var(--pu-copper-700);
+}
+.tr-curso__corpo {
+  flex: 1;
+  padding: 24px clamp(22px, 3vw, 30px) 26px;
+}
+.tr-curso__corpo h3 {
+  font-size: clamp(1.1rem, 1rem + 0.4vw, 1.3rem);
+}
+.tr-curso__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.tr-curso__meta li {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--pu-gray-600);
+}
+.tr-curso__meta svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: var(--pu-copper-600);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.tr-curso__desc {
+  margin-top: 16px;
+  font-size: 0.95rem;
+  color: var(--text);
+}
+.tr-curso__modulos {
+  display: grid;
+  gap: 10px;
+  margin: 20px 0 0;
+  padding: 18px 0 0;
+  list-style: none;
+  border-top: 1px dashed var(--line-strong);
+}
+.tr-curso__modulos li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 4.6rem 1fr;
+  gap: 10px;
+  align-items: baseline;
+  padding-left: 20px;
+  font-size: 0.9rem;
+  color: var(--ink);
+}
+.tr-curso__modulos li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 0.55em;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--pu-copper-300), var(--pu-copper-600));
+}
+.tr-curso__mod {
+  font-weight: 700;
+  color: var(--pu-navy-500);
+  white-space: nowrap;
+}
+/* Cursos sob consulta não têm rótulo de módulo: o texto ocupa a linha toda. */
+.tr-curso__modulos li > span:only-child {
+  grid-column: 1 / -1;
+}
+.tr-curso__normas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  padding: 16px clamp(22px, 3vw, 30px);
+  background: var(--pu-gray-50);
+  border-top: 1px solid var(--line);
+}
+.tr-curso__normas-rotulo {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--pu-gray-500);
+}
+.tr-curso__normas ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tr-curso__normas li {
+  padding: 3px 9px;
+  border-radius: 6px;
+  background: var(--pu-white);
+  box-shadow: var(--ring-solid);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--pu-navy-500);
+}
+
+/* ---------- Metodologia ---------- */
+.tr-metodo h2 {
+  max-width: 22ch;
+}
+.tr-etapas {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 24px;
+  margin: clamp(36px, 5vw, 52px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.tr-etapas::before {
+  /* trilha ligando as etapas */
+  content: "";
+  position: absolute;
+  top: 25px;
+  left: 26px;
+  right: 10%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--pu-copper-500), rgba(234, 176, 128, 0.15));
+}
+.tr-etapas li {
+  position: relative;
+}
+.tr-etapas__num {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--pu-navy-950);
+  border: 2px solid var(--pu-copper-500);
+  color: var(--pu-white);
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+}
+.tr-etapas h3 {
+  margin-top: 18px;
+  font-size: 1.02rem;
+  color: var(--pu-white);
+}
+.tr-etapas p {
+  margin-top: 8px;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+/* ---------- Equipe ---------- */
+.tr-pessoa {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 22px;
+  align-items: start;
+}
+.tr-pessoa__avatar {
+  display: grid;
+  place-items: center;
+  width: 68px;
+  height: 68px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, var(--pu-copper-500), var(--pu-copper-600));
+  color: var(--pu-white);
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  box-shadow: 0 10px 24px -12px rgba(190, 115, 52, 0.7);
+}
+.tr-pessoa h3 {
+  font-size: 1.1rem;
+}
+.tr-pessoa__funcao {
+  margin-top: 4px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent-text);
+}
+.tr-pessoa p:not(.tr-pessoa__funcao):not(.tr-pessoa__registro) {
+  margin-top: 12px;
+}
+.tr-pessoa__registro {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 5px 12px;
+  border-radius: 8px;
+  background: var(--pu-gray-100);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--pu-navy-500);
+}
+
+/* ---------- Normas atendidas ---------- */
+.tr-filtro {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.tr-filtro[hidden] {
+  display: none;
+}
+.tr-filtro button {
+  padding: 10px 18px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--pu-white);
+  box-shadow: var(--ring-solid), 0 6px 18px -10px rgba(30, 40, 58, 0.25);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background-color 0.25s var(--ease), color 0.25s var(--ease);
+}
+.tr-filtro button[aria-pressed="true"] {
+  background: var(--pu-navy-500);
+  color: var(--pu-white);
+}
+.tr-filtro button:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+.tr-filtro__status {
+  min-height: 1.5em;
+  margin-top: 14px;
+  font-size: 0.9rem;
+  color: var(--pu-gray-500);
+}
+.tr-normas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tr-norma {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 8px;
+  padding: 20px 22px;
+  border-radius: var(--radius-field);
+  background: var(--pu-white);
+  box-shadow: var(--ring-solid), var(--shadow-card);
+  transition: opacity 0.35s var(--ease), transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+}
+.tr-norma__nr {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  color: var(--pu-navy-500);
+}
+.tr-norma__titulo {
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--ink);
+}
+.tr-norma__onde {
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--accent-text);
+}
+.tr-normas.is-filtrada .tr-norma:not(.is-apagada) {
+  box-shadow: inset 0 0 0 2px var(--pu-copper-500), var(--shadow-card);
+}
+.tr-norma.is-apagada {
+  opacity: 0.32;
+  transform: scale(0.98);
+}
+
+/* ---------- Contato ---------- */
+.tr-contato {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(32px, 5vw, 64px);
+  align-items: start;
+}
+.tr-contato h2 {
+  max-width: 16ch;
+}
+.tr-contato__pontos {
+  margin-top: 28px;
+}
+.tr-contato__wa {
+  margin-top: 32px;
+}
+.tr-contato__form {
+  color: var(--text);
+}
+.tr-contato__form h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.3rem, 1rem + 1vw, 1.7rem);
+}
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 1080px) {
+  .tr .grid--4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .tr-etapas {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    row-gap: 36px;
+  }
+  .tr-etapas::before {
+    display: none;
+  }
+}
+@media (max-width: 900px) {
+  .tr-hero__grid,
+  .tr-cursos,
+  .tr-contato {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 640px) {
+  .tr .grid--4,
+  .tr .grid--2 {
+    grid-template-columns: 1fr;
+  }
+  .tr-numeros {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .tr-numeros__item {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    align-items: center;
+    gap: 14px;
+  }
+  .tr-numeros dd {
+    margin: 0;
+    max-width: none;
+  }
+  .tr-etapas {
+    grid-template-columns: 1fr;
+    row-gap: 22px;
+  }
+  .tr-etapas li {
+    display: grid;
+    grid-template-columns: 52px 1fr;
+    column-gap: 16px;
+  }
+  .tr-etapas h3 {
+    margin-top: 4px;
+  }
+  .tr-etapas p {
+    grid-column: 2;
+  }
+  .tr-pessoa {
+    grid-template-columns: 1fr;
+  }
+  .tr-curso__topo {
+    flex-direction: column;
+  }
+  .tr .form__row {
+    grid-template-columns: 1fr;
+  }
+  .tr .btn {
+    white-space: normal;
+    text-align: left;
+  }
+}

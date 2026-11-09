@@ -22,3 +22,10 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# estado de plugins locais
+.omc/
+
+# arquivos locais que não vão para o repositório público
+exportar/
+assets-originais/

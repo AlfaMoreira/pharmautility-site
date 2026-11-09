@@ -1,0 +1,100 @@
+---
+import Layout from '../layouts/Layout.astro';
+import FundoPagina from '../components/FundoPagina.astro';
+
+const valores = [
+  { icon: 'i-target', titulo: 'Rigor técnico e precisão', texto: 'Cada projeto é conduzido com atenção aos parâmetros, critérios e registros definidos.' },
+  { icon: 'i-doc', titulo: 'Ética e transparência', texto: 'Relações claras com os clientes, com resultados apresentados de forma objetiva.' },
+  { icon: 'i-shield', titulo: 'Compromisso com normas', texto: 'Atuação alinhada às normas e às boas práticas exigidas pelos órgãos reguladores.' },
+  { icon: 'i-layers', titulo: 'Inovação em engenharia e automação', texto: 'Busca contínua por métodos e ferramentas que aumentem a confiabilidade dos resultados.' },
+  { icon: 'i-check', titulo: 'Foco no resultado do cliente', texto: 'Escopo e entregas construídos a partir da necessidade real de cada operação.' },
+];
+
+const atuacao = [
+  'Qualificação de temperatura: cadeia fria, estufas e banhos térmicos',
+  'Sensores de temperatura e pressão',
+  'Qualificação de gases, ar comprimido e ar respirável',
+  'Estudos de ambientes controlados e classificados',
+  'Salas limpas e sistemas HVAC',
+  'Automação de sistemas industriais',
+  'Qualificação de utilidades: vapor e água purificada',
+];
+---
+
+<Layout title="Quem somos | PharmaUtility" description="Conheça a PharmaUtility: propósito, valores e atuação em estudos, qualificações e validações de sistemas críticos.">
+  <!-- Imagem de fundo fixa: permanece na tela enquanto o conteúdo rola por cima dela (somente nesta página). -->
+  <FundoPagina nome="/assets/images/quem-somos-fundo" largura={2848} altura={1496} />
+  <div class="page-content">
+  <section class="page-hero">
+    <div class="container">
+      <nav class="crumbs reveal" aria-label="Você está em">
+        <a href="/">Início</a><span aria-hidden="true">/</span><span>Quem somos</span>
+      </nav>
+      <p class="eyebrow reveal">Quem somos</p>
+      <h1 class="reveal" style="margin-top:18px; --d: 0.1s">Soluções técnicas com precisão, segurança e conformidade.</h1>
+      <p class="lead reveal" style="--d: 0.2s">
+        A PharmaUtility é especializada em soluções técnicas para os segmentos farmacêutico, alimentício, hospitalar e industrial. Atuamos na execução de estudos, qualificações e validações de sistemas críticos, com foco em segurança, confiabilidade e conformidade regulatória.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0" aria-labelledby="proposito">
+    <div class="container split">
+      <div class="reveal">
+        <p class="eyebrow">Nosso propósito</p>
+        <h2 id="proposito" style="margin-top:18px">Sistemas, equipamentos e ambientes operando com máxima confiabilidade.</h2>
+      </div>
+      <div class="prose-block reveal" style="--d: 0.1s">
+        <p>Nosso propósito é garantir que sistemas, equipamentos e ambientes operem com máxima confiabilidade, contribuindo diretamente para a segurança de processos e produtos.</p>
+        <p>Trabalhamos para construir relações de confiança. Queremos que seus processos operem com segurança, eficiência e dentro dos mais altos padrões de qualidade.</p>
+        <p>Atendemos todo o Brasil e a América Latina de forma online, com suporte presencial mediante agendamento, sempre com agilidade e alto nível de especialização.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0" aria-labelledby="valores">
+    <div class="container">
+      <header class="section__head reveal">
+        <p class="eyebrow">Valores</p>
+        <h2 id="valores" style="margin-top:18px">O que orienta o nosso trabalho.</h2>
+      </header>
+      <div class="grid grid--3 values">
+        {valores.map((v, i) => (
+          <article class="card reveal" style={`--d: ${(i % 3) * 0.08}s`}>
+            <span class="card__icon"><svg class="icon" aria-hidden="true"><use href={`#${v.icon}`} /></svg></span>
+            <h3>{v.titulo}</h3>
+            <p>{v.texto}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0" aria-labelledby="atuacao">
+    <div class="container split">
+      <div class="reveal">
+        <p class="eyebrow">Nossa atuação</p>
+        <h2 id="atuacao" style="margin-top:18px">Atuamos de forma completa e integrada.</h2>
+        <p class="lead" style="margin-top:20px">Dos estudos iniciais às qualificações avançadas em sistemas críticos, com equipe técnica especializada em ambientes regulados.</p>
+      </div>
+      <div class="tag-cloud reveal" style="--d: 0.1s">
+        {atuacao.map((item) => <span class="chip">{item}</span>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <div class="container">
+      <div class="cta-dark reveal">
+        <p class="eyebrow" style="color:var(--pu-copper-300)">Fale conosco</p>
+        <h2 style="margin-top:16px">Vamos conversar sobre o seu sistema.</h2>
+        <p>Entre em contato e descubra como podemos contribuir para a segurança, a qualidade e o desempenho dos seus processos.</p>
+        <div class="btn-row">
+          <a class="btn btn--on-dark" href="/contato/"><span>Ir para o contato</span><span class="btn__icon"><svg class="icon" aria-hidden="true"><use href="#i-arrow" /></svg></span></a>
+          <a class="btn btn--ghost" href="/servicos/"><span>Ver serviços</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+  </div>
+</Layout>

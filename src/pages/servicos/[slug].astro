@@ -1,0 +1,167 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { servicos } from '../../data/servicos.js';
+import FundoPagina from '../../components/FundoPagina.astro';
+
+// Serviços com `dedicada: true` têm arquivo próprio em src/pages/servicos/ (Água PW/WFI e Vapor Puro).
+export function getStaticPaths() {
+  return servicos
+    .filter((servico) => !servico.dedicada)
+    .map((servico) => ({
+      params: { slug: servico.slug },
+      props: { servico, outros: servicos.filter((s) => s.slug !== servico.slug) },
+    }));
+}
+
+const { servico, outros } = Astro.props;
+const whatsapp = 'https://wa.me/5511944744013?text=' + encodeURIComponent(`Olá, PharmaUtility! Gostaria de uma proposta para: ${servico.nome}.`);
+---
+
+<Layout title={`${servico.nome} | PharmaUtility`} description={servico.chamada}>
+  {servico.fundo && <FundoPagina {...servico.fundo} />}
+  <div class="page-content">
+  <section class="page-hero">
+    <div class="container">
+      <nav class="crumbs reveal" aria-label="Você está em">
+        <a href="/">Início</a><span aria-hidden="true">/</span><a href="/servicos/">Serviços</a><span aria-hidden="true">/</span><span>{servico.numero}</span>
+      </nav>
+      <p class="eyebrow reveal">Serviço {servico.numero}</p>
+      <h1 class="reveal" style="margin-top:18px; --d: 0.1s">{servico.nome}</h1>
+      <p class="lead reveal" style="--d: 0.2s">{servico.chamada}</p>
+      <div class="btn-row reveal" style="--d: 0.3s">
+        <a class="btn btn--primary" href="/contato/">
+          <span>Solicitar proposta técnica</span>
+          <span class="btn__icon"><svg class="icon" aria-hidden="true"><use href="#i-arrow" /></svg></span>
+        </a>
+        <a class="btn btn--whatsapp" href={whatsapp} target="_blank" rel="noopener">
+          <svg class="icon" aria-hidden="true"><use href="#i-whatsapp" /></svg>
+          <span>Tire suas dúvidas pelo WhatsApp</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0" aria-labelledby="necessidade">
+    <div class="container split">
+      <div class="reveal">
+        <p class="eyebrow">Necessidade atendida</p>
+        <h2 id="necessidade" style="margin-top:18px; font-size:clamp(1.4rem, 1rem + 1.2vw, 2rem)">Para que este serviço serve.</h2>
+      </div>
+      <div class="card quote-card reveal" style="--d: 0.1s">
+        <p class="lead" style="margin-top:0">{servico.necessidade}</p>
+      </div>
+    </div>
+  </section>
+
+  {servico.contexto && (
+    <section class="section" style="padding-top:0" aria-labelledby="contexto">
+      <div class="container split">
+        <div class="reveal">
+          <p class="eyebrow">Contexto</p>
+          <h2 id="contexto" style="margin-top:18px; font-size:clamp(1.4rem, 1rem + 1.2vw, 2rem)">Por que este sistema exige qualificação.</h2>
+        </div>
+        <div class="prose-block reveal" style="--d: 0.1s">
+          {servico.contexto.map((p) => <p>{p}</p>)}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="section" style="padding-top:0" aria-labelledby="escopo">
+    <div class="container">
+      <header class="section__head reveal">
+        <p class="eyebrow">Escopo</p>
+        <h2 id="escopo" style="margin-top:18px">O que está incluído.</h2>
+      </header>
+      <div class="card reveal" style="max-width:920px">
+        <ul class="checklist">
+          {servico.escopo.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0" aria-labelledby="etapas">
+    <div class="container">
+      <header class="section__head reveal">
+        <p class="eyebrow">Etapas</p>
+        <h2 id="etapas" style="margin-top:18px">Como o trabalho é conduzido.</h2>
+      </header>
+      <div class="stack" style="max-width:920px">
+        {servico.etapas.map((etapa, i) => (
+          <article class="card phase reveal" style={`--d: ${i * 0.08}s`}>
+            <span class="phase__tag">{etapa.tag}</span>
+            <div>
+              <h3>{etapa.titulo}</h3>
+              <p>{etapa.texto}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0" aria-labelledby="entregaveis">
+    <div class="container split">
+      <div class="reveal">
+        <p class="eyebrow">Entregáveis</p>
+        <h2 id="entregaveis" style="margin-top:18px">Documentação entregue ao final.</h2>
+        <p class="lead" style="margin-top:20px">Todos os resultados são organizados para análise técnica e apresentação em auditorias.</p>
+      </div>
+      <div class="card reveal" style="--d: 0.1s">
+        <ul class="checklist">
+          {servico.entregaveis.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  {servico.normas && (
+    <section class="section" style="padding-top:0" aria-labelledby="normas">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">Base normativa</p>
+          <h2 id="normas" style="margin-top:18px">Referências que orientam o trabalho.</h2>
+          <p>Aplicadas conforme a edição vigente e o escopo definido para cada sistema.</p>
+        </header>
+        <div class="card reveal" style="max-width:920px">
+          <ul class="checklist">
+            {servico.normas.map((n) => <li>{n}</li>)}
+          </ul>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="section" style="padding-top:0" aria-labelledby="proposta">
+    <div class="container">
+      <div class="cta-dark reveal">
+        <p class="eyebrow" style="color:var(--pu-copper-300)">Solicitação de proposta</p>
+        <h2 id="proposta" style="margin-top:16px">Conte o que o seu projeto precisa.</h2>
+        <p>Informe o sistema ou equipamento, a localização e o objetivo do trabalho. Nossa equipe retorna com a avaliação da demanda e o escopo proposto.</p>
+        <div class="btn-row">
+          <a class="btn btn--on-dark" href="/contato/"><span>Solicitar proposta</span><span class="btn__icon"><svg class="icon" aria-hidden="true"><use href="#i-arrow" /></svg></span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0" aria-labelledby="outros">
+    <div class="container">
+      <header class="section__head reveal">
+        <p class="eyebrow">Outros serviços</p>
+        <h2 id="outros" style="margin-top:18px">Conheça as demais frentes.</h2>
+      </header>
+      <div class="grid grid--3 service-nav">
+        {outros.slice(0, 6).map((s, i) => (
+          <a class="card card--link reveal" href={`/servicos/${s.slug}/`} style={`--d: ${(i % 3) * 0.08}s`}>
+            <span class="card__num">{s.numero}</span>
+            <h3>{s.nome}</h3>
+            <span class="card__more">Ver serviço <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow" /></svg></span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+  </div>
+</Layout>
