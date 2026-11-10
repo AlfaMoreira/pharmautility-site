@@ -1,8 +1,9 @@
 ---
 /*
  * Imagem de fundo fixa da primeira dobra (Quem somos, HVAC, Ar comprimido, Água, Vapor).
- * Usa WebP em duas larguras: o navegador baixa só a versão adequada à tela.
- * Arquivos esperados em public/: `${nome}-960.webp` e `${nome}-1920.webp`.
+ * Usa WebP em quatro larguras: o navegador baixa só a versão adequada à tela
+ * (celular ~480/768, notebook 960, telas grandes 1920).
+ * Arquivos esperados em public/: `${nome}-480.webp`, `-768`, `-960` e `-1920`.
  * Os JPGs originais ficam em assets-originais/imagens/ para nova exportação.
  */
 interface Props {
@@ -20,7 +21,7 @@ const alturaGrande = Math.round((altura * grande) / largura);
 <div class:list={['page-fixed-bg', { 'page-fixed-bg--texto': destacarTexto }]} aria-hidden="true">
   <img
     src={`${nome}-1920.webp`}
-    srcset={`${nome}-960.webp 960w, ${nome}-1920.webp ${grande}w`}
+    srcset={`${nome}-480.webp 480w, ${nome}-768.webp 768w, ${nome}-960.webp 960w, ${nome}-1920.webp ${grande}w`}
     sizes="100vw"
     alt=""
     width={grande}

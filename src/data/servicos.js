@@ -75,7 +75,7 @@ export const servicos = [
     ],
   },
   {
-    slug: 'cabines-fluxos-contencao',
+    slug: 'qualificacao-cabines-fluxo-laminar-contencao',
     numero: '05',
     nome: 'Cabines, Fluxos e Equipamentos de Contenção',
     chamada: 'Qualificação de cabines de segurança biológica, câmaras de fluxo laminar, cabines de pesagem e capelas de exaustão.',
@@ -150,7 +150,7 @@ export const servicos = [
     ],
   },
   {
-    slug: 'portfolio-gxp-validacao',
+    slug: 'validacao-gxp',
     numero: '08',
     nome: 'Portfólio GxP e Validação',
     chamada: 'Planos, protocolos e relatórios para sistemas, processos e equipamentos sujeitos aos requisitos GxP.',

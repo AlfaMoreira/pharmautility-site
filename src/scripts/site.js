@@ -1,14 +1,11 @@
-// Comportamento do site: menu, cabeçalho, revelação ao rolar, progresso do fundo em vídeo e formulários.
-const root = document.documentElement;
+// Comportamento do site: menu, cabeçalho, revelação ao rolar e formulários.
 
 /* ---------- Cada página abre independente ----------
    Sem isso, o navegador restaura a rolagem ao voltar (ex.: da Serviços para a Home) e a Home
    reaparece no meio da sequência. Recarregar a página mantém a posição; entrar por link ou voltar abre no topo. */
+// Com restauração manual o navegador não reposiciona a rolagem ao navegar: a página já abre no topo.
+// (Não chamar scrollTo/scrollY no carregamento: isso força recálculo de layout — "reflow forçado".)
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-const tipoNavegacao = performance.getEntriesByType('navigation')[0]?.type;
-if (tipoNavegacao !== 'reload') {
-  window.scrollTo(0, 0);
-}
 window.addEventListener('pageshow', (evento) => {
   // Restaurado do cache do navegador (bfcache): também começa no topo.
   if (evento.persisted) window.scrollTo(0, 0);
@@ -50,13 +47,11 @@ document.querySelectorAll('a.btn').forEach((botao) => {
 /* ---------- Cabeçalho: sombra ao rolar ---------- */
 const header = document.querySelector('[data-header]');
 
-/* ---------- Progresso da rolagem (alimenta o vídeo de fundo) ---------- */
+/* ---------- Estado de rolagem do cabeçalho ----------
+   Lê só window.scrollY (não força recálculo de layout). O vídeo da Home tem controle próprio (scrub.js). */
 let emFrame = false;
 function atualizarProgresso() {
   emFrame = false;
-  const max = document.documentElement.scrollHeight - window.innerHeight;
-  const p = max > 0 ? window.scrollY / max : 0;
-  root.style.setProperty('--p', p.toFixed(4));
   header?.classList.toggle('is-scrolled', window.scrollY > 24);
 }
 function aoRolar() {
@@ -67,7 +62,8 @@ function aoRolar() {
 }
 window.addEventListener('scroll', aoRolar, { passive: true });
 window.addEventListener('resize', aoRolar, { passive: true });
-atualizarProgresso();
+// Sem leitura inicial: a página sempre abre no topo (sem sombra) e ler scrollY durante o carregamento
+// força recálculo de layout (reflow forçado). A sombra é aplicada na primeira rolagem.
 
 /* ---------- Menu móvel ---------- */
 const botaoMenu = document.querySelector('[data-menu-toggle]');

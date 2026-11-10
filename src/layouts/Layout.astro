@@ -4,14 +4,48 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
 interface Props {
+  /** Título da aba e do resultado de busca. */
   title?: string;
+  /** Descrição exibida no resultado de busca. */
   description?: string;
+  /** URL canônica absoluta. Sem ela, é gerada a partir do domínio do site (astro.config) e da rota atual. */
+  canonicalURL?: string | URL;
+  /** Imagem de compartilhamento (Open Graph/Twitter): caminho do site ("/assets/og/x.jpg") ou URL absoluta. Ideal 1200×630. */
+  image?: string;
+  /** Texto alternativo da imagem de compartilhamento. */
+  imageAlt?: string;
+  /** Tipo Open Graph (og:type). Padrão: "website". */
+  type?: string;
 }
 
+// Fallbacks genéricos da marca, usados quando a página não envia os dados.
+const MARCA = {
+  nome: 'PharmaUtility',
+  title: 'PharmaUtility — Calibração, qualificação e validação de sistemas críticos',
+  description: 'Calibração, qualificação e validação de equipamentos, sistemas e ambientes críticos para os setores farmacêutico, hospitalar, alimentício e industrial.',
+  image: '/assets/og/capacete.jpg',
+  imageAlt: 'Capacete de segurança cinza com o símbolo da PharmaUtility',
+};
+
 const {
-  title = 'PharmaUtility — Qualificação e validação de sistemas críticos',
-  description = 'Qualificação e validação para a confiabilidade dos seus sistemas críticos farmacêuticos, hospitalares, alimentícios e industriais.',
+  title = MARCA.title,
+  description = MARCA.description,
+  canonicalURL,
+  image = MARCA.image,
+  imageAlt = MARCA.imageAlt,
+  type = 'website',
 } = Astro.props;
+
+// URLs absolutas com new URL(valor, Astro.site ?? Astro.url):
+// - URLs absolutas já fornecidas (https://...) são preservadas pelo próprio new URL;
+// - caminhos relativos ou iniciados por "/" são resolvidos sobre a base do site. A barra inicial é removida
+//   e a base termina em "/", para não descartar o subcaminho do domínio (ex.: GitHub Pages /pharmautility-site).
+const baseSite = new URL(Astro.site ?? new URL('/', Astro.url));
+if (!baseSite.pathname.endsWith('/')) baseSite.pathname += '/';
+const absoluta = (valor: string | URL) => new URL(String(valor).replace(/^\/(?!\/)/, ''), baseSite).href;
+
+const canonical = absoluta(canonicalURL ?? Astro.url.pathname);
+const imagemSocial = absoluta(image);
 ---
 
 <!doctype html>
@@ -24,7 +58,24 @@ const {
     <meta name="theme-color" content="#40506A" />
     <!-- O site tem paleta própria só clara: impede o escurecimento automático do Chrome/Android e de outros navegadores. -->
     <meta name="color-scheme" content="only light" />
-    <link rel="icon" type="image/svg+xml" href="/assets/logo/simbolo-cor.svg" />
+    <link rel="canonical" href={canonical} />
+    <!-- Compartilhamento (WhatsApp, LinkedIn, Facebook, X) -->
+    <meta property="og:type" content={type} />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content={MARCA.nome} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={imagemSocial} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={imageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imagemSocial} />
+    <meta name="twitter:image:alt" content={imageAlt} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preload" href="/assets/fonts/NasalizationRg-Regular.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/assets/fonts/Montserrat-Regular.woff2" as="font" type="font/woff2" crossorigin />
     <script is:inline>

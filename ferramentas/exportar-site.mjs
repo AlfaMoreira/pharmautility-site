@@ -65,7 +65,18 @@ for (const { html } of paginas) {
     cssVistos.add(href);
     css += ler(path.join(dist, href)) + '\n';
   }
+  // CSS embutido pelo Astro (build.inlineStylesheets): blocos <style> do <head>, sem repetir.
+  const head = html.split('</head>')[0];
+  for (const [, bloco] of head.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)) {
+    const hash = crypto.createHash('md5').update(bloco).digest('hex');
+    if (cssVistos.has(hash)) continue;
+    cssVistos.add(hash);
+    css += bloco + '\n';
+  }
 }
+// Cada página embute o CSS completo: mantém só a primeira ocorrência de cada @font-face (evita fontes repetidas).
+const fontesVistas = new Set();
+css = css.replace(/@font-face\s*\{[^}]*\}/g, (regra) => (fontesVistas.has(regra) ? '' : (fontesVistas.add(regra), regra)));
 css = css.replace(/src:\s*url\(["']?(\/assets\/fonts\/[^"')]+\.woff2)["']?\)\s*format\(["']woff2["']\)\s*,\s*url\([^)]*\)\s*format\([^)]*\)/g,
   (_, fonte) => `src:url("${dataUri(fonte)}") format("woff2")`);
 css = css.replace(/url\(["']?(\/assets\/[^"')]+)["']?\)/g, (_, url) => `url("${dataUri(url)}")`);
