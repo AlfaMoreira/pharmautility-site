@@ -150,7 +150,7 @@ const whatsapp = 'https://wa.me/5511944744013?text=' + encodeURIComponent('Olá,
         ))}
         {/* Completa a última linha da grade com cards "Em breve" (não são links). */}
         {Array.from({ length: (4 - (servicos.length % 4)) % 4 }, (_, i) => (
-          <div class="card card--breve reveal" style={`--d: ${((servicos.length + i) % 4) * 0.08}s`}>
+          <div class:list={['card card--breve reveal', { 'card--breve-extra': i >= servicos.length % 2 }]} style={`--d: ${((servicos.length + i) % 4) * 0.08}s`}>
             <div class="card-breve__arte" aria-hidden="true">
               <img src="/assets/logo/simbolo-cor.svg" alt="" width="56" height="56" loading="lazy" />
               <span class="card-breve__selo">Em breve</span>

@@ -81,6 +81,8 @@
 
 /* ---------- Base ---------- */
 *, *::before, *::after { box-sizing: border-box; }
+/* Paleta só clara: com "only light" o navegador não aplica modo escuro automático (Chrome/Android). */
+:root { color-scheme: only light; }
 html { background: var(--bg); -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 24px); overflow-x: clip; }
 body { margin: 0; font-family: var(--font-sans); font-size: var(--fs-body); line-height: 1.65; color: var(--text); background: transparent; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; overflow-x: clip; }
 img, svg, video { display: block; max-width: 100%; }
@@ -200,6 +202,11 @@ h3 { font-family: var(--font-sans); font-size: var(--fs-h3); font-weight: 600; l
   filter: drop-shadow(0 18px 16px rgba(23, 32, 48, 0.2)); animation: tecnico-respira 5s ease-in-out infinite; transform-origin: 50% 100%; }
 @keyframes tecnico-respira { 0%, 100% { transform: translateY(0) scaleY(1); } 50% { transform: translateY(-5px) scaleY(1.008); } }
 @media (max-width: 1360px) { .breve-cena__tecnico { display: none; } }
+/* Tablet (2 colunas): só os cards "Em breve" necessários para fechar a grade, com arte mais baixa. */
+@media (max-width: 1080px) {
+  .card--breve-extra { display: none; }
+  .card-breve__arte { aspect-ratio: 16 / 9; }
+}
 @media (max-width: 1080px) { .breve-cena { display: none; } }
 @media (prefers-reduced-motion: reduce) { .breve-cena * { animation: none !important; } .js .breve-cena > * { opacity: 1; transition: none; } }
 .card-breve__selo { position: absolute; top: 12px; left: 12px; padding: 5px 10px; border-radius: var(--radius-pill); background: var(--pu-navy-500); color: var(--pu-white); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
@@ -325,6 +332,11 @@ h3 { font-family: var(--font-sans); font-size: var(--fs-h3); font-weight: 600; l
 .cta-dark .btn-row { margin-top: 30px; }
 /* Símbolo da marca, solitário, à direita e levemente centralizado na vertical. */
 .cta-dark__logo { position: absolute; right: clamp(32px, 9vw, 140px); top: 50%; transform: translateY(-50%); width: clamp(96px, 11vw, 140px); height: auto; pointer-events: none; user-select: none; }
+/* Tablet: emblema menor e espaço reservado à direita para não cobrir o texto. */
+@media (max-width: 1080px) {
+  .cta-dark:has(.cta-dark__logo) { padding-right: 150px; }
+  .cta-dark__logo { width: 84px; right: 36px; }
+}
 /* Emblema prata (Quem somos): brilho metálico e leve relevo sobre o fundo escuro. */
 .cta-dark__logo--prata { filter: drop-shadow(0 18px 24px rgba(0, 0, 0, 0.45)) drop-shadow(0 0 18px rgba(233, 237, 242, 0.12)); }
 
