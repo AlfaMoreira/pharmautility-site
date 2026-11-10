@@ -139,7 +139,7 @@ const whatsapp = 'https://wa.me/5511944744013?text=' + encodeURIComponent('Olá,
         <p>Cada serviço tem página própria, com necessidade atendida, escopo, etapas e entregáveis.</p>
       </header>
 
-      <div class="grid grid--4">
+      <div class="grid grid--4 grid--servicos">
         {servicos.map((s, i) => (
           <a class="card card--link reveal" href={`/servicos/${s.slug}/`} style={`--d: ${(i % 4) * 0.08}s`}>
             <span class="card__num">{s.numero}</span>
@@ -148,6 +148,30 @@ const whatsapp = 'https://wa.me/5511944744013?text=' + encodeURIComponent('Olá,
             <span class="card__more">Ver serviço <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow" /></svg></span>
           </a>
         ))}
+        {/* Completa a última linha da grade com cards "Em breve" (não são links). */}
+        {Array.from({ length: (4 - (servicos.length % 4)) % 4 }, (_, i) => (
+          <div class="card card--breve reveal" style={`--d: ${((servicos.length + i) % 4) * 0.08}s`}>
+            <div class="card-breve__arte" aria-hidden="true">
+              <img src="/assets/logo/simbolo-cor.svg" alt="" width="56" height="56" loading="lazy" />
+              <span class="card-breve__selo">Em breve</span>
+            </div>
+            <span class="card__num">{String(servicos.length + i + 1).padStart(2, '0')}</span>
+            <h3>Em breve teremos novidades</h3>
+            <p>Novos serviços em preparação. Acompanhe por aqui.</p>
+          </div>
+        ))}
+        {/* Cena "em obras" sobre os cards Em breve: escada entre o 1º e o 2º, fita na frente de todos e técnico ao lado do último. */}
+        {servicos.length % 4 !== 0 && (
+          <div
+            class="breve-cena"
+            aria-hidden="true"
+            style={`grid-row: ${Math.ceil(servicos.length / 4)}; grid-column: ${(servicos.length % 4) + 1} / 5; --cards: ${4 - (servicos.length % 4)}`}
+          >
+            {/* Fundo da imagem normalizado para branco: com mix-blend-mode multiply ele some sobre o site. */}
+            <img class="breve-cena__escada" src="/assets/images/em-breve-escada.webp" alt="" width="322" height="278" loading="lazy" decoding="async" />
+            <img class="breve-cena__tecnico" src="/assets/images/em-breve-tecnico.webp" alt="" width="382" height="880" loading="lazy" decoding="async" />
+          </div>
+        )}
       </div>
     </div>
   </section>

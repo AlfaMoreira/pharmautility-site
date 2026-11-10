@@ -34,6 +34,12 @@ import { servicos } from '../../data/servicos.js';
             <span class="card__more">Ver serviço <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow" /></svg></span>
           </a>
         ))}
+        {/* Preenche a posição vaga da grade (quantidade ímpar de serviços) com o símbolo da marca. */}
+        {servicos.length % 2 === 1 && (
+          <div class="card card--marca reveal" style="--d: 0.08s" aria-hidden="true">
+            <img src="/assets/logo/simbolo-branco.svg" alt="" width="96" height="96" loading="lazy" />
+          </div>
+        )}
       </div>
     </div>
   </section>

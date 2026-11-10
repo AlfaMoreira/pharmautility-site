@@ -29,3 +29,4 @@ pnpm-debug.log*
 # arquivos locais que não vão para o repositório público
 exportar/
 assets-originais/
+.vercel

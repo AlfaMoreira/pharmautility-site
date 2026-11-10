@@ -66,6 +66,12 @@ const atuacao = [
             <p>{v.texto}</p>
           </article>
         ))}
+        {/* Posição vaga da grade: ilustração do técnico de segurança, em pé no lugar do card. */}
+        {valores.length % 3 !== 0 && (
+          <div class="valores__ilustracao reveal" style="--d: 0.16s" aria-hidden="true">
+            <img src="/assets/images/seguranca-valores.webp" alt="" width="290" height="900" loading="lazy" decoding="async" />
+          </div>
+        )}
       </div>
     </div>
   </section>
@@ -86,6 +92,7 @@ const atuacao = [
   <section class="section" style="padding-top:0">
     <div class="container">
       <div class="cta-dark reveal">
+        <img class="cta-dark__logo cta-dark__logo--prata" src="/assets/logo/simbolo-prata.svg" alt="" aria-hidden="true" width="131" height="210" loading="lazy" decoding="async" />
         <p class="eyebrow" style="color:var(--pu-copper-300)">Fale conosco</p>
         <h2 style="margin-top:16px">Vamos conversar sobre o seu sistema.</h2>
         <p>Entre em contato e descubra como podemos contribuir para a segurança, a qualidade e o desempenho dos seus processos.</p>
