@@ -7,7 +7,7 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   // Domínio público usado no sitemap (src/pages/sitemap.xml.js).
   // No deploy do GitHub Pages, SITE_URL aponta para o endereço publicado (ver .github/workflows/deploy.yml).
-  site: process.env.SITE_URL || 'https://pharmautility.com.br',
+  site: process.env.SITE_URL || 'https://www.pharmautility.com.br',
 
   // Rotas antigas de Utilidades Clean: redirecionamento permanente (301) para a listagem de serviços.
   // Água PW/WFI e Vapor Puro agora têm páginas próprias.
