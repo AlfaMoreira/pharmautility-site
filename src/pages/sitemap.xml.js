@@ -5,7 +5,7 @@
 import { execFileSync } from 'node:child_process';
 import { servicos } from '../data/servicos.js';
 
-const LOGO_OG = '/assets/og/capacete.jpg';
+const LOGO_OG = '/assets/og/Gemini_Generated_Image_7.jpg';
 
 // Data ISO do último commit que tocou os arquivos (ou null se não houver git/histórico).
 function ultimaAlteracao(arquivos) {
