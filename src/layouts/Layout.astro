@@ -23,8 +23,8 @@ const MARCA = {
   nome: 'PharmaUtility',
   title: 'PharmaUtility — Calibração, qualificação e validação de sistemas críticos',
   description: 'Calibração, qualificação e validação de equipamentos, sistemas e ambientes críticos para os setores farmacêutico, hospitalar, alimentício e industrial.',
-  image: '/assets/og/capacete.jpg',
-  imageAlt: 'Capacete de segurança cinza com o símbolo da PharmaUtility',
+  image: '/assets/og/pharmautility-padrao.jpg',
+  imageAlt: 'Capacete de segurança com o símbolo da PharmaUtility, prancheta e paquímetro',
 };
 
 const {
@@ -44,7 +44,11 @@ const baseSite = new URL(Astro.site ?? new URL('/', Astro.url));
 if (!baseSite.pathname.endsWith('/')) baseSite.pathname += '/';
 const absoluta = (valor: string | URL) => new URL(String(valor).replace(/^\/(?!\/)/, ''), baseSite).href;
 
-const canonical = absoluta(canonicalURL ?? Astro.url.pathname);
+// Canônica (e og:url) sem parâmetros de rastreamento (?utm_...) nem fragmentos (#...).
+const urlCanonica = new URL(absoluta(canonicalURL ?? Astro.url.pathname));
+urlCanonica.search = '';
+urlCanonica.hash = '';
+const canonical = urlCanonica.href;
 const imagemSocial = absoluta(image);
 ---
 
