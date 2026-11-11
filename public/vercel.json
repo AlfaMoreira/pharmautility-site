@@ -24,7 +24,7 @@
       "headers": [
         {
           "key": "Link",
-          "value": "</assets/fonts/NasalizationRg-Regular.woff2>; rel=preload; as=font; type=\"font/woff2\"; crossorigin, </assets/fonts/Montserrat-Regular.woff2>; rel=preload; as=font; type=\"font/woff2\"; crossorigin"
+          "value": "</assets/fonts/NasalizationRg-Regular.woff2>; rel=preload; as=font; type=\"font/woff2\"; crossorigin, </assets/fonts/Montserrat-Regular.woff2>; rel=preload; as=font; type=\"font/woff2\"; crossorigin, </assets/fonts/Montserrat-Medium.woff2>; rel=preload; as=font; type=\"font/woff2\"; crossorigin; media=\"(min-width: 961px)\""
         }
       ]
     },

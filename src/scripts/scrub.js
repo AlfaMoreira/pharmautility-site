@@ -60,12 +60,22 @@ document.querySelectorAll('[data-scrub]').forEach((secao) => {
     secao.classList.remove('is-ready');
   });
 
+  // Geometria da seção lida só dentro do ResizeObserver, que roda logo após o navegador calcular o layout.
+  // Assim o laço de animação usa apenas window.scrollY e valores em cache, sem forçar recálculo de layout
+  // ("reflow forçado") a cada quadro nem no carregamento.
+  let topoSecao = 0;
+  let alturaSecao = 0;
+  new ResizeObserver(() => {
+    topoSecao = secao.offsetTop;
+    alturaSecao = secao.offsetHeight;
+    agendar();
+  }).observe(secao);
+
   // Progresso de 0 (início da seção no topo) a 1 (fim da seção), mapeado a uma altura de tela.
   function progressoDaSecao() {
-    const r = secao.getBoundingClientRect();
-    const faixa = secao.offsetHeight - window.innerHeight;
+    const faixa = alturaSecao - window.innerHeight;
     if (faixa <= 0) return 0;
-    return Math.min(1, Math.max(0, -r.top / faixa));
+    return Math.min(1, Math.max(0, (window.scrollY - topoSecao) / faixa));
   }
 
   function agendar() {
