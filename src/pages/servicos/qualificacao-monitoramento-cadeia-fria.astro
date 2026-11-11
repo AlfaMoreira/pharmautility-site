@@ -1,0 +1,261 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { servicos } from '../../data/servicos.js';
+import '../../styles/utilidades.css';
+
+const servico = servicos.find((s) => s.slug === 'qualificacao-monitoramento-cadeia-fria')!;
+const outros = servicos.filter((s) => s.slug !== servico.slug);
+const nomeServico = servico.nome;
+
+// Riscos mais comuns encontrados em centros de distribuição e áreas de armazenagem.
+const riscos = [
+  { eyebrow: 'Sem mapeamento térmico', texto: 'Um ponto quente não identificado em câmara fria pode virar lote reprovado e questionamento direto em auditoria.' },
+  { eyebrow: 'Sem qualificação de HVAC', texto: 'Um sistema fora de especificação compromete a estabilidade do produto antes mesmo de o desvio aparecer no registro.' },
+  { eyebrow: 'Sem programa de água', texto: 'Ponto de consumo sem laudo é uma não conformidade fácil de apontar em inspeção da vigilância sanitária.' },
+];
+
+// Quatro frentes integradas a um único Plano Mestre de Qualificação.
+const frentes = [
+  { eyebrow: '01', titulo: 'Mapeamento térmico e HVAC', texto: 'Estudo de pior caso (worst case), cálculo de temperatura cinética média (MKT) e qualificação IQ, OQ e PQ dos sistemas de climatização.', normas: ['RDC 430/2020', '21 CFR 211.46'] },
+  { eyebrow: '02', titulo: 'Monitoramento contínuo', texto: 'Sensores calibrados, alarmes 24 horas e plano de contingência para falhas de energia e desvios de temperatura.', normas: ['RDC 430/2020', 'EU GDP'] },
+  { eyebrow: '03', titulo: 'Ar ambiente', texto: 'Contagem de partículas, monitoramento microbiológico e renovações de ar por hora, com laudo interpretativo.', normas: ['ABNT NBR 17037:2023', 'ASHRAE'] },
+  { eyebrow: '04', titulo: 'Água para consumo humano', texto: 'Plano de amostragem e laudos físico-químicos e microbiológicos dos pontos de coleta.', normas: ['Portaria GM/MS 888/2021'] },
+];
+
+// Detalhamento dos ensaios.
+const detalhes = [
+  {
+    id: 'tab',
+    eyebrow: 'TAB de HVAC',
+    titulo: 'Testar, ajustar e balancear.',
+    texto: 'Não entregamos apenas um sistema instalado: entregamos um sistema testado, ajustado e balanceado para operar como o projeto exige, em câmaras frias, salas climatizadas, antecâmaras e áreas de expedição do seu centro de distribuição.',
+    destaque: 'Se o seu HVAC nunca passou por um TAB formal, você não sabe se ele entrega o que o projeto prometeu, e só descobre quando um lote é reprovado.',
+    normas: ['RDC 430/2020', 'RDC 658/2022', '21 CFR 211.46 (FDA)', 'EU GDP 2013/C 343/01', 'ISO 14644*'],
+    itens: [
+      'Balanceamento de vazão de ar e de diferencial de pressão entre ambientes',
+      'Verificação das renovações de ar por hora conforme a classificação da área',
+      'Ajuste fino de dampers, difusores e insuflamento',
+      'Diagnóstico de recirculação inadequada e de perda de eficiência térmica',
+      'Relatório técnico com os parâmetros medidos versus os especificados',
+    ],
+  },
+  {
+    id: 'ar-ambiente',
+    eyebrow: 'Ar ambiente',
+    titulo: 'Qualidade do ar interior conforme a NBR 17037.',
+    texto: 'Ensaios de qualidade do ar interior com base na ABNT NBR 17037:2023, a referência atual de padrões para ambientes climatizados artificialmente.',
+    destaque: 'Não é uma medição isolada: é um diagnóstico completo da qualidade do ar que sustenta o seu produto e protege a saúde de quem trabalha ali.',
+    normas: ['ABNT NBR 17037:2023', 'ASHRAE', 'ISO 14644*'],
+    itens: [
+      'Contagem de partículas em suspensão no ar',
+      'Análise microbiológica do ar (fungos e bactérias)',
+      'Medição de CO₂, temperatura, umidade relativa e velocidade do ar',
+      'Avaliação da renovação de ar conforme os parâmetros da NBR 17037:2023',
+      'Laudo técnico interpretativo, com plano de ação quando necessário',
+    ],
+  },
+  {
+    id: 'agua-consumo',
+    eyebrow: 'Água para consumo humano',
+    titulo: 'O ponto que mais surpreende em auditoria.',
+    texto: 'Bebedouros e pontos de consumo raramente recebem o mesmo rigor documental da câmara fria, e uma não conformidade aqui compromete a credibilidade de todo o programa.',
+    destaque: 'Água que ninguém audita é o risco que ninguém vê chegar.',
+    normas: ['Portaria GM/MS 888/2021', 'OMS — Guidelines for Drinking-water Quality'],
+    itens: [
+      'Plano de amostragem por ponto de coleta (bebedouros, torneiras e copa)',
+      'Análises físico-químicas (cloro residual, turbidez, pH, entre outras)',
+      'Análises microbiológicas (coliformes totais e Escherichia coli)',
+      'Laudo técnico pronto para apresentação à vigilância sanitária',
+      'Acompanhamento das não conformidades até a resolução',
+    ],
+  },
+];
+
+const referencias = ['RDC 430/2020', 'RDC 658/2022', 'ABNT NBR 17037:2023', 'Portaria GM/MS 888/2021', '21 CFR Part 211', 'EU GDP 2013/C 343/01', 'PIC/S', 'OMS — WHO TRS', 'ISO 14644', 'ICH Q9 e Q10'];
+
+const processo = [
+  { titulo: 'Diagnóstico', texto: 'Visita técnica e levantamento de riscos no centro de distribuição.' },
+  { titulo: 'Plano mestre', texto: 'Plano de qualificação e de amostragem, com base em análise de risco.' },
+  { titulo: 'Execução', texto: 'Protocolos IQ, OQ e PQ, mapeamento e coletas em campo.' },
+  { titulo: 'Relatórios e laudos', texto: 'Relatórios, laudos e plano de requalificação periódica.' },
+];
+
+const whatsapp = 'https://wa.me/5511944744013?text=' + encodeURIComponent('Olá, PharmaUtility! Gostaria de um diagnóstico técnico da minha cadeia fria.');
+---
+
+<Layout title={`${nomeServico} | PharmaUtility`} description="Mapeamento térmico, qualificação e TAB de HVAC, monitoramento contínuo, ensaios de ar ambiente (NBR 17037) e água para consumo humano em centros de distribuição e cadeia fria." canonicalURL={`/servicos/${servico.slug}/`}>
+  <div class="page-content util-pagina">
+    <!-- 1. Apresentação -->
+    <section class="page-hero">
+      <div class="container">
+        <nav class="crumbs reveal" aria-label="Você está em">
+          <a href="/">Início</a><span aria-hidden="true">/</span><a href="/servicos/">Serviços</a><span aria-hidden="true">/</span><span>Cadeia fria</span>
+        </nav>
+        <p class="eyebrow reveal">Serviço {servico.numero}</p>
+        <h1 class="reveal" style="margin-top:18px; --d: 0.1s">{nomeServico}</h1>
+        <p class="lead reveal" style="--d: 0.2s">
+          Sua cadeia fria resiste a uma inspeção sanitária amanhã? Mapeamento térmico, qualificação de HVAC, monitoramento de ar ambiente e análise de água para consumo humano, com evidência técnica para ANVISA e autoridades internacionais.
+        </p>
+        <div class="btn-row reveal" style="--d: 0.3s">
+          <a class="btn btn--primary" href="/contato/" data-proposta={nomeServico}>
+            <span>Solicitar diagnóstico técnico</span>
+            <span class="btn__icon"><svg class="icon" aria-hidden="true"><use href="#i-arrow" /></svg></span>
+          </a>
+          <a class="btn btn--whatsapp" href={whatsapp} target="_blank" rel="noopener">
+            <svg class="icon" aria-hidden="true"><use href="#i-whatsapp" /></svg>
+            <span>Tire suas dúvidas pelo WhatsApp</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Riscos -->
+    <section class="section" style="padding-top:0" aria-labelledby="riscos">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">Onde o risco aparece</p>
+          <h2 id="riscos" style="margin-top:18px">O desvio começa antes do registro.</h2>
+        </header>
+        <div class="grid grid--3">
+          {riscos.map((r, i) => (
+            <article class="card util-escopo reveal" style={`--d: ${i * 0.08}s`}>
+              <p class="eyebrow">{r.eyebrow}</p>
+              <p style="margin-top:14px">{r.texto}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Frentes -->
+    <section class="section" style="padding-top:0" aria-labelledby="frentes">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">Escopo do serviço</p>
+          <h2 id="frentes" style="margin-top:18px">Quatro frentes, um único programa de controle ambiental.</h2>
+          <p>Cada serviço gera evidência documental própria, integrada a um único Plano Mestre de Qualificação.</p>
+        </header>
+        <div class="grid grid--2">
+          {frentes.map((f, i) => (
+            <article class="card util-escopo reveal" style={`--d: ${(i % 2) * 0.08}s`}>
+              <p class="eyebrow">{f.eyebrow}</p>
+              <h3>{f.titulo}</h3>
+              <p style="margin-top:10px">{f.texto}</p>
+              <ul class="util-normas" aria-label="Referências">
+                {f.normas.map((n) => <li class="pill">{n}</li>)}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Detalhamento -->
+    {detalhes.map((d) => (
+      <section class="section" style="padding-top:0" aria-labelledby={d.id}>
+        <div class="container split">
+          <div class="reveal">
+            <p class="eyebrow">{d.eyebrow}</p>
+            <h2 id={d.id} style="margin-top:18px; font-size:clamp(1.4rem, 1rem + 1.2vw, 2rem)">{d.titulo}</h2>
+            <p style="margin-top:18px">{d.texto}</p>
+            <p class="util-aviso">{d.destaque}</p>
+            <ul class="util-normas" aria-label="Referências">
+              {d.normas.map((n) => <li class="pill">{n}</li>)}
+            </ul>
+          </div>
+          <div class="card reveal" style="--d: 0.1s">
+            <ul class="checklist">
+              {d.itens.map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
+        </div>
+      </section>
+    ))}
+    <div class="container">
+      <p class="util-nota" style="margin:-24px 0 48px">* ISO 14644 aplicável a áreas com classificação de sala limpa (contagem de partículas por classe).</p>
+    </div>
+
+    <!-- 5. Referências -->
+    <section class="section" style="padding-top:0" aria-labelledby="referencias">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">Conformidade construída sobre</p>
+          <h2 id="referencias" style="margin-top:18px">Referências do programa.</h2>
+          <p>Aplicadas conforme a edição vigente e a regulamentação a que a sua operação está sujeita.</p>
+        </header>
+        <ul class="util-normas reveal" aria-label="Referências normativas" style="max-width:980px">
+          {referencias.map((n) => <li class="pill">{n}</li>)}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 6. Como funciona -->
+    <section class="section" style="padding-top:0" aria-labelledby="processo">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">Como funciona</p>
+          <h2 id="processo" style="margin-top:18px">Do diagnóstico ao relatório de qualificação.</h2>
+        </header>
+        <ol class="util-ciclo util-cadeia">
+          {processo.map((p, i) => (
+            <li class="reveal" style={`--d: ${i * 0.06}s`}>
+              <span class="util-ciclo__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <div>
+                <h3>{p.titulo}</h3>
+                <p>{p.texto}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- 7. Entregáveis -->
+    <section class="section" style="padding-top:0" aria-labelledby="entregaveis">
+      <div class="container split">
+        <div class="reveal">
+          <p class="eyebrow">Entregáveis</p>
+          <h2 id="entregaveis" style="margin-top:18px">Documentação entregue.</h2>
+          <p class="lead" style="margin-top:20px">Organizada para análise técnica e para apresentação à vigilância sanitária e em auditorias.</p>
+        </div>
+        <div class="card reveal" style="--d: 0.1s">
+          <ul class="checklist">
+            {servico.entregaveis.map((e) => <li>{e}</li>)}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Contato -->
+    <section class="section" style="padding-top:0" aria-labelledby="contato">
+      <div class="container">
+        <div class="cta-dark reveal">
+          <p class="eyebrow" style="color:var(--pu-copper-300)">Diagnóstico técnico</p>
+          <h2 id="contato" style="margin-top:16px">Leve o seu centro de distribuição para dentro da faixa de controle.</h2>
+          <p>Comece por um diagnóstico técnico e identifique os pontos de risco antes que uma auditoria os encontre por você.</p>
+          <div class="btn-row">
+            <a class="btn btn--on-dark" href="/contato/" data-proposta={nomeServico}><span>Agendar diagnóstico técnico</span><span class="btn__icon"><svg class="icon" aria-hidden="true"><use href="#i-arrow" /></svg></span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0" aria-labelledby="outros">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">Outros serviços</p>
+          <h2 id="outros" style="margin-top:18px">Conheça as demais frentes.</h2>
+        </header>
+        <div class="grid grid--3 service-nav">
+          {outros.slice(0, 6).map((s, i) => (
+            <a class="card card--link reveal" href={`/servicos/${s.slug}/`} style={`--d: ${(i % 3) * 0.08}s`}>
+              <span class="card__num">{s.numero}</span>
+              <h3>{s.nome}</h3>
+              <span class="card__more">Ver serviço <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow" /></svg></span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>

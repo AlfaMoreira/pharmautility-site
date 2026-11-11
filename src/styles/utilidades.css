@@ -117,6 +117,276 @@
   font-size: 0.9rem;
 }
 
+/* ---------- Ar comprimido e gases: frentes, normas, ensaios e tabelas ---------- */
+.stack .card.util-frente {
+  display: block;
+  min-width: 0;
+  padding: clamp(24px, 3vw, 36px);
+}
+.util-normas .pill {
+  white-space: normal;
+}
+@media (max-width: 640px) {
+  .stack .card.util-frente {
+    padding: 22px 18px;
+  }
+  .util-tabela table {
+    min-width: 0;
+    font-size: 0.82rem;
+  }
+  .util-tabela th,
+  .util-tabela td {
+    padding: 10px;
+  }
+  .util-tabela td.util-tabela__valor {
+    white-space: normal;
+  }
+}
+.util-frente__head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.util-frente__head .card__icon {
+  margin: 0;
+  flex-shrink: 0;
+}
+.util-frente__head h3 {
+  font-size: clamp(1.15rem, 1rem + 0.5vw, 1.4rem);
+}
+.util-frente__head p {
+  margin-top: 4px;
+  font-size: 0.85rem;
+  color: var(--pu-gray-500);
+}
+.util-normas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+.util-aviso {
+  margin-top: 20px;
+  padding: 16px 20px;
+  border-left: 3px solid var(--pu-copper-500);
+  border-radius: 0 var(--radius-field) var(--radius-field) 0;
+  background: var(--pu-gray-50);
+  font-size: 0.92rem;
+}
+.util-aviso strong {
+  color: var(--pu-copper-700);
+}
+.util-rotulo {
+  margin-top: 28px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--pu-copper-700);
+}
+.util-ensaios {
+  margin-top: 12px;
+}
+.util-ensaios li {
+  display: grid;
+  grid-template-columns: 8px 1fr;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+.util-ensaios li:last-child {
+  border-bottom: 0;
+}
+.util-ensaios li::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  margin-top: 8px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--pu-copper-300), var(--pu-copper-600));
+}
+.util-ensaios strong {
+  display: block;
+  color: var(--ink);
+  font-weight: 600;
+}
+.util-ensaios span {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.92rem;
+}
+.util-tabela {
+  margin-top: 12px;
+  overflow-x: auto;
+  border-radius: var(--radius-field);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.util-tabela table {
+  width: 100%;
+  min-width: 520px;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+.util-tabela th {
+  padding: 12px 16px;
+  background: var(--pu-navy-500);
+  color: var(--pu-white);
+  font-weight: 600;
+  text-align: left;
+}
+.util-tabela td {
+  padding: 11px 16px;
+  border-top: 1px solid var(--line);
+  vertical-align: top;
+}
+.util-tabela td:first-child {
+  color: var(--ink);
+  font-weight: 500;
+}
+.util-tabela td.util-tabela__valor {
+  color: var(--pu-navy-700);
+  font-weight: 700;
+  white-space: nowrap;
+}
+.util-tabela tbody tr:nth-child(even) td {
+  background: var(--pu-gray-25);
+}
+.util-nota {
+  margin-top: 10px;
+  font-size: 0.8rem;
+  color: var(--pu-gray-500);
+}
+
+/* ---------- HVAC: fases IQ/OQ/PQ em colunas e grade de aplicações ---------- */
+.util-fases {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 20px;
+}
+.util-fase {
+  padding: 18px 18px 16px;
+  border-radius: var(--radius-field);
+  background: var(--pu-gray-50);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.util-fase__tag {
+  display: inline-grid;
+  place-items: center;
+  min-width: 44px;
+  height: 30px;
+  padding: 0 10px;
+  border-radius: var(--radius-pill);
+  background: var(--pu-navy-500);
+  color: var(--pu-white);
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+}
+.util-fase h4 {
+  margin-top: 12px;
+  color: var(--ink);
+  font-size: 0.98rem;
+}
+.util-fase ul {
+  margin-top: 8px;
+}
+.util-fase li {
+  position: relative;
+  padding: 3px 0 3px 16px;
+  font-size: 0.88rem;
+}
+.util-fase li::before {
+  content: "›";
+  position: absolute;
+  left: 0;
+  color: var(--pu-copper-600);
+  font-weight: 700;
+}
+.util-mini {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 12px;
+  margin-top: 20px;
+}
+.util-mini li {
+  padding: 14px 16px;
+  border-radius: var(--radius-field);
+  background: var(--pu-gray-50);
+  box-shadow: inset 0 0 0 1px var(--line);
+  font-size: 0.9rem;
+}
+.util-mini strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--ink);
+}
+/* ---------- Água: cadeia de tratamento e escopo ---------- */
+.util-ciclo.util-cadeia {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.util-cadeia__sub {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--pu-copper-700);
+}
+.util-cadeia__destaque {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  font-size: 0.85rem;
+}
+.util-cadeia__destaque strong {
+  display: block;
+  color: var(--ink);
+}
+.util-escopo .eyebrow {
+  display: inline-flex;
+}
+.util-escopo h3 {
+  margin-top: 12px;
+}
+.util-escopo .util-escopo__promessa {
+  margin-top: 10px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.util-escopo .checklist {
+  margin-top: 20px;
+}
+@media (max-width: 1080px) {
+  .util-ciclo.util-cadeia {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 640px) {
+  .util-ciclo.util-cadeia {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- Calibração: categorias de equipamentos ---------- */
+.util-categorias .util-frente__head {
+  margin-bottom: 18px;
+}
+.util-categorias .checklist {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 28px;
+}
+@media (max-width: 640px) {
+  .util-categorias .checklist {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 1080px) {
+  .util-fases {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ---------- Responsivo ---------- */
 @media (max-width: 1080px) {
   .util-ciclo {

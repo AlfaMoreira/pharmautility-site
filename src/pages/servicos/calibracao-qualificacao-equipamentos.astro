@@ -1,0 +1,233 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { servicos } from '../../data/servicos.js';
+import '../../styles/utilidades.css';
+
+const servico = servicos.find((s) => s.slug === 'calibracao-qualificacao-equipamentos')!;
+const outros = servicos.filter((s) => s.slug !== servico.slug);
+const nomeServico = servico.nome;
+
+// Áreas de atuação: equipamentos e instrumentos atendidos em cada grandeza.
+const categorias = [
+  {
+    id: 'temperatura',
+    icone: 'i-thermo',
+    titulo: 'Temperatura',
+    subtitulo: 'Equipamentos térmicos, sensores e controladores',
+    itens: [
+      'Estufas de secagem e esterilização',
+      'Câmaras frias',
+      'Câmaras de estabilidade',
+      'Freezers',
+      'Autoclaves verticais e horizontais',
+      'Qualificação de vapor saturado',
+      'Banho-maria e banhos termostáticos',
+      'Termo-higrômetros',
+      'Termopares (tipos K, J, T, E e N)',
+      'Termorresistências Pt-100',
+      'Controladores de temperatura',
+      'Transdutores de temperatura',
+    ],
+  },
+  {
+    id: 'pressao',
+    icone: 'i-gauge',
+    titulo: 'Pressão',
+    subtitulo: 'Manômetros, vacuômetros, transdutores e transmissores',
+    itens: [
+      'Manômetros de pressão absoluta',
+      'Manômetros de pressão relativa',
+      'Medidores de pressão diferencial',
+      'Vacuômetros',
+      'Transdutores de pressão',
+      'Transmissores 4–20 mA e HART',
+    ],
+  },
+  {
+    id: 'rotacao',
+    icone: 'i-target',
+    titulo: 'Velocidade e rotação',
+    subtitulo: 'Centrífugas, agitadores e tacômetros',
+    itens: [
+      'Centrífugas de bancada',
+      'Centrífugas clínicas',
+      'Ultracentrífugas',
+      'Agitadores rotativos e orbitais',
+      'Tacômetros e contadores de rotação (RPM)',
+    ],
+  },
+  {
+    id: 'fisico-quimica',
+    icone: 'i-flask',
+    titulo: 'Físico-química',
+    subtitulo: 'Instrumentos de bancada do laboratório',
+    itens: [
+      'Karl Fischer volumétrico e coulométrico',
+      'Viscosímetros rotacionais e capilares',
+      'Tituladores automáticos',
+      'Eletrodos íon-seletivos (ISE)',
+      'pHmetros',
+      'Condutivímetros',
+      'Osmômetros',
+      'Refratômetros',
+      'Espectrofotômetros UV-Vis',
+      'Polarímetros',
+    ],
+  },
+  {
+    id: 'analitica',
+    icone: 'i-layers',
+    titulo: 'Qualificação analítica',
+    subtitulo: 'Instrumentos analíticos, com qualificação IQ, OQ e PQ',
+    itens: [
+      'Absorção atômica (AAS)',
+      'ICP-OES e ICP-MS',
+      'Cromatografia gasosa (GC)',
+      'Cromatografia líquida (HPLC e UPLC)',
+      'Karl Fischer (KF)',
+      'UV-Vis, FTIR, NIR e Raman',
+      'Carbono orgânico total (TOC)',
+      'LC-MS e GC-MS',
+    ],
+  },
+];
+
+const whatsapp = 'https://wa.me/5511944744013?text=' + encodeURIComponent('Olá, PharmaUtility! Gostaria de uma proposta de calibração e qualificação de equipamentos.');
+---
+
+<Layout title={`${nomeServico} | PharmaUtility`} description="Calibração rastreável e qualificação IQ/OQ/PQ de equipamentos de temperatura, pressão, rotação, físico-química e instrumentos analíticos para laboratórios e indústria farmacêutica." canonicalURL={`/servicos/${servico.slug}/`}>
+  <div class="page-content util-pagina">
+    <!-- 1. Apresentação -->
+    <section class="page-hero">
+      <div class="container">
+        <nav class="crumbs reveal" aria-label="Você está em">
+          <a href="/">Início</a><span aria-hidden="true">/</span><a href="/servicos/">Serviços</a><span aria-hidden="true">/</span><span>Calibração e qualificação</span>
+        </nav>
+        <p class="eyebrow reveal">Serviço {servico.numero}</p>
+        <h1 class="reveal" style="margin-top:18px; --d: 0.1s">{nomeServico}</h1>
+        <p class="lead reveal" style="--d: 0.2s">
+          Precisão que protege resultados. Calibração rastreável ao Sistema Internacional de Unidades (SI) e qualificação de equipamentos para a indústria farmacêutica e laboratorial, do campo até o laudo.
+        </p>
+        <div class="btn-row reveal" style="--d: 0.3s">
+          <a class="btn btn--primary" href="/contato/" data-proposta={nomeServico}>
+            <span>Solicitar proposta técnica</span>
+            <span class="btn__icon"><svg class="icon" aria-hidden="true"><use href="#i-arrow" /></svg></span>
+          </a>
+          <a class="btn btn--whatsapp" href={whatsapp} target="_blank" rel="noopener">
+            <svg class="icon" aria-hidden="true"><use href="#i-whatsapp" /></svg>
+            <span>Tire suas dúvidas pelo WhatsApp</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Necessidade -->
+    <section class="section" style="padding-top:0" aria-labelledby="necessidade">
+      <div class="container split">
+        <div class="reveal">
+          <p class="eyebrow">Necessidade atendida</p>
+          <h2 id="necessidade" style="margin-top:18px; font-size:clamp(1.4rem, 1rem + 1.2vw, 2rem)">Para que este serviço serve.</h2>
+        </div>
+        <div class="card quote-card reveal" style="--d: 0.1s">
+          <p class="lead" style="margin-top:0">{servico.necessidade}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Áreas de atuação -->
+    <section class="section" style="padding-top:0" aria-labelledby="areas">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">Áreas de atuação</p>
+          <h2 id="areas" style="margin-top:18px">Cinco grandezas, um programa de calibração.</h2>
+          <p>Equipamentos e instrumentos atendidos, com pontos, faixas e critérios de aceitação definidos em conjunto com o cliente.</p>
+        </header>
+        <div class="stack util-categorias" style="max-width:980px">
+          {categorias.map((c) => (
+            <article class="card util-frente reveal" id={c.id} aria-labelledby={`${c.id}-titulo`}>
+              <div class="util-frente__head">
+                <span class="card__icon"><svg class="icon" aria-hidden="true"><use href={`#${c.icone}`} /></svg></span>
+                <div>
+                  <h3 id={`${c.id}-titulo`}>{c.titulo}</h3>
+                  <p>{c.subtitulo}</p>
+                </div>
+              </div>
+              <ul class="checklist">
+                {c.itens.map((item) => <li>{item}</li>)}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Etapas -->
+    <section class="section" style="padding-top:0" aria-labelledby="etapas">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">Etapas</p>
+          <h2 id="etapas" style="margin-top:18px">Como o trabalho é conduzido.</h2>
+        </header>
+        <div class="stack" style="max-width:920px">
+          {servico.etapas.map((etapa, i) => (
+            <article class="card phase reveal" style={`--d: ${i * 0.08}s`}>
+              <span class="phase__tag">{etapa.tag}</span>
+              <div>
+                <h3>{etapa.titulo}</h3>
+                <p>{etapa.texto}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Entregáveis -->
+    <section class="section" style="padding-top:0" aria-labelledby="entregaveis">
+      <div class="container split">
+        <div class="reveal">
+          <p class="eyebrow">Entregáveis</p>
+          <h2 id="entregaveis" style="margin-top:18px">Documentação entregue ao final.</h2>
+          <p class="lead" style="margin-top:20px">Certificados e laudos organizados para análise técnica e apresentação em auditorias.</p>
+        </div>
+        <div class="card reveal" style="--d: 0.1s">
+          <ul class="checklist">
+            {servico.entregaveis.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Contato -->
+    <section class="section" style="padding-top:0" aria-labelledby="proposta">
+      <div class="container">
+        <div class="cta-dark reveal">
+          <p class="eyebrow" style="color:var(--pu-copper-300)">Solicite proposta</p>
+          <h2 id="proposta" style="margin-top:16px">Pronto para garantir a sua rastreabilidade?</h2>
+          <p>Nossa equipe elabora um programa de calibração sob medida, com certificados, cálculo de incerteza e suporte técnico para auditorias. Informe os equipamentos, as faixas de uso e a localização.</p>
+          <div class="btn-row">
+            <a class="btn btn--on-dark" href="/contato/" data-proposta={nomeServico}><span>Solicitar proposta</span><span class="btn__icon"><svg class="icon" aria-hidden="true"><use href="#i-arrow" /></svg></span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0" aria-labelledby="outros">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">Outros serviços</p>
+          <h2 id="outros" style="margin-top:18px">Conheça as demais frentes.</h2>
+        </header>
+        <div class="grid grid--3 service-nav">
+          {outros.slice(0, 6).map((s, i) => (
+            <a class="card card--link reveal" href={`/servicos/${s.slug}/`} style={`--d: ${(i % 3) * 0.08}s`}>
+              <span class="card__num">{s.numero}</span>
+              <h3>{s.nome}</h3>
+              <span class="card__more">Ver serviço <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow" /></svg></span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>

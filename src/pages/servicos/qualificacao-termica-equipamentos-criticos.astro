@@ -1,0 +1,274 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { servicos } from '../../data/servicos.js';
+import '../../styles/utilidades.css';
+
+const servico = servicos.find((s) => s.slug === 'qualificacao-termica-equipamentos-criticos')!;
+const outros = servicos.filter((s) => s.slug !== servico.slug);
+const nomeServico = servico.nome;
+
+// Da conservação criogênica à esterilização por calor seco (conteúdo do folder de Qualificação Térmica).
+const faixas = [
+  { titulo: 'Ultrafreezer', sub: 'Até −80 °C', texto: 'Banco de células, insumos biológicos e amostras de longa retenção.', destaque: 'Sensor criogênico', detalhe: 'Estudo de queda de energia e de tempo de segurança para transferência de carga.' },
+  { titulo: 'Freezer', sub: 'Faixa negativa', texto: 'Matéria-prima congelada, amostras de retenção e reagentes.', destaque: 'Uniformidade no volume', detalhe: 'Mapeamento com carga real e verificação do ciclo de degelo.' },
+  { titulo: 'Refrigerado', sub: '2 a 8 °C', texto: 'Câmara fria, refrigerador de vacinas e produto termolábil.', destaque: 'Faixa estreita', detalhe: 'Estudo de abertura de porta e de recuperação após interrupção.' },
+  { titulo: 'Ambiente controlado', sub: '15 a 30 °C', texto: 'Almoxarifado, sala de estabilidade e área de armazenagem.', destaque: 'Pior caso sazonal', detalhe: 'Mapeamento de verão e de inverno, com umidade quando aplicável.' },
+  { titulo: 'Estufa e incubadora', sub: 'Faixa de incubação', texto: 'Incubadora microbiológica, BOD, estufa de secagem e banho.', destaque: 'Estabilidade no tempo', detalhe: 'Uniformidade entre prateleiras e comportamento com carga máxima.' },
+  { titulo: 'Autoclave', sub: 'Vapor saturado', texto: 'Esterilização de material, líquido e carga porosa.', destaque: 'Distribuição e penetração', detalhe: 'Cálculo de letalidade acumulada, indicadores biológicos e teste de remoção de ar.' },
+  { titulo: 'Calor seco', sub: 'Esterilização e despirogenização', texto: 'Estufa de esterilização e túnel de despirogenização.', destaque: 'Redução de endotoxina', detalhe: 'Penetração no pior caso e comprovação da redução exigida de endotoxina.' },
+];
+
+const escopo = [
+  {
+    eyebrow: 'Mapeamento',
+    titulo: 'Mapeamento térmico e qualificação',
+    promessa: 'O ponto crítico do seu equipamento identificado com dado, não com estimativa de projeto.',
+    itens: [
+      'Mapeamento com câmara vazia e com carga',
+      'Definição do número e da posição dos sensores',
+      'Uniformidade espacial e estabilidade no tempo',
+      'Identificação dos pontos mais quente e mais frio',
+      'Estudo de pior caso de carga e de configuração',
+      'Verificação do sensor de controle do equipamento',
+      'QI, QO e QD, com requalificação periódica',
+    ],
+  },
+  {
+    eyebrow: 'Robustez',
+    titulo: 'Estudos de robustez',
+    promessa: 'Você passa a saber quanto tempo tem antes de o produto sair da faixa, em vez de descobrir na emergência.',
+    itens: [
+      'Queda de energia, com o tempo até sair da faixa',
+      'Abertura de porta e tempo de recuperação',
+      'Falha de compressor ou do sistema de frio',
+      'Retorno após o restabelecimento da alimentação',
+      'Verificação de alarme, atraso e destinatário',
+      'Teste do sistema de emergência e de contingência',
+      'Recomendação de tempo máximo de exposição',
+    ],
+  },
+  {
+    eyebrow: 'Esterilização',
+    titulo: 'Autoclave e processos térmicos',
+    promessa: 'Ciclo validado com letalidade demonstrada na carga que você realmente processa.',
+    itens: [
+      'Distribuição de calor com câmara vazia',
+      'Penetração de calor em carga porosa e em líquido',
+      'Cálculo de letalidade acumulada por ciclo',
+      'Indicadores biológicos e químicos',
+      'Teste de remoção de ar e de estanqueidade a vácuo',
+      'Definição e validação da configuração de carga',
+      'Despirogenização com redução de endotoxina comprovada',
+    ],
+  },
+  {
+    eyebrow: 'Documentação',
+    titulo: 'Protocolos, documentação e calibração',
+    promessa: 'Escrevemos o documento que falta ou executamos no seu, do jeito que o seu sistema da qualidade exige.',
+    itens: [
+      'Elaboração de requisitos do usuário e de protocolos',
+      'Critérios de aceitação definidos com você',
+      'Execução em protocolo próprio ou do cliente',
+      'Relatório com parecer e tratamento de desvios',
+      'Calibração rastreável dos sensores utilizados',
+      'Incerteza de medição declarada no relatório',
+      'Plano de periodicidade e apoio durante inspeções',
+    ],
+  },
+];
+
+// A pergunta que a inspeção faz e o dado que responde.
+const perguntas = [
+  { tag: '01', titulo: 'Por que esse número de sensores?', texto: 'Justificativa por volume, geometria e histórico do equipamento, registrada no protocolo antes da execução.' },
+  { tag: '02', titulo: 'E se a energia cair?', texto: 'Estudo de queda de energia, com o tempo medido até o produto sair da faixa e o tempo de retorno após religar.' },
+  { tag: '03', titulo: 'E quando a porta abre?', texto: 'Estudo de abertura na condição real de uso, com o tempo de recuperação e o limite de exposição recomendado.' },
+  { tag: '04', titulo: 'O ponto crítico muda com a carga?', texto: 'Mapeamento vazio e carregado no pior caso, mostrando se o ponto frio se desloca conforme a configuração.' },
+];
+
+const referencias = [
+  ['Esterilização por calor', 'ISO 17665 para calor úmido · ISO 20857 para calor seco · EN 285 para esterilizadores a vapor de grande porte'],
+  ['Indicadores', 'ISO 11138 para indicadores biológicos · ISO 11140 para indicadores químicos e teste de remoção de ar'],
+  ['Armazenagem e cadeia fria', 'RDC 430/2020 · guias da OMS para mapeamento de áreas de armazenamento e para produtos termossensíveis'],
+  ['Uso farmacêutico e saúde', 'RDC 658/2022 · RDC 665/2022 · RDC 15/2012 para processamento de produtos para saúde'],
+  ['Base metrológica', 'Incerteza de medição conforme o GUM · rastreabilidade ao Sistema Internacional de Unidades (SI)'],
+];
+
+const whatsapp = 'https://wa.me/5511944744013?text=' + encodeURIComponent('Olá, PharmaUtility! Gostaria de uma proposta de qualificação térmica e mapeamento de temperatura.');
+---
+
+<Layout title={`${nomeServico} | PharmaUtility`} description="Qualificação térmica e mapeamento de temperatura de autoclaves, estufas, incubadoras, câmaras frias, freezers, ultrafreezers e câmaras climáticas, com estudos de robustez e protocolos." canonicalURL={`/servicos/${servico.slug}/`}>
+  <div class="page-content util-pagina">
+    <!-- 1. Apresentação -->
+    <section class="page-hero">
+      <div class="container">
+        <nav class="crumbs reveal" aria-label="Você está em">
+          <a href="/">Início</a><span aria-hidden="true">/</span><a href="/servicos/">Serviços</a><span aria-hidden="true">/</span><span>Qualificação térmica</span>
+        </nav>
+        <p class="eyebrow reveal">Serviço {servico.numero}</p>
+        <h1 class="reveal" style="margin-top:18px; --d: 0.1s">{nomeServico}</h1>
+        <p class="lead reveal" style="--d: 0.2s">
+          Qualificação térmica e mapeamento de temperatura de equipamentos e áreas: autoclave, estufa e incubadora, refrigerador e câmara fria, freezer e ultrafreezer, câmara climática e elaboração de protocolos.
+        </p>
+        <div class="btn-row reveal" style="--d: 0.3s">
+          <a class="btn btn--primary" href="/contato/" data-proposta={nomeServico}>
+            <span>Solicitar proposta técnica</span>
+            <span class="btn__icon"><svg class="icon" aria-hidden="true"><use href="#i-arrow" /></svg></span>
+          </a>
+          <a class="btn btn--whatsapp" href={whatsapp} target="_blank" rel="noopener">
+            <svg class="icon" aria-hidden="true"><use href="#i-whatsapp" /></svg>
+            <span>Tire suas dúvidas pelo WhatsApp</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Necessidade -->
+    <section class="section" style="padding-top:0" aria-labelledby="necessidade">
+      <div class="container split">
+        <div class="reveal">
+          <p class="eyebrow">Necessidade atendida</p>
+          <h2 id="necessidade" style="margin-top:18px; font-size:clamp(1.4rem, 1rem + 1.2vw, 2rem)">Temperatura no display não é equipamento qualificado.</h2>
+        </div>
+        <div class="card quote-card reveal" style="--d: 0.1s">
+          <p class="lead" style="margin-top:0">O display lê um ponto, e o produto quase nunca está nesse ponto. A PharmaUtility mapeia o volume inteiro, encontra o ponto mais frio e o mais quente com a carga real e comprova o que acontece quando a porta abre ou a energia cai. Se você precisa do protocolo, nós escrevemos e submetemos à sua aprovação. Se já tem o seu, executamos no seu documento.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Faixas -->
+    <section class="section" style="padding-top:0" aria-labelledby="faixas">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">Faixas de temperatura</p>
+          <h2 id="faixas" style="margin-top:18px">Da conservação criogênica à esterilização por calor seco.</h2>
+          <p>Cada faixa exige sensor, instrumentação e critério diferentes. Trabalhamos com toda a escala, dentro de uma mesma campanha.</p>
+        </header>
+        <ol class="util-ciclo util-cadeia">
+          {faixas.map((c, i) => (
+            <li class="reveal" style={`--d: ${(i % 4) * 0.06}s`}>
+              <span class="util-ciclo__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <div>
+                <h3>{c.titulo}<span class="util-cadeia__sub">{c.sub}</span></h3>
+                <p>{c.texto}</p>
+                <p class="util-cadeia__destaque"><strong>{c.destaque}</strong>{c.detalhe}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+        <p class="util-nota reveal" style="max-width:920px; margin-top:18px">Também qualificamos caixas térmicas, contêineres e veículos de transporte, com estudo de pior caso de rota e de tempo fora de refrigeração. A instrumentação é calibrada com rastreabilidade, e a incerteza de medição entra no relatório junto com o critério de aceitação.</p>
+      </div>
+    </section>
+
+    <!-- 4. Escopo -->
+    <section class="section" style="padding-top:0" aria-labelledby="escopo">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">Escopo</p>
+          <h2 id="escopo" style="margin-top:18px">Mapear, testar, validar e documentar.</h2>
+          <p>Você contrata a frente de que precisa ou a campanha completa do seu parque térmico.</p>
+        </header>
+        <div class="grid grid--2">
+          {escopo.map((e, i) => (
+            <article class="card util-escopo reveal" style={`--d: ${(i % 2) * 0.08}s`}>
+              <p class="eyebrow">{e.eyebrow}</p>
+              <h3>{e.titulo}</h3>
+              <p class="util-escopo__promessa">{e.promessa}</p>
+              <ul class="checklist">
+                {e.itens.map((item) => <li>{item}</li>)}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Perguntas da inspeção -->
+    <section class="section" style="padding-top:0" aria-labelledby="perguntas">
+      <div class="container split">
+        <div class="reveal">
+          <p class="eyebrow">Inspeção</p>
+          <h2 id="perguntas" style="margin-top:18px">A pergunta que a inspeção faz e o dado que responde.</h2>
+          <p class="lead" style="margin-top:20px">Cada resposta sai do protocolo e do relatório, não de uma estimativa.</p>
+        </div>
+        <div class="stack reveal" style="--d: 0.1s">
+          {perguntas.map((f) => (
+            <article class="card phase">
+              <span class="phase__tag">{f.tag}</span>
+              <div>
+                <h3>{f.titulo}</h3>
+                <p>{f.texto}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Referências -->
+    <section class="section" style="padding-top:0" aria-labelledby="referencias">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">Referências normativas e técnicas</p>
+          <h2 id="referencias" style="margin-top:18px">Base técnica do trabalho.</h2>
+          <p>Aplicadas conforme a edição vigente e a regulamentação a que a sua operação está sujeita.</p>
+        </header>
+        <div class="util-tabela reveal" style="max-width:980px">
+          <table>
+            <thead><tr><th scope="col">Área</th><th scope="col">Referências</th></tr></thead>
+            <tbody>
+              {referencias.map(([area, refs]) => <tr><td>{area}</td><td>{refs}</td></tr>)}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Entregáveis -->
+    <section class="section" style="padding-top:0" aria-labelledby="entregaveis">
+      <div class="container split">
+        <div class="reveal">
+          <p class="eyebrow">Entregáveis</p>
+          <h2 id="entregaveis" style="margin-top:18px">Documentação entregue.</h2>
+          <p class="lead" style="margin-top:20px">Organizada para análise técnica e para consulta em auditorias e inspeções.</p>
+        </div>
+        <div class="card reveal" style="--d: 0.1s">
+          <ul class="checklist">
+            {servico.entregaveis.map((e) => <li>{e}</li>)}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Contato -->
+    <section class="section" style="padding-top:0" aria-labelledby="contato">
+      <div class="container">
+        <div class="cta-dark reveal">
+          <p class="eyebrow" style="color:var(--pu-copper-300)">Comece pelo inventário térmico</p>
+          <h2 id="contato" style="margin-top:16px">Converse sobre os seus equipamentos térmicos.</h2>
+          <p>Levantamos os equipamentos, a criticidade de cada um e o que já existe de documentação, e apresentamos uma proposta com escopo, periodicidade e cronograma de campanha.</p>
+          <div class="btn-row">
+            <a class="btn btn--on-dark" href="/contato/" data-proposta={nomeServico}><span>Solicitar proposta técnica</span><span class="btn__icon"><svg class="icon" aria-hidden="true"><use href="#i-arrow" /></svg></span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0" aria-labelledby="outros">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">Outros serviços</p>
+          <h2 id="outros" style="margin-top:18px">Conheça as demais frentes.</h2>
+        </header>
+        <div class="grid grid--3 service-nav">
+          {outros.slice(0, 6).map((s, i) => (
+            <a class="card card--link reveal" href={`/servicos/${s.slug}/`} style={`--d: ${(i % 3) * 0.08}s`}>
+              <span class="card__num">{s.numero}</span>
+              <h3>{s.nome}</h3>
+              <span class="card__more">Ver serviço <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow" /></svg></span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>

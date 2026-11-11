@@ -8,66 +8,111 @@ const servico = servicos.find((s) => s.slug === 'qualificacao-sistemas-agua-pw-w
 const outros = servicos.filter((s) => s.slug !== servico.slug);
 const nomeServico = servico.nome;
 
-const tiposAgua = [
+// Cadeia de tratamento: da água de alimentação ao ponto de uso (conteúdo do folder de Água Purificada).
+const cadeia = [
+  { titulo: 'Alimentação', sub: 'Água potável', texto: 'Entrada da rede ou de poço, com caracterização da água bruta.', destaque: 'Potabilidade atendida', detalhe: 'Análise de sazonalidade da fonte antes de dimensionar o pré-tratamento.' },
+  { titulo: 'Pré-tratamento', sub: 'Filtração e abrandamento', texto: 'Multimeios, carvão ativado, abrandador e dosagem química.', destaque: 'Proteção da membrana', detalhe: 'Controle de dureza, cloro livre e sólidos que reduzem a vida útil da osmose.' },
+  { titulo: 'Osmose reversa', sub: 'Simples ou duplo passo', texto: 'Skid de osmose com recirculação, CIP e sanitização.', destaque: 'Ajuste de recuperação', detalhe: 'Balanço de permeado e concentrado, pressão diferencial e rejeição salina.' },
+  { titulo: 'Polimento', sub: 'EDI · UV · ultrafiltração', texto: 'Eletrodeionização, ultravioleta e barreira final.', destaque: 'Estabilidade do polimento', detalhe: 'Ajuste de corrente do EDI, dose de UV e controle de carga orgânica.' },
+  { titulo: 'Água purificada', sub: 'PW', texto: 'Tanque de armazenamento e loop de distribuição em circulação.', destaque: '≤ 1,3 µS/cm · TOC ≤ 500 ppb', detalhe: 'Limite de ação usual de 100 UFC/mL · sanitização térmica ou química periódica.' },
+  { titulo: 'Água para injetáveis', sub: 'WFI', texto: 'Geração, loop quente em circulação e pontos de uso com dreno sanitário.', destaque: 'Endotoxina < 0,25 UI/mL', detalhe: 'Limite de ação usual de 10 UFC/100 mL · controle de temperatura do loop.' },
+  { titulo: 'Vapor puro', sub: 'Esterilização e SIP', texto: 'Gerador, rede sanitária, purgadores e pontos de uso em autoclave e linha de processo.', destaque: 'Ensaio de qualidade do vapor', detalhe: 'Gases não condensáveis, título e superaquecimento · condensado analisado como WFI.' },
+];
+
+// Quatro frentes de escopo: contrata-se a etapa necessária ou o sistema completo.
+const escopo = [
   {
-    eyebrow: 'PW',
-    titulo: 'Água Purificada',
+    eyebrow: 'Engenharia',
+    titulo: 'Dimensionamento, instalação e retrofit',
+    promessa: 'Sistema dimensionado para o seu consumo real e para o pico, não para o catálogo do fabricante.',
     itens: [
-      'Usada em etapas de fabricação e limpeza que não exigem a qualidade de injetáveis.',
-      'Tecnologia de produção definida no projeto, por exemplo osmose reversa e/ou desionização.',
-      'Requisitos físico-químicos e microbiológicos conforme a monografia aplicável.',
+      'Caracterização da água de alimentação',
+      'Balanço de consumo e curva de demanda por ponto',
+      'Projeto de skid, tanque e loop de distribuição',
+      'Tubulação em aço inoxidável sanitário',
+      'Solda orbital com registro e endoscopia',
+      'Declividade, drenabilidade e eliminação de pontos mortos',
+      'Passivação e comissionamento da instalação',
     ],
   },
   {
-    eyebrow: 'WFI',
-    titulo: 'Água para Injetáveis',
+    eyebrow: 'Qualificação',
+    titulo: 'Qualificação do sistema',
+    promessa: 'Liberação com evidência aceita em inspeção, do projeto ao desempenho ao longo do ano.',
     itens: [
-      'Usada em produtos parenterais e em etapas que exigem essa qualidade.',
-      'Requisitos adicionais, incluindo o limite de endotoxinas.',
-      'Rota de produção definida na monografia vigente e no processo validado do cliente.',
+      'QP — análise crítica de projeto e materiais',
+      'QI — instalação, documentação e rastreabilidade',
+      'QO — ensaios funcionais, alarmes e sanitização',
+      'QD em três fases, com plano de amostragem',
+      'Qualificação de vapor puro e do ciclo de SIP',
+      'Mapeamento térmico de sanitização, loop e SIP',
+      'Requalificação periódica e controle de mudanças',
+      'Investigação e tratamento de desvios',
+    ],
+  },
+  {
+    eyebrow: 'Manutenção',
+    titulo: 'Manutenção e ajuste do sistema',
+    promessa: 'Sistema estável entre as inspeções, com intervenção planejada em vez de parada de emergência.',
+    itens: [
+      'Sanitização térmica e química do loop',
+      'Gerador de vapor puro, purgadores e válvulas sanitárias',
+      'Troca e limpeza de membranas de osmose',
+      'Regeneração de resina e ajuste de dosagem',
+      'Substituição de lâmpadas UV e elementos filtrantes',
+      'Calibração de condutivímetros e sensores',
+      'Ajuste de setpoints, pressão e velocidade no loop',
+      'Plano de manutenção preventiva e registro',
+    ],
+  },
+  {
+    eyebrow: 'Laboratório',
+    titulo: 'Análises físico-químicas e microbiológicas',
+    promessa: 'Coleta, ensaio e interpretação por quem conhece o sistema que gerou a amostra.',
+    itens: [
+      'Condutividade e carbono orgânico total (TOC)',
+      'Contagem total de micro-organismos heterotróficos',
+      'Endotoxinas bacterianas por ensaio de LAL',
+      'Condensado de vapor puro avaliado como WFI',
+      'Gases não condensáveis, título e superaquecimento',
+      'Nitrato, metais e demais ensaios da monografia aplicável',
+      'Identificação dos micro-organismos recuperados',
+      'Análise de tendência por ponto de coleta',
+      'Definição de níveis de alerta e de ação',
     ],
   },
 ];
 
-const ciclo = [
-  { titulo: 'Pré-tratamento', texto: 'Condicionamento da água de alimentação antes do tratamento principal.' },
-  { titulo: 'Tratamento', texto: 'Remoção de sais e íons conforme a tecnologia definida no projeto.' },
-  { titulo: 'Polimento', texto: 'Etapa final de controle da qualidade, quando aplicável.' },
-  { titulo: 'Armazenamento', texto: 'Tanque e respiro com controles de contaminação e sanitização.' },
-  { titulo: 'Distribuição', texto: 'Loop, retorno e pontos de uso avaliados quanto à estabilidade.' },
+// Qualificação de desempenho em três fases, seguida da rotina.
+const fasesQD = [
+  { tag: 'Fase 1', titulo: 'Amostragem intensiva', texto: 'Coleta diária em todos os pontos de uso para conhecer o comportamento do sistema. A água ainda não libera produto.' },
+  { tag: 'Fase 2', titulo: 'Confirmação do controle', texto: 'Mesma intensidade de coleta com o procedimento operacional já definido, para confirmar que o controle se sustenta.' },
+  { tag: 'Fase 3', titulo: 'Um ciclo de doze meses', texto: 'Frequência de rotina ao longo de um ano, cobrindo a sazonalidade da água de alimentação.' },
+  { tag: 'Rotina', titulo: 'Monitoramento contínuo', texto: 'Plano de amostragem, tendência e requalificação periódica, com revisão a cada mudança no sistema.' },
 ];
 
-const planejamento = [
-  { icone: 'i-doc', titulo: 'Requisitos do usuário (URS)', texto: 'Definem a qualidade, a vazão e os pontos de uso que o sistema deve atender.' },
-  { icone: 'i-layers', titulo: 'Especificações técnica e funcional', texto: 'Descrevem como o sistema é construído e como cada função deve operar.' },
-  { icone: 'i-shield', titulo: 'Análise de risco', texto: 'Identifica os pontos críticos de qualidade e define a prioridade dos estudos.' },
-  { icone: 'i-target', titulo: 'Plano de qualificação', texto: 'Organiza as etapas, as responsabilidades e os critérios de aceitação.' },
-];
-
-const fases = [
-  { tag: 'IQ', titulo: 'Qualificação de instalação', texto: 'Verificação da instalação, dos materiais, dos componentes e da documentação contra o projeto.' },
-  { tag: 'OQ', titulo: 'Qualificação de operação', texto: 'Avaliação das funções, dos controles, dos alarmes e dos intertravamentos nas faixas previstas.' },
-  { tag: 'PQ', titulo: 'Qualificação de desempenho', texto: 'Avaliação da qualidade da água nos pontos de uso, ao longo de um período definido no plano.' },
-];
-
-const controle = [
-  { icone: 'i-drop', titulo: 'Estratégia de sanitização', texto: 'Método, frequência e critérios definidos para manter o sistema sob controle.' },
-  { icone: 'i-flask', titulo: 'Controle microbiológico', texto: 'Amostragem nos pontos definidos, com limites de alerta e de ação.' },
-  { icone: 'i-gauge', titulo: 'Monitoramento', texto: 'Acompanhamento dos parâmetros críticos e análise de tendências.' },
-  { icone: 'i-thermo', titulo: 'Requalificação', texto: 'Revisão do desempenho em intervalos definidos e após mudanças relevantes.' },
+const referencias = [
+  ['Anvisa', 'RDC 658/2022 (Boas Práticas de Fabricação) e guias aplicáveis a sistemas de água para uso farmacêutico'],
+  ['Farmacopeias', 'Farmacopeia Brasileira · USP, com os capítulos de condutividade, carbono orgânico total e água para uso farmacêutico · Farmacopeia Europeia'],
+  ['Agências internacionais', 'Guia da EMA para qualidade da água de uso farmacêutico · 21 CFR 211 e guias de inspeção do FDA · PIC/S'],
+  ['Projeto e construção', 'ASME BPE para tubulação sanitária · guias ISPE para sistemas de água e vapor puro'],
+  ['Vapor e esterilização', 'Ensaio de qualidade do vapor conforme EN 285 · qualificação de autoclave e de ciclo de SIP'],
+  ['Base metrológica', 'Incerteza de medição conforme o GUM · rastreabilidade ao Sistema Internacional de Unidades (SI)'],
 ];
 
 const entregaveis = [
-  'Protocolos de qualificação IQ, OQ e PQ',
-  'Relatórios dos estudos',
-  'Registros dos ensaios e das amostragens',
-  'Documentação de rastreabilidade',
+  'Protocolos e relatórios de QP, QI, QO e QD',
+  'Plano de amostragem e registros de coleta por ponto de uso',
+  'Laudos físico-químicos e microbiológicos com análise de tendência',
+  'Níveis de alerta e de ação definidos a partir do histórico do sistema',
+  'Documentação de rastreabilidade de materiais, soldas e instrumentos',
+  'Plano de manutenção preventiva e de requalificação',
 ];
 
-const whatsapp = 'https://wa.me/5511944744013?text=' + encodeURIComponent('Olá, PharmaUtility! Tenho dúvidas sobre a qualificação de sistemas de água PW e WFI.');
+const whatsapp = 'https://wa.me/5511944744013?text=' + encodeURIComponent('Olá, PharmaUtility! Tenho dúvidas sobre o meu sistema de água para uso farmacêutico (PW/WFI).');
 ---
 
-<Layout title={`${nomeServico} | PharmaUtility`} description="Qualificação de sistemas de Água Purificada (PW) e Água para Injetáveis (WFI), com planejamento, estudos IQ, OQ e PQ, controle microbiológico e documentação rastreável." canonicalURL="/servicos/qualificacao-sistemas-agua-pw-wfi/" image="/assets/og/agua.jpg" imageAlt="Ilustração isométrica de sistema de água purificada e água para injetáveis">
+<Layout title={`${nomeServico} | PharmaUtility`} description="Sistemas de água para uso farmacêutico do projeto à análise de rotina: dimensionamento, instalação, qualificação, manutenção e análises de PW, WFI e vapor puro." canonicalURL="/servicos/qualificacao-sistemas-agua-pw-wfi/" image="/assets/og/agua.jpg" imageAlt="Ilustração isométrica de sistema de água purificada e água para injetáveis">
   <!-- Imagem de fundo fixa só na primeira dobra (mesmo padrão da página de HVAC). Ilustrativa. -->
   <FundoPagina nome="/assets/images/agua-fundo" largura={2752} altura={1536} destacarTexto />
   <div class="page-content util-pagina">
@@ -80,7 +125,7 @@ const whatsapp = 'https://wa.me/5511944744013?text=' + encodeURIComponent('Olá,
         <p class="eyebrow reveal">Serviço {servico.numero}</p>
         <h1 class="reveal" style="margin-top:18px; --d: 0.1s">{nomeServico}</h1>
         <p class="lead reveal" style="--d: 0.2s">
-          Qualificação de sistemas de Água Purificada e de Água para Injetáveis, considerando os requisitos e os usos específicos de cada um, com planejamento, estudos e documentação rastreável.
+          Sistemas de água para uso farmacêutico, do projeto à análise de rotina: água purificada, água para injetáveis, vapor puro, osmose reversa e EDI, loop de distribuição e análises físico-químicas e microbiológicas.
         </p>
         <div class="btn-row reveal" style="--d: 0.3s">
           <a class="btn btn--primary" href="/contato/" data-proposta="Sistemas de Água (PW e WFI)">
@@ -95,20 +140,59 @@ const whatsapp = 'https://wa.me/5511944744013?text=' + encodeURIComponent('Olá,
       </div>
     </section>
 
-    <section class="section" style="padding-top:0" aria-labelledby="tipos">
+    <!-- 2. Necessidade -->
+    <section class="section" style="padding-top:0" aria-labelledby="necessidade">
+      <div class="container split">
+        <div class="reveal">
+          <p class="eyebrow">Necessidade atendida</p>
+          <h2 id="necessidade" style="margin-top:18px; font-size:clamp(1.4rem, 1rem + 1.2vw, 2rem)">Projeto, operação e laboratório na mesma mesa.</h2>
+        </div>
+        <div class="card quote-card reveal" style="--d: 0.1s">
+          <p class="lead" style="margin-top:0">A água entra em quase todo lote e é um dos sistemas que mais geram observações em inspeção. Quando a contagem sobe, a pergunta é sempre a mesma: foi a membrana, o loop, a sanitização ou a coleta? A PharmaUtility dimensiona, instala, qualifica, mantém e analisa o seu sistema de água, e a resposta chega com o dado de projeto, de operação e de laboratório juntos, e com quem responde por ela.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Cadeia de tratamento -->
+    <section class="section" style="padding-top:0" aria-labelledby="cadeia">
       <div class="container">
         <header class="section__head reveal">
-          <p class="eyebrow">PW e WFI</p>
-          <h2 id="tipos" style="margin-top:18px">Qualidades diferentes, sistemas avaliados separadamente.</h2>
-          <p>PW e WFI têm requisitos e usos próprios. A configuração de cada sistema, inclusive se são instalações independentes, é confirmada pelo projeto antes da proposta.</p>
+          <p class="eyebrow">Cadeia de tratamento</p>
+          <h2 id="cadeia" style="margin-top:18px">Da água de alimentação ao ponto de uso.</h2>
+          <p>Você contrata a etapa de que precisa ou o sistema completo, incluindo a distribuição.</p>
+        </header>
+        <ol class="util-ciclo util-cadeia">
+          {cadeia.map((c, i) => (
+            <li class="reveal" style={`--d: ${(i % 4) * 0.06}s`}>
+              <span class="util-ciclo__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <div>
+                <h3>{c.titulo}<span class="util-cadeia__sub">{c.sub}</span></h3>
+                <p>{c.texto}</p>
+                <p class="util-cadeia__destaque"><strong>{c.destaque}</strong>{c.detalhe}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+        <p class="util-nota reveal" style="max-width:920px; margin-top:18px">Condutividade, carbono orgânico total e endotoxinas: limites de referência das farmacopeias. Os níveis de alerta e de ação microbiológicos são definidos no protocolo, a partir do histórico do seu sistema. O gerador de vapor puro é alimentado por água purificada ou WFI; quando o vapor industrial da planta tem contato indireto com o produto, avaliamos também o tratamento da água de caldeira e os aditivos em uso.</p>
+      </div>
+    </section>
+
+    <!-- 4. Escopo -->
+    <section class="section" style="padding-top:0" aria-labelledby="escopo">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">Escopo</p>
+          <h2 id="escopo" style="margin-top:18px">Quatro frentes para o mesmo sistema.</h2>
+          <p>Engenharia, qualificação, manutenção e laboratório, com uma equipe que conhece o sistema de ponta a ponta.</p>
         </header>
         <div class="grid grid--2">
-          {tiposAgua.map((t, i) => (
-            <article class="card util-tipo reveal" style={`--d: ${i * 0.08}s`}>
-              <p class="eyebrow">{t.eyebrow}</p>
-              <h3 style="margin-top:12px">{t.titulo}</h3>
-              <ul class="checklist" style="margin-top:20px">
-                {t.itens.map((item) => <li>{item}</li>)}
+          {escopo.map((e, i) => (
+            <article class="card util-escopo reveal" style={`--d: ${(i % 2) * 0.08}s`}>
+              <p class="eyebrow">{e.eyebrow}</p>
+              <h3>{e.titulo}</h3>
+              <p class="util-escopo__promessa">{e.promessa}</p>
+              <ul class="checklist">
+                {e.itens.map((item) => <li>{item}</li>)}
               </ul>
             </article>
           ))}
@@ -116,58 +200,18 @@ const whatsapp = 'https://wa.me/5511944744013?text=' + encodeURIComponent('Olá,
       </div>
     </section>
 
-    <!-- 2. Ciclo do sistema -->
-    <section class="section" style="padding-top:0" aria-labelledby="ciclo">
-      <div class="container">
-        <header class="section__head reveal">
-          <p class="eyebrow">Ciclo do sistema</p>
-          <h2 id="ciclo" style="margin-top:18px">Da água de alimentação ao ponto de uso.</h2>
-          <p>As etapas aplicáveis variam conforme a tecnologia e a qualidade de água de cada sistema.</p>
-        </header>
-        <ol class="util-ciclo">
-          {ciclo.map((c, i) => (
-            <li class="reveal" style={`--d: ${i * 0.06}s`}>
-              <span class="util-ciclo__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-              <h3>{c.titulo}</h3>
-              <p>{c.texto}</p>
-            </li>
-          ))}
-        </ol>
-      </div>
-    </section>
-
-    <!-- 3. Planejamento -->
-    <section class="section" style="padding-top:0" aria-labelledby="planejamento">
-      <div class="container">
-        <header class="section__head reveal">
-          <p class="eyebrow">Planejamento</p>
-          <h2 id="planejamento" style="margin-top:18px">Requisitos antes dos estudos.</h2>
-          <p>Esses documentos orientam o escopo, os estudos e os critérios de aceitação da qualificação.</p>
-        </header>
-        <div class="grid grid--2">
-          {planejamento.map((p, i) => (
-            <article class="card reveal" style={`--d: ${(i % 2) * 0.08}s`}>
-              <span class="card__icon"><svg class="icon" aria-hidden="true"><use href={`#${p.icone}`} /></svg></span>
-              <h3>{p.titulo}</h3>
-              <p>{p.texto}</p>
-            </article>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <!-- 4. Qualificação -->
-    <section class="section" style="padding-top:0" aria-labelledby="qualificacao">
+    <!-- 5. Qualificação de desempenho -->
+    <section class="section" style="padding-top:0" aria-labelledby="qd">
       <div class="container split">
         <div class="reveal">
-          <p class="eyebrow">Qualificação</p>
-          <h2 id="qualificacao" style="margin-top:18px">Estudos IQ, OQ e PQ.</h2>
-          <p class="lead" style="margin-top:20px">Inclui a avaliação de instrumentos, controles, alarmes e intertravamentos, com a calibração dos instrumentos críticos verificada.</p>
+          <p class="eyebrow">Qualificação de desempenho</p>
+          <h2 id="qd" style="margin-top:18px">Três fases, como a inspeção espera ver.</h2>
+          <p class="lead" style="margin-top:20px">Antes da QD, o sistema passa por QP, QI e QO, com a calibração dos instrumentos críticos verificada.</p>
         </div>
         <div class="stack reveal" style="--d: 0.1s">
-          {fases.map((f) => (
+          {fasesQD.map((f) => (
             <article class="card phase">
-              <span class="phase__tag">{f.tag}</span>
+              <span class="phase__tag" style="min-width:76px">{f.tag}</span>
               <div>
                 <h3>{f.titulo}</h3>
                 <p>{f.texto}</p>
@@ -178,26 +222,26 @@ const whatsapp = 'https://wa.me/5511944744013?text=' + encodeURIComponent('Olá,
       </div>
     </section>
 
-    <!-- 5. Controle e acompanhamento -->
-    <section class="section" style="padding-top:0" aria-labelledby="controle">
+    <!-- 6. Referências -->
+    <section class="section" style="padding-top:0" aria-labelledby="referencias">
       <div class="container">
         <header class="section__head reveal">
-          <p class="eyebrow">Controle e acompanhamento</p>
-          <h2 id="controle" style="margin-top:18px">Manter a qualidade da água ao longo do uso.</h2>
+          <p class="eyebrow">Referências normativas e compendiais</p>
+          <h2 id="referencias" style="margin-top:18px">Base técnica do trabalho.</h2>
+          <p>Aplicadas conforme a edição vigente e a regulamentação a que o seu produto está sujeito.</p>
         </header>
-        <div class="grid grid--2">
-          {controle.map((c, i) => (
-            <article class="card reveal" style={`--d: ${(i % 2) * 0.08}s`}>
-              <span class="card__icon"><svg class="icon" aria-hidden="true"><use href={`#${c.icone}`} /></svg></span>
-              <h3>{c.titulo}</h3>
-              <p>{c.texto}</p>
-            </article>
-          ))}
+        <div class="util-tabela reveal" style="max-width:980px">
+          <table>
+            <thead><tr><th scope="col">Área</th><th scope="col">Referências</th></tr></thead>
+            <tbody>
+              {referencias.map(([area, refs]) => <tr><td>{area}</td><td>{refs}</td></tr>)}
+            </tbody>
+          </table>
         </div>
       </div>
     </section>
 
-    <!-- 6. Entregáveis -->
+    <!-- 7. Entregáveis -->
     <section class="section" style="padding-top:0" aria-labelledby="entregaveis">
       <div class="container split">
         <div class="reveal">
@@ -213,13 +257,13 @@ const whatsapp = 'https://wa.me/5511944744013?text=' + encodeURIComponent('Olá,
       </div>
     </section>
 
-    <!-- 7. Contato -->
+    <!-- 8. Contato -->
     <section class="section" style="padding-top:0" aria-labelledby="contato">
       <div class="container">
         <div class="cta-dark reveal">
-          <p class="eyebrow" style="color:var(--pu-copper-300)">Contato</p>
+          <p class="eyebrow" style="color:var(--pu-copper-300)">Fale com a engenharia</p>
           <h2 id="contato" style="margin-top:16px">Converse sobre o seu sistema de água.</h2>
-          <p>Informe o tipo de água (PW, WFI ou ambos), a tecnologia instalada, a localização e o objetivo do trabalho. Nossa equipe retorna com a avaliação da demanda e o escopo proposto.</p>
+          <p>Avaliamos o sistema instalado, o histórico de análises e o plano de amostragem atual, e apresentamos uma proposta com escopo, cronograma e critérios de aceitação.</p>
           <div class="btn-row">
             <a class="btn btn--on-dark" href="/contato/" data-proposta="Sistemas de Água (PW e WFI)"><span>Solicitar proposta técnica</span><span class="btn__icon"><svg class="icon" aria-hidden="true"><use href="#i-arrow" /></svg></span></a>
           </div>

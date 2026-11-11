@@ -1,0 +1,366 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { servicos } from '../../data/servicos.js';
+import FundoPagina from '../../components/FundoPagina.astro';
+import '../../styles/utilidades.css';
+
+const servico = servicos.find((s) => s.slug === 'qualificacao-hvac-salas-limpas')!;
+const outros = servicos.filter((s) => s.slug !== servico.slug);
+const nomeServico = servico.nome;
+
+// Normas citadas como referência: a edição vigente e os critérios de aceitação são definidos
+// no protocolo de cada projeto, conforme o uso da área e a regulamentação aplicável ao cliente.
+type Tabela = { rotulo: string; colunas: string[]; linhas: string[][]; destaque?: number[]; nota?: string };
+type Fase = { tag: string; titulo: string; itens: string[] };
+type Bloco = {
+  id: string;
+  icone: string;
+  titulo: string;
+  subtitulo: string;
+  intro?: string;
+  aviso?: string;
+  normas?: string[];
+  tabela?: Tabela;
+  fases?: Fase[];
+  ensaiosRotulo?: string;
+  ensaios?: { titulo: string; texto: string }[];
+  mini?: { titulo: string; texto: string }[];
+};
+
+const segmentos: { id: string; eyebrow: string; titulo: string; texto: string; aviso?: string; blocos: Bloco[] }[] = [
+  {
+    id: 'gxp',
+    eyebrow: 'Áreas farmacêuticas e hospitalares',
+    titulo: 'HVAC em ambientes GxP.',
+    texto: 'Qualificação estruturada em IQ, OQ e PQ, com evidência documental auditável e rastreável para inspeções da ANVISA e de autoridades internacionais.',
+    blocos: [
+      {
+        id: 'classificacao',
+        icone: 'i-layers',
+        titulo: 'Classificação de áreas',
+        subtitulo: 'ISO 14644-1 · EU GMP Anexo 1 · ANVISA',
+        intro: 'A qualificação abrange as áreas classificadas da instalação, com verificação nas condições em repouso (at rest) e em operação (in operation).',
+        normas: ['ISO 14644-1 — classificação por partículas', 'EU GMP Anexo 1 (2022)', 'ANVISA — RDC 658/2022 e instruções normativas', 'OMS — boas práticas para HVAC'],
+        tabela: {
+          rotulo: 'Limites em repouso — EU GMP Anexo 1 (2022)',
+          colunas: ['Grau', 'ISO equivalente', 'Partículas ≥ 0,5 µm/m³', 'Partículas ≥ 5,0 µm/m³', 'Aplicação típica'],
+          linhas: [
+            ['A', 'ISO 5', '3.520', 'Não especificado', 'Operações assépticas com produto exposto'],
+            ['B', 'ISO 5', '3.520', 'Não especificado', 'Entorno das áreas grau A'],
+            ['C', 'ISO 7', '352.000', '2.930', 'Etapas menos críticas da fabricação de estéreis'],
+            ['D', 'ISO 8', '3.520.000', '29.300', 'Manuseio de componentes após lavagem'],
+          ],
+          destaque: [2, 3],
+          nota: 'Valores máximos em repouso. Os limites em operação, a classificação ISO de outras áreas e os critérios de aceitação são definidos no protocolo, conforme a edição vigente das normas.',
+        },
+      },
+      {
+        id: 'ensaios-gxp',
+        icone: 'i-target',
+        titulo: 'Ensaios de qualificação — IQ, OQ e PQ',
+        subtitulo: 'ISO 14644-3 · EU GMP Anexo 1 · IEST-RP-CC034',
+        fases: [
+          { tag: 'IQ', titulo: 'Instalação', itens: ['Conferência de projeto (fluxogramas e isométricos)', 'Certificados de fábrica dos filtros', 'Inspeção de dutos, grelhas e dampers', 'Calibração de instrumentos (T, UR e ΔP)', 'Alarmes e intertravamentos'] },
+          { tag: 'OQ', titulo: 'Operação', itens: ['Velocidade e uniformidade do fluxo de ar', 'Pressão diferencial e cascata', 'Taxa de renovação de ar', 'Integridade de filtros HEPA/ULPA', 'Visualização de fluxo (smoke test)', 'Tempo de recuperação'] },
+          { tag: 'PQ', titulo: 'Desempenho', itens: ['Partículas em repouso e em operação', 'Mapeamento de temperatura e umidade', 'Estanqueidade da sala', 'Monitoramento microbiológico de ar e superfícies', 'Avaliação em condição operacional'] },
+        ],
+        ensaiosRotulo: 'Detalhamento dos principais ensaios',
+        ensaios: [
+          { titulo: 'Classificação por partículas', texto: 'Contador óptico calibrado, em repouso e em operação, conforme a ISO 14644-1, com número mínimo de pontos definido pela área da sala e comparação aos limites do grau aplicável.' },
+          { titulo: 'Integridade de filtros HEPA/ULPA', texto: 'Varredura com fotômetro ou contador de partículas e aerossol de desafio (PAO ou DEHS), conforme a ISO 14644-3 e o IEST-RP-CC034, para detectar furos e falhas de vedação.' },
+          { titulo: 'Pressão diferencial e cascata', texto: 'Medição entre cada área classificada e as áreas adjacentes. Referência do Anexo 1: diferencial de 10 Pa entre graus adjacentes, com sentido de fluxo definido no projeto (inclusive em áreas de contenção).' },
+          { titulo: 'Velocidade e uniformidade do fluxo', texto: 'Medição nas grelhas e, no fluxo unidirecional, na seção de trabalho. Referência do Anexo 1 para grau A: 0,36 a 0,54 m/s na posição de trabalho.' },
+          { titulo: 'Visualização de fluxo (smoke test)', texto: 'Geração de fumaça com registro em vídeo, confirmando o fluxo unidirecional nas zonas críticas, a ausência de turbulências e zonas mortas e a contenção entre graus.' },
+          { titulo: 'Taxa de renovação de ar', texto: 'Cálculo a partir da vazão medida e do volume da sala, comparado ao valor de projeto.' },
+          { titulo: 'Tempo de recuperação', texto: 'Tempo para retorno à condição de repouso após contaminação controlada. Orientação do Anexo 1: de 15 a 20 minutos.' },
+          { titulo: 'Temperatura e umidade relativa', texto: 'Mapeamento com múltiplos sensores calibrados, verificando estabilidade e homogeneidade nas faixas definidas pelo produto e pelo processo.' },
+          { titulo: 'Estanqueidade da sala', texto: 'Ensaio de pressurização para avaliar a envoltória e identificar vazamentos em juntas, passagens de utilidades e vedações.' },
+        ],
+      },
+      {
+        id: 'monitoramento',
+        icone: 'i-gauge',
+        titulo: 'Monitoramento ambiental contínuo',
+        subtitulo: 'Pós-qualificação · EU GMP Anexo 1 · ANVISA',
+        intro: 'A qualificação estabelece os parâmetros de referência do programa de monitoramento ambiental, requisito permanente de operação das áreas classificadas.',
+        mini: [
+          { titulo: 'Pressão diferencial', texto: 'Monitoramento contínuo com alarmes parametrizados.' },
+          { titulo: 'Partículas', texto: 'Contagem em operação, contínua nas áreas grau A e B.' },
+          { titulo: 'Microbiologia', texto: 'Amostragem ativa e passiva do ar e de superfícies.' },
+          { titulo: 'Temperatura e umidade', texto: 'Registro contínuo, rastreável e com análise de tendência.' },
+        ],
+      },
+      {
+        id: 'instalacoes',
+        icone: 'i-shield',
+        titulo: 'Instalações atendidas',
+        subtitulo: 'Ambientes GxP com requisitos de controle ambiental',
+        mini: [
+          { titulo: 'Indústria farmacêutica', texto: 'Áreas de estéreis, sólidos, semissólidos e líquidos.' },
+          { titulo: 'Áreas assépticas', texto: 'Enchimento, liofilização e manipulação de produto exposto.' },
+          { titulo: 'Pesagem e dispensação', texto: 'Insumos ativos, inclusive de alta potência, com contenção.' },
+          { titulo: 'Laboratórios', texto: 'Controle de qualidade e microbiologia.' },
+          { titulo: 'Hospitais', texto: 'Centros cirúrgicos, UTIs e farmácias de manipulação hospitalar.' },
+          { titulo: 'Pesquisa e desenvolvimento', texto: 'Instalações com requisitos regulatórios de controle ambiental.' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'data-centers',
+    eyebrow: 'Data centers',
+    titulo: 'HVAC em data centers.',
+    texto: 'Verificação formal e documentada de que a climatização opera dentro dos parâmetros de projeto, com evidências técnicas que sustentam contratos de disponibilidade (SLA), certificações e auditorias de clientes.',
+    blocos: [
+      {
+        id: 'normas-dc',
+        icone: 'i-doc',
+        titulo: 'Normas e referências',
+        subtitulo: 'ASHRAE TC 9.9 · ANSI/TIA-942 · ISO/IEC 22237 · EN 50600',
+        ensaios: [
+          { titulo: 'ASHRAE TC 9.9 — Thermal Guidelines for Data Processing Environments', texto: 'Faixas de temperatura e umidade na entrada dos equipamentos de TI, por classe, verificadas e documentadas na qualificação.' },
+          { titulo: 'ANSI/TIA-942', texto: 'Infraestrutura de data centers, com níveis de classificação (Rated 1 a 4) que definem requisitos de redundância, inclusive da climatização.' },
+          { titulo: 'ISO/IEC 22237 e EN 50600', texto: 'Projeto, construção e operação de data centers, incluindo controle ambiental e indicadores de eficiência energética.' },
+          { titulo: 'Uptime Institute — Tier Standard', texto: 'Referência para certificação Tier I a IV, adotada por operadores de colocation e clientes institucionais.' },
+        ],
+      },
+      {
+        id: 'ashrae',
+        icone: 'i-thermo',
+        titulo: 'Classes térmicas ASHRAE',
+        subtitulo: 'Condições na entrada de ar dos equipamentos de TI',
+        intro: 'A faixa recomendada é comum a todas as classes; as faixas permitidas variam por classe. A escolha da classe impacta diretamente a eficiência energética e o PUE.',
+        tabela: {
+          rotulo: 'Faixas de referência — ASHRAE TC 9.9',
+          colunas: ['Envelope', 'Temperatura de bulbo seco', 'Umidade relativa', 'Uso típico'],
+          linhas: [
+            ['Recomendado (todas as classes)', '18 a 27 °C', 'Até 60 %, com limites de ponto de orvalho', 'Operação contínua'],
+            ['Permitido — A1', '15 a 32 °C', '20 a 80 %', 'Servidores e storage de missão crítica'],
+            ['Permitido — A2', '10 a 35 °C', '20 a 80 %', 'TI corporativa em geral'],
+            ['Permitido — A3', '5 a 40 °C', '8 a 85 %', 'Equipamentos com faixa ampliada'],
+            ['Permitido — A4', '5 a 45 °C', '8 a 90 %', 'Data centers modulares e de borda'],
+          ],
+          destaque: [1, 2],
+          nota: 'Valores de referência da ASHRAE. A classe aplicável, os limites de ponto de orvalho e as condições de resfriamento líquido (classes W) são confirmados no protocolo, conforme a edição vigente.',
+        },
+      },
+      {
+        id: 'redundancia',
+        icone: 'i-layers',
+        titulo: 'Níveis de redundância',
+        subtitulo: 'ANSI/TIA-942 (Rated 1 a 4) · Uptime Institute (Tier I a IV)',
+        tabela: {
+          rotulo: 'Redundância da climatização verificada na qualificação',
+          colunas: ['Nível', 'Conceito', 'Redundância', 'O que a qualificação comprova'],
+          linhas: [
+            ['Rated 1 / Tier I', 'Infraestrutura básica', 'N', 'Capacidade de projeto; manutenções exigem parada.'],
+            ['Rated 2 / Tier II', 'Componentes redundantes', 'N+1', 'Unidades reserva assumindo a carga.'],
+            ['Rated 3 / Tier III', 'Manutenção simultânea', 'N+1, múltiplos caminhos', 'Manutenção de qualquer equipamento sem interromper a TI.'],
+            ['Rated 4 / Tier IV', 'Tolerância a falhas', '2N ou 2(N+1)', 'Falha de um sistema completo sem impacto térmico.'],
+          ],
+          destaque: [2],
+        },
+      },
+      {
+        id: 'ensaios-dc',
+        icone: 'i-wind',
+        titulo: 'Ensaios de qualificação — IQ, OQ e PQ',
+        subtitulo: 'Evidências documentadas para SLA, certificações e auditorias',
+        fases: [
+          { tag: 'IQ', titulo: 'Instalação', itens: ['Projeto versus instalado', 'Certificados de fábrica dos equipamentos', 'Calibração de sensores DCIM/BMS', 'Tubulações e conexões hidráulicas'] },
+          { tag: 'OQ', titulo: 'Operação', itens: ['Balanceamento de ar (TAB) por zona e rack', 'Pressão diferencial e contenção de corredor', 'Visualização de fluxo (smoke test)', 'Failover e acionamento da redundância'] },
+          { tag: 'PQ', titulo: 'Desempenho', itens: ['Mapeamento térmico em carga', 'Temperatura e umidade frente à classe ASHRAE', 'Medição e linha de base de PUE', 'Conformidade por rack'] },
+        ],
+        ensaiosRotulo: 'Detalhamento dos ensaios',
+        ensaios: [
+          { titulo: 'Mapeamento térmico', texto: 'Medição simultânea em múltiplos pontos da sala e na entrada dos racks, em carga representativa e pelo período definido no protocolo, identificando pontos quentes e recirculação. Resultado: mapa térmico com isocurvas.' },
+          { titulo: 'Temperatura, umidade e ponto de orvalho', texto: 'Monitoramento contínuo frente aos limites da classe ASHRAE, com avaliação do risco de condensação sobre os equipamentos.' },
+          { titulo: 'Vazão e balanceamento (TAB)', texto: 'Medição nas unidades CRAC/CRAH, grelhas e plenum de piso elevado, comparada à demanda térmica de projeto por zona e por rack.' },
+          { titulo: 'Pressão diferencial e contenção', texto: 'Pressão estática no plenum e efetividade da contenção de corredor frio ou quente, avaliando by-pass e recirculação de ar quente.' },
+          { titulo: 'Visualização de fluxo (smoke test)', texto: 'Registro em vídeo do escoamento na sala, mostrando recirculação, turbulência e vazamentos na contenção.' },
+          { titulo: 'PUE (Power Usage Effectiveness)', texto: 'Cálculo pela razão entre a energia total da instalação e a energia de TI (The Green Grid e ISO/IEC 30134-2), com linha de base documentada para comparação após otimizações.' },
+          { titulo: 'Redundância e failover', texto: 'Desligamento controlado de unidades de climatização para verificar se a redundância assume a carga sem violar os limites térmicos, comprovando o nível declarado.' },
+        ],
+      },
+    ],
+  },
+];
+
+const entregaveis = [
+  'Protocolo de qualificação IQ/OQ/PQ com critérios de aceitação aprovados antes da execução',
+  'Relatório técnico final com dados brutos e análise estatística de conformidade',
+  'Certificados de calibração dos instrumentos, rastreáveis à RBC/INMETRO',
+  'Laudos de integridade de filtros HEPA com mapas de varredura (áreas GxP)',
+  'Mapa térmico da sala com isocurvas e zonas críticas (data centers)',
+  'Registro em vídeo dos ensaios de visualização de fluxo e de failover',
+  'Linha de base de PUE documentada (data centers)',
+  'Plano de monitoramento periódico e recomendações de requalificação',
+];
+
+const whatsapp = 'https://wa.me/5511944744013?text=' + encodeURIComponent('Olá, PharmaUtility! Gostaria de uma proposta para qualificação de HVAC.');
+---
+
+<Layout title={`${nomeServico} | PharmaUtility`} description="Qualificação de HVAC em salas limpas farmacêuticas, hospitalares e data centers: classificação ISO 14644, integridade HEPA, pressão diferencial, mapeamento térmico e IQ/OQ/PQ." canonicalURL="/servicos/qualificacao-hvac-salas-limpas/" image="/assets/og/hvac.jpg" imageAlt="Ilustração do serviço de qualificação de HVAC e salas limpas">
+  <FundoPagina {...servico.fundo} />
+  <div class="page-content util-pagina">
+    <!-- 1. Apresentação -->
+    <section class="page-hero">
+      <div class="container">
+        <nav class="crumbs reveal" aria-label="Você está em">
+          <a href="/">Início</a><span aria-hidden="true">/</span><a href="/servicos/">Serviços</a><span aria-hidden="true">/</span><span>HVAC e salas limpas</span>
+        </nav>
+        <p class="eyebrow reveal">Serviço {servico.numero}</p>
+        <h1 class="reveal" style="margin-top:18px; --d: 0.1s">{nomeServico}</h1>
+        <p class="lead reveal" style="--d: 0.2s">
+          Evidência documentada de que o sistema de climatização mantém, de forma consistente, as condições ambientais exigidas, protegendo o produto, o processo, o operador e a continuidade operacional. Atendemos áreas farmacêuticas, hospitalares, laboratoriais e data centers.
+        </p>
+        <div class="btn-row reveal" style="--d: 0.3s">
+          <a class="btn btn--primary" href="/contato/" data-proposta={nomeServico}>
+            <span>Solicitar proposta técnica</span>
+            <span class="btn__icon"><svg class="icon" aria-hidden="true"><use href="#i-arrow" /></svg></span>
+          </a>
+          <a class="btn btn--whatsapp" href={whatsapp} target="_blank" rel="noopener">
+            <svg class="icon" aria-hidden="true"><use href="#i-whatsapp" /></svg>
+            <span>Tire suas dúvidas pelo WhatsApp</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Necessidade -->
+    <section class="section" style="padding-top:0" aria-labelledby="necessidade">
+      <div class="container split">
+        <div class="reveal">
+          <p class="eyebrow">Necessidade atendida</p>
+          <h2 id="necessidade" style="margin-top:18px; font-size:clamp(1.4rem, 1rem + 1.2vw, 2rem)">Por que qualificar o HVAC.</h2>
+        </div>
+        <div class="card quote-card reveal" style="--d: 0.1s">
+          <p class="lead" style="margin-top:0">Um HVAC fora de controle compromete a qualidade do produto, a segurança do paciente e a conformidade em inspeções. Em data centers, coloca em risco a disponibilidade da TI. A qualificação em IQ, OQ e PQ gera evidência auditável de que o sistema entrega o que o projeto promete.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Segmentos -->
+    {segmentos.map((seg) => (
+      <section class="section" style="padding-top:0" aria-labelledby={seg.id}>
+        <div class="container">
+          <header class="section__head reveal">
+            <p class="eyebrow">{seg.eyebrow}</p>
+            <h2 id={seg.id} style="margin-top:18px">{seg.titulo}</h2>
+            <p>{seg.texto}</p>
+          </header>
+          <div class="stack" style="max-width:980px">
+            {seg.blocos.map((b) => (
+              <article class="card util-frente reveal" id={b.id} aria-labelledby={`${b.id}-titulo`}>
+                <div class="util-frente__head">
+                  <span class="card__icon"><svg class="icon" aria-hidden="true"><use href={`#${b.icone}`} /></svg></span>
+                  <div>
+                    <h3 id={`${b.id}-titulo`}>{b.titulo}</h3>
+                    <p>{b.subtitulo}</p>
+                  </div>
+                </div>
+                {b.intro && <p style="margin-top:20px">{b.intro}</p>}
+                {b.aviso && <p class="util-aviso" set:html={b.aviso} />}
+                {b.normas && (
+                  <ul class="util-normas" aria-label="Normas de referência">
+                    {b.normas.map((n) => <li class="pill">{n}</li>)}
+                  </ul>
+                )}
+                {b.tabela && (
+                  <>
+                    <p class="util-rotulo">{b.tabela.rotulo}</p>
+                    <div class="util-tabela">
+                      <table>
+                        <thead><tr>{b.tabela.colunas.map((c) => <th scope="col">{c}</th>)}</tr></thead>
+                        <tbody>
+                          {b.tabela.linhas.map((linha) => (
+                            <tr>{linha.map((celula, i) => <td class={b.tabela!.destaque?.includes(i) ? 'util-tabela__valor' : undefined}>{celula}</td>)}</tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    {b.tabela.nota && <p class="util-nota">{b.tabela.nota}</p>}
+                  </>
+                )}
+                {b.fases && (
+                  <div class="util-fases">
+                    {b.fases.map((f) => (
+                      <div class="util-fase">
+                        <span class="util-fase__tag">{f.tag}</span>
+                        <h4>{f.titulo}</h4>
+                        <ul>{f.itens.map((item) => <li>{item}</li>)}</ul>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {b.ensaios && (
+                  <>
+                    {b.ensaiosRotulo && <p class="util-rotulo">{b.ensaiosRotulo}</p>}
+                    <ul class="util-ensaios" style={b.ensaiosRotulo ? undefined : 'margin-top:16px'}>
+                      {b.ensaios.map((e) => (
+                        <li><div><strong>{e.titulo}</strong><span>{e.texto}</span></div></li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+                {b.mini && (
+                  <ul class="util-mini">
+                    {b.mini.map((m) => <li><strong>{m.titulo}</strong>{m.texto}</li>)}
+                  </ul>
+                )}
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+    ))}
+
+    <!-- 4. Entregáveis -->
+    <section class="section" style="padding-top:0" aria-labelledby="entregaveis">
+      <div class="container split">
+        <div class="reveal">
+          <p class="eyebrow">Entregáveis</p>
+          <h2 id="entregaveis" style="margin-top:18px">Documentação técnica entregue.</h2>
+          <p class="lead" style="margin-top:20px">Organizada para análise técnica e para consulta em auditorias, inspeções e certificações.</p>
+        </div>
+        <div class="card reveal" style="--d: 0.1s">
+          <ul class="checklist">
+            {entregaveis.map((e) => <li>{e}</li>)}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Contato -->
+    <section class="section" style="padding-top:0" aria-labelledby="contato">
+      <div class="container">
+        <div class="cta-dark reveal">
+          <p class="eyebrow" style="color:var(--pu-copper-300)">Contato</p>
+          <h2 id="contato" style="margin-top:16px">Garanta a conformidade do seu sistema HVAC.</h2>
+          <p>Informe o tipo de instalação, as áreas ou salas envolvidas, a localização e o objetivo do trabalho. Nossa equipe retorna com a avaliação da demanda e o escopo proposto.</p>
+          <div class="btn-row">
+            <a class="btn btn--on-dark" href="/contato/" data-proposta={nomeServico}><span>Solicitar proposta técnica</span><span class="btn__icon"><svg class="icon" aria-hidden="true"><use href="#i-arrow" /></svg></span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0" aria-labelledby="outros">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">Outros serviços</p>
+          <h2 id="outros" style="margin-top:18px">Conheça as demais frentes.</h2>
+        </header>
+        <div class="grid grid--3 service-nav">
+          {outros.slice(0, 6).map((s, i) => (
+            <a class="card card--link reveal" href={`/servicos/${s.slug}/`} style={`--d: ${(i % 3) * 0.08}s`}>
+              <span class="card__num">{s.numero}</span>
+              <h3>{s.nome}</h3>
+              <span class="card__more">Ver serviço <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow" /></svg></span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>

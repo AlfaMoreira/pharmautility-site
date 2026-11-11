@@ -30,7 +30,12 @@ const paginasFixas = [
 
 const paginasServico = servicos.map((s) => {
   const arquivoPagina = s.dedicada ? `src/pages/servicos/${s.slug}.astro` : 'src/pages/servicos/[slug].astro';
-  const fundo = s.fundo?.nome ?? (s.dedicada ? `/assets/images/${s.slug.includes('agua') ? 'agua' : 'vapor'}-fundo` : null);
+  // Água e Vapor têm o fundo definido na própria página (não em servicos.js).
+  const fundosDasPaginas = {
+    'qualificacao-sistemas-agua-pw-wfi': '/assets/images/agua-fundo',
+    'qualificacao-vapor-puro': '/assets/images/vapor-fundo',
+  };
+  const fundo = s.fundo?.nome ?? fundosDasPaginas[s.slug] ?? null;
   const og = fundo ? `/assets/og/${fundo.split('/').pop().replace(/-fundo$/, '')}.jpg` : LOGO_OG;
   return { rota: `/servicos/${s.slug}/`, arquivos: [arquivoPagina, 'src/data/servicos.js'], imagens: [og] };
 });

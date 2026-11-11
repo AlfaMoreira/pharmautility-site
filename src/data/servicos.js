@@ -9,7 +9,7 @@ export const servicos = [
     dedicada: true,
     numero: '01',
     nome: 'Qualificação de Sistemas de Água — PW e WFI',
-    chamada: 'Sistemas de Água Purificada (PW) e Água para Injetáveis (WFI) qualificados conforme seus requisitos e usos, do pré-tratamento à distribuição.',
+    chamada: 'Sistemas de água purificada (PW), água para injetáveis (WFI) e vapor puro do projeto à análise de rotina: dimensionamento, instalação, qualificação, manutenção e análises.',
   },
   {
     // Página dedicada: src/pages/servicos/qualificacao-vapor-puro.astro
@@ -20,12 +20,15 @@ export const servicos = [
     chamada: 'Geração, distribuição e pontos de uso de vapor puro qualificados conforme os requisitos do projeto, com estudos IQ, OQ e PQ.',
   },
   {
+    // Página dedicada: src/pages/servicos/qualificacao-hvac-salas-limpas.astro
+    // (os campos abaixo seguem como resumo do serviço).
     slug: 'qualificacao-hvac-salas-limpas',
+    dedicada: true,
     // Imagem de fundo fixa exibida somente nesta página (a página rola o texto sobre ela).
     fundo: { nome: '/assets/images/hvac-fundo', largura: 2752, altura: 1536 },
     numero: '03',
     nome: 'Qualificação de HVAC e Salas Limpas',
-    chamada: 'Revisão de projeto, verificação da instalação, ensaios de desempenho e classificação de áreas controladas.',
+    chamada: 'Qualificação IQ, OQ e PQ de HVAC em salas limpas farmacêuticas, hospitalares e data centers, com classificação ISO 14644, integridade de filtros HEPA e mapeamento térmico.',
     necessidade: 'Manter as condições ambientais exigidas pelo processo: temperatura, umidade, pressão diferencial, fluxo de ar e controle de partículas.',
     escopo: [
       'Sistemas de climatização (AVAC/HVAC) de áreas farmacêuticas, hospitalares e industriais.',
@@ -48,12 +51,15 @@ export const servicos = [
     ],
   },
   {
+    // Página dedicada: src/pages/servicos/qualificacao-ar-comprimido-gases.astro
+    // (os campos abaixo seguem como resumo do serviço).
     slug: 'qualificacao-ar-comprimido-gases',
+    dedicada: true,
     // Imagem de fundo na primeira dobra (rola com o conteúdo).
     fundo: { nome: '/assets/images/ar-comprimido-fundo', largura: 2752, altura: 1536 },
     numero: '04',
     nome: 'Qualificação de Ar Comprimido e Gases',
-    chamada: 'Qualificação de sistemas de ar comprimido, gases industriais e ar respirável, com ensaios nos pontos de uso.',
+    chamada: 'Qualificação de ar comprimido de processo, ar medicinal, ar respirável e cilindros de gases, com ensaios nos pontos de uso conforme ISO 8573, farmacopeias e EN 12021.',
     necessidade: 'Assegurar que o ar e os gases que entram em contato direto ou indireto com o produto atendam ao nível de qualidade exigido pelo processo.',
     escopo: [
       'Sistemas de geração, tratamento e distribuição de ar comprimido.',
@@ -75,10 +81,13 @@ export const servicos = [
     ],
   },
   {
+    // Página dedicada: src/pages/servicos/qualificacao-cabines-fluxo-laminar-contencao.astro
+    // (os entregáveis abaixo são usados pela página).
     slug: 'qualificacao-cabines-fluxo-laminar-contencao',
+    dedicada: true,
     numero: '05',
     nome: 'Cabines, Fluxos e Equipamentos de Contenção',
-    chamada: 'Qualificação de cabines de segurança biológica, câmaras de fluxo laminar, cabines de pesagem e capelas de exaustão.',
+    chamada: 'Qualificação, manutenção, descontaminação e troca de filtro HEPA de cabines de segurança biológica, fluxos laminares, cabines de pesagem e capelas de exaustão.',
     necessidade: 'Comprovar que o equipamento protege o operador, o produto e o ambiente, reduzindo riscos de contaminação cruzada e de exposição a agentes biológicos e químicos.',
     escopo: [
       'Cabines de segurança biológica (CSB).',
@@ -99,10 +108,13 @@ export const servicos = [
     ],
   },
   {
+    // Página dedicada: src/pages/servicos/calibracao-qualificacao-equipamentos.astro
+    // (etapas, entregáveis e necessidade abaixo são usados pela página).
     slug: 'calibracao-qualificacao-equipamentos',
+    dedicada: true,
     numero: '06',
     nome: 'Calibração e Qualificação de Equipamentos',
-    chamada: 'Calibração metrológica rastreável e qualificação IQ/OQ/PQ de equipamentos laboratoriais e industriais.',
+    chamada: 'Calibração rastreável e qualificação IQ/OQ/PQ de equipamentos de temperatura, pressão, rotação, físico-química e instrumentos analíticos.',
     necessidade: 'Ter medições confiáveis e documentação pronta para auditoria, com a menor interrupção possível da operação.',
     escopo: [
       'Temperatura e umidade: estufas, câmaras, freezers, autoclaves, termopares e Pt-100.',
@@ -127,11 +139,14 @@ export const servicos = [
     ],
   },
   {
+    // Página dedicada: src/pages/servicos/qualificacao-monitoramento-cadeia-fria.astro
+    // (os entregáveis abaixo são usados pela página).
     slug: 'qualificacao-monitoramento-cadeia-fria',
+    dedicada: true,
     numero: '07',
     nome: 'Qualificação e Monitoramento de Cadeia Fria',
-    chamada: 'Balanceamento de HVAC (TAB), ensaios de ar ambiente e análise de água para consumo humano, com um único cronograma e um padrão de relatório.',
-    necessidade: 'Garantir que câmaras frias, salas climatizadas e áreas de expedição operem dentro da faixa definida pelo projeto, com o ambiente e a água de consumo documentados. (Escopo a validar pela equipe técnica.)',
+    chamada: 'Mapeamento térmico, TAB e qualificação de HVAC, monitoramento contínuo, ensaios de ar ambiente (NBR 17037) e água para consumo humano em um único programa.',
+    necessidade: 'Garantir que câmaras frias, salas climatizadas e áreas de expedição operem dentro da faixa definida pelo projeto, com o ambiente e a água de consumo documentados.',
     escopo: [
       'TAB de HVAC: balanceamento de vazão e de diferencial de pressão entre ambientes, verificação de renovações de ar e ajuste de dampers e difusores.',
       'Ensaios de ar ambiente conforme a ABNT NBR 17037: partículas, microbiologia do ar, CO₂, temperatura, umidade relativa e velocidade do ar.',
@@ -178,10 +193,13 @@ export const servicos = [
     ],
   },
   {
+    // Página dedicada: src/pages/servicos/qualificacao-termica-equipamentos-criticos.astro
+    // (os entregáveis abaixo são usados pela página).
     slug: 'qualificacao-termica-equipamentos-criticos',
+    dedicada: true,
     numero: '09',
     nome: 'Qualificação Térmica de Equipamentos Críticos',
-    chamada: 'Mapeamento e qualificação térmica em três etapas, QI, QO e QD, com sensores calibrados e rastreáveis.',
+    chamada: 'Mapeamento de temperatura e qualificação térmica de ultrafreezers a autoclaves e calor seco, com estudos de robustez, protocolos e sensores calibrados.',
     necessidade: 'Comprovar que cada equipamento opera dentro da faixa especificada para o uso pretendido, com evidências defensáveis perante a ANVISA e os clientes.',
     escopo: [
       'Câmaras climáticas, estufas de incubação, secagem e esterilização.',

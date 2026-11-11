@@ -1,0 +1,278 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { servicos } from '../../data/servicos.js';
+import '../../styles/utilidades.css';
+
+const servico = servicos.find((s) => s.slug === 'qualificacao-cabines-fluxo-laminar-contencao')!;
+const outros = servicos.filter((s) => s.slug !== servico.slug);
+const nomeServico = servico.nome;
+
+// Cada equipamento protege uma coisa diferente (conteúdo do folder de Cabines e Fluxos Laminares).
+const equipamentos = [
+  { titulo: 'Fluxo laminar horizontal', sub: 'Protege o produto', texto: 'O ar filtrado sai do fundo em direção ao operador.', destaque: 'Sem proteção pessoal', detalhe: 'Não pode ser usado com agente biológico, citotóxico ou pó ativo.' },
+  { titulo: 'Fluxo laminar vertical', sub: 'Protege o produto', texto: 'O ar filtrado desce do teto sobre a área de trabalho.', destaque: 'Sem proteção pessoal', detalhe: 'Comum em envase asséptico e manipulação de estéreis não perigosos.' },
+  { titulo: 'CSB Classe I', sub: 'Operador e ambiente', texto: 'Entrada de ar frontal com exaustão filtrada, sem ar filtrado sobre a bancada.', destaque: 'Produto não protegido', detalhe: 'Contenção de agente biológico quando a amostra não exige assepsia.' },
+  { titulo: 'CSB Classe II A2', sub: 'Proteção tripla', texto: 'Recirculação parcial, com fluxo descendente filtrado e exaustão por HEPA.', destaque: 'O modelo mais comum', detalhe: 'Voláteis e químicos apenas em quantidade traço, se houver exaustão dedicada.' },
+  { titulo: 'CSB Classe II B2', sub: 'Exaustão total', texto: 'Todo o ar é exaurido para fora, sem recirculação interna.', destaque: 'Para químico volátil', detalhe: 'Exige exaustão dedicada, alarme e interface bem resolvida com o HVAC.' },
+  { titulo: 'Cabine de pesagem', sub: 'Contenção de pó', texto: 'Barreira de ar e captação para pesagem de insumo ativo.', destaque: 'Contenção verificada', detalhe: 'Ensaio de contenção com traçador e verificação da faixa de exposição.' },
+  { titulo: 'Capela de exaustão', sub: 'Vapor químico', texto: 'Exaustão de gases e vapores, normalmente sem filtro HEPA.', destaque: 'Velocidade de face', detalhe: 'Ensaio de contenção com traçador e verificação do sistema de exaustão.' },
+];
+
+const escopo = [
+  {
+    eyebrow: 'Qualificação',
+    titulo: 'Qualificação e ensaios de desempenho',
+    promessa: 'Equipamento liberado com laudo e etiqueta, pronto para apresentar em inspeção.',
+    itens: [
+      'Integridade de filtro HEPA por varredura com aerossol',
+      'Velocidade de fluxo descendente e de entrada frontal',
+      'Contagem de partículas na área de trabalho',
+      'Visualização do fluxo de ar com fumaça, em vídeo',
+      'Ensaio de contenção com traçador',
+      'Iluminância, ruído e vibração',
+      'Verificação de alarmes e de intertravamentos',
+      'QI, QO e QD, com requalificação periódica',
+    ],
+  },
+  {
+    eyebrow: 'Manutenção',
+    titulo: 'Manutenção preventiva e corretiva',
+    promessa: 'Plano periódico que evita a parada no dia em que a área mais precisa do equipamento.',
+    itens: [
+      'Limpeza técnica e inspeção do conjunto',
+      'Troca de pré-filtro e de elementos filtrantes',
+      'Motoventilador, ajuste de rotação e compensação',
+      'Substituição de lâmpada germicida e de iluminação',
+      'Verificação da dose da lâmpada germicida',
+      'Vedações, gaxetas e vidro frontal',
+      'Calibração de manômetro, sensor e display',
+      'Reparo de comando, alarme e placa eletrônica',
+    ],
+  },
+  {
+    eyebrow: 'Descontaminação',
+    titulo: 'Descontaminação e troca de filtro',
+    promessa: 'Filtro trocado sem expor a equipe e sem espalhar contaminação pela área.',
+    itens: [
+      'Descontaminação com peróxido de hidrogênio vaporizado',
+      'Indicadores químicos e biológicos do ciclo',
+      'Aeração com verificação de residual',
+      'Troca de filtro HEPA com contenção',
+      'Acondicionamento e destinação do filtro removido',
+      'Ensaio de integridade após a substituição',
+      'Requalificação e liberação do equipamento',
+      'Certificado de descontaminação para movimentação',
+    ],
+  },
+  {
+    eyebrow: 'Gestão',
+    titulo: 'Gestão do parque e conformidade',
+    promessa: 'Você deixa de descobrir na auditoria que um equipamento ficou fora do cronograma.',
+    itens: [
+      'Inventário e cadastro de todo o parque',
+      'Definição de periodicidade por criticidade de uso',
+      'Cronograma anual e aviso de vencimento',
+      'Etiqueta de status com validade e uso permitido',
+      'Dossiê por equipamento, com histórico completo',
+      'Treinamento de operadores sobre o uso correto',
+      'Apoio técnico durante inspeções',
+      'Parecer sobre a adequação do equipamento à aplicação',
+    ],
+  },
+];
+
+// Troca de filtro HEPA: sequência que protege a equipe e a área.
+const trocaFiltro = [
+  { tag: '01', titulo: 'Descontaminar antes de abrir', texto: 'Ciclo de peróxido de hidrogênio vaporizado na câmara, com indicador biológico, antes de qualquer painel ser removido.' },
+  { tag: '02', titulo: 'Trocar com contenção', texto: 'Remoção do filtro saturado com acondicionamento fechado e destinação registrada do material retirado.' },
+  { tag: '03', titulo: 'Ensaiar o que foi instalado', texto: 'Integridade por varredura, velocidade de fluxo e contagem de partículas no filtro novo, já montado.' },
+  { tag: '04', titulo: 'Requalificar e liberar', texto: 'Relatório com os dados de campo, etiqueta de status atualizada e equipamento devolvido à operação.' },
+];
+
+const referencias = [
+  ['Cabines de segurança', 'NSF/ANSI 49 para cabines de segurança biológica · EN 12469 como referência alternativa'],
+  ['Ensaios e classificação', 'ISO 14644-1 e ISO 14644-3 para classificação e métodos · práticas recomendadas do IEST para integridade de HEPA'],
+  ['Capelas e contenção', 'Método de ensaio de desempenho de capelas conforme ASHRAE 110 · guia ISPE para avaliação de contenção de pó'],
+  ['Uso farmacêutico e saúde', 'RDC 658/2022 · RDC 665/2022 · RDC 50/2002 · ISO 14698 para controle microbiológico'],
+  ['Base metrológica', 'Incerteza de medição conforme o GUM · rastreabilidade ao Sistema Internacional de Unidades (SI)'],
+];
+
+const whatsapp = 'https://wa.me/5511944744013?text=' + encodeURIComponent('Olá, PharmaUtility! Gostaria de uma proposta para cabines, fluxos laminares e capelas.');
+---
+
+<Layout title={`${nomeServico} | PharmaUtility`} description="Qualificação, manutenção, descontaminação e troca de filtro HEPA de cabines de segurança biológica, fluxos laminares, cabines de pesagem e capelas de exaustão." canonicalURL={`/servicos/${servico.slug}/`}>
+  <div class="page-content util-pagina">
+    <!-- 1. Apresentação -->
+    <section class="page-hero">
+      <div class="container">
+        <nav class="crumbs reveal" aria-label="Você está em">
+          <a href="/">Início</a><span aria-hidden="true">/</span><a href="/servicos/">Serviços</a><span aria-hidden="true">/</span><span>Cabines e fluxos</span>
+        </nav>
+        <p class="eyebrow reveal">Serviço {servico.numero}</p>
+        <h1 class="reveal" style="margin-top:18px; --d: 0.1s">{nomeServico}</h1>
+        <p class="lead reveal" style="--d: 0.2s">
+          Cabines, fluxos laminares e capelas: qualificação, manutenção e troca de filtro. Cabine de segurança biológica, fluxo laminar, cabine de pesagem, capela de exaustão, descontaminação e requalificação.
+        </p>
+        <div class="btn-row reveal" style="--d: 0.3s">
+          <a class="btn btn--primary" href="/contato/" data-proposta={nomeServico}>
+            <span>Solicitar proposta técnica</span>
+            <span class="btn__icon"><svg class="icon" aria-hidden="true"><use href="#i-arrow" /></svg></span>
+          </a>
+          <a class="btn btn--whatsapp" href={whatsapp} target="_blank" rel="noopener">
+            <svg class="icon" aria-hidden="true"><use href="#i-whatsapp" /></svg>
+            <span>Tire suas dúvidas pelo WhatsApp</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Necessidade -->
+    <section class="section" style="padding-top:0" aria-labelledby="necessidade">
+      <div class="container split">
+        <div class="reveal">
+          <p class="eyebrow">Necessidade atendida</p>
+          <h2 id="necessidade" style="margin-top:18px; font-size:clamp(1.4rem, 1rem + 1.2vw, 2rem)">Um fornecedor para o parque inteiro.</h2>
+        </div>
+        <div class="card quote-card reveal" style="--d: 0.1s">
+          <p class="lead" style="margin-top:0">Boa parte das cabines em operação protege algo diferente do que o usuário imagina: fluxo laminar não protege o operador, capela química não retém partícula, e cabine com filtro no fim da vida protege menos ainda. A PharmaUtility ensaia, libera e mantém o seu parque inteiro. Quando o filtro chega ao limite, descontaminamos, trocamos e requalificamos, sem você precisar acionar três fornecedores nem ficar com a área parada no meio do caminho.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Equipamentos -->
+    <section class="section" style="padding-top:0" aria-labelledby="equipamentos">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">Equipamentos</p>
+          <h2 id="equipamentos" style="margin-top:18px">Cada equipamento protege uma coisa diferente.</h2>
+          <p>O ensaio e a periodicidade mudam conforme o que o equipamento precisa proteger. É a primeira coisa que verificamos no seu parque.</p>
+        </header>
+        <ol class="util-ciclo util-cadeia">
+          {equipamentos.map((c, i) => (
+            <li class="reveal" style={`--d: ${(i % 4) * 0.06}s`}>
+              <span class="util-ciclo__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <div>
+                <h3>{c.titulo}<span class="util-cadeia__sub">{c.sub}</span></h3>
+                <p>{c.texto}</p>
+                <p class="util-cadeia__destaque"><strong>{c.destaque}</strong>{c.detalhe}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+        <p class="util-nota reveal" style="max-width:920px; margin-top:18px">Também atendemos isoladores, cabines Classe III e passthroughs. Trocar um equipamento por outro sem rever a aplicação é uma das não conformidades mais comuns que encontramos; a etiqueta de status que emitimos deixa explícito o que aquele equipamento protege e o que ele não protege.</p>
+      </div>
+    </section>
+
+    <!-- 4. Escopo -->
+    <section class="section" style="padding-top:0" aria-labelledby="escopo">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">Escopo</p>
+          <h2 id="escopo" style="margin-top:18px">Ensaiar, manter, trocar e gerir.</h2>
+          <p>Você contrata a frente de que precisa ou o cuidado completo do parque.</p>
+        </header>
+        <div class="grid grid--2">
+          {escopo.map((e, i) => (
+            <article class="card util-escopo reveal" style={`--d: ${(i % 2) * 0.08}s`}>
+              <p class="eyebrow">{e.eyebrow}</p>
+              <h3>{e.titulo}</h3>
+              <p class="util-escopo__promessa">{e.promessa}</p>
+              <ul class="checklist">
+                {e.itens.map((item) => <li>{item}</li>)}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Troca de filtro HEPA -->
+    <section class="section" style="padding-top:0" aria-labelledby="troca">
+      <div class="container split">
+        <div class="reveal">
+          <p class="eyebrow">Troca de filtro HEPA</p>
+          <h2 id="troca" style="margin-top:18px">A sequência que protege a equipe e a área.</h2>
+          <p class="lead" style="margin-top:20px">Descontaminação, troca, ensaio e liberação feitos pela mesma equipe, com registro de cada etapa.</p>
+        </div>
+        <div class="stack reveal" style="--d: 0.1s">
+          {trocaFiltro.map((f) => (
+            <article class="card phase">
+              <span class="phase__tag">{f.tag}</span>
+              <div>
+                <h3>{f.titulo}</h3>
+                <p>{f.texto}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Referências -->
+    <section class="section" style="padding-top:0" aria-labelledby="referencias">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">Referências normativas e técnicas</p>
+          <h2 id="referencias" style="margin-top:18px">Base técnica do trabalho.</h2>
+          <p>Aplicadas conforme a edição vigente e a regulamentação a que a sua operação está sujeita.</p>
+        </header>
+        <div class="util-tabela reveal" style="max-width:980px">
+          <table>
+            <thead><tr><th scope="col">Área</th><th scope="col">Referências</th></tr></thead>
+            <tbody>
+              {referencias.map(([area, refs]) => <tr><td>{area}</td><td>{refs}</td></tr>)}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Entregáveis -->
+    <section class="section" style="padding-top:0" aria-labelledby="entregaveis">
+      <div class="container split">
+        <div class="reveal">
+          <p class="eyebrow">Entregáveis</p>
+          <h2 id="entregaveis" style="margin-top:18px">Documentação entregue.</h2>
+          <p class="lead" style="margin-top:20px">Organizada para análise técnica e para consulta em auditorias e inspeções.</p>
+        </div>
+        <div class="card reveal" style="--d: 0.1s">
+          <ul class="checklist">
+            {servico.entregaveis.map((e) => <li>{e}</li>)}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Contato -->
+    <section class="section" style="padding-top:0" aria-labelledby="contato">
+      <div class="container">
+        <div class="cta-dark reveal">
+          <p class="eyebrow" style="color:var(--pu-copper-300)">Comece pelo inventário</p>
+          <h2 id="contato" style="margin-top:16px">Converse sobre o seu parque de cabines.</h2>
+          <p>Levantamos o parque instalado, o histórico de cada equipamento e a aplicação de cada um, e apresentamos uma proposta com escopo de ensaio, plano de manutenção e cronograma.</p>
+          <div class="btn-row">
+            <a class="btn btn--on-dark" href="/contato/" data-proposta={nomeServico}><span>Solicitar proposta técnica</span><span class="btn__icon"><svg class="icon" aria-hidden="true"><use href="#i-arrow" /></svg></span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0" aria-labelledby="outros">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">Outros serviços</p>
+          <h2 id="outros" style="margin-top:18px">Conheça as demais frentes.</h2>
+        </header>
+        <div class="grid grid--3 service-nav">
+          {outros.slice(0, 6).map((s, i) => (
+            <a class="card card--link reveal" href={`/servicos/${s.slug}/`} style={`--d: ${(i % 3) * 0.08}s`}>
+              <span class="card__num">{s.numero}</span>
+              <h3>{s.nome}</h3>
+              <span class="card__more">Ver serviço <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow" /></svg></span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>

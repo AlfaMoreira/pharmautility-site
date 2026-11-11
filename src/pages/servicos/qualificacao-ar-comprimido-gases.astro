@@ -1,0 +1,283 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { servicos } from '../../data/servicos.js';
+import FundoPagina from '../../components/FundoPagina.astro';
+import '../../styles/utilidades.css';
+
+const servico = servicos.find((s) => s.slug === 'qualificacao-ar-comprimido-gases')!;
+const outros = servicos.filter((s) => s.slug !== servico.slug);
+const nomeServico = servico.nome;
+
+// Quatro frentes do serviço. Normas citadas como referência: a edição vigente e os critérios de aceitação
+// são definidos no protocolo, conforme o uso do sistema e a regulamentação aplicável ao cliente.
+const frentes = [
+  {
+    id: 'ar-processo',
+    icone: 'i-gauge',
+    titulo: 'Ar comprimido de processo e instrumentação',
+    subtitulo: 'ISO 8573-1 · ISO 8573-2 a 9 · ANSI/ISA-7.0.01',
+    intro: 'Usado em atuadores pneumáticos, instrumentos de controle, válvulas e aplicações de processo. Umidade, óleo ou partículas no ar causam falhas de instrumentos, danos a equipamentos e desvios de processo rastreáveis à fonte.',
+    normas: ['ISO 8573-1 — classes de pureza', 'ISO 8573-2 a 9 — métodos de ensaio', 'ANSI/ISA-7.0.01 — ar de instrumentação'],
+    ensaios: [
+      { titulo: 'Pressão de fornecimento e estabilidade', texto: 'Registro da pressão no ponto de uso, com verificação de flutuações, quedas sob demanda máxima e atendimento ao projeto (pressão de operação e setpoint de alarme).' },
+      { titulo: 'Ponto de orvalho', texto: 'Teor de umidade por sensor capacitivo ou espelho resfriado (chilled mirror), com resultado em °C de ponto de orvalho sob pressão e comparação com a classe ISO 8573-1 definida em projeto.' },
+      { titulo: 'Teor de óleo total', texto: 'Aerossol, vapor e líquido, por fotoionização (PID) ou métodos da ISO 8573-2 e ISO 8573-5, com avaliação frente à classe especificada.' },
+      { titulo: 'Contagem de partículas sólidas', texto: 'Contador óptico de partículas conforme a ISO 8573-4, com classificação por faixa de tamanho e verificação da classe ISO de projeto.' },
+      { titulo: 'Microbiologia (quando aplicável)', texto: 'Amostragem nos pontos de uso com contato direto ou indireto com produto, conforme a ISO 8573-7.' },
+      { titulo: 'Cadeia de tratamento', texto: 'Compressores (com ou isentos de óleo), pré-filtros, secadores por refrigeração ou adsorção, filtros coalescentes e de carvão ativado e drenos, com verificação de diferencial de pressão e vida útil dos elementos.' },
+      { titulo: 'Alarmes e intertravamentos', texto: 'Teste funcional dos sensores de pressão, temperatura e ponto de orvalho integrados ao sistema de alarme.' },
+    ],
+  },
+  {
+    id: 'ar-medicinal',
+    icone: 'i-shield',
+    titulo: 'Ar comprimido medicinal',
+    subtitulo: 'Farmacopeias Brasileira, Europeia e Americana · ISO 7396-1',
+    aviso: 'O ar medicinal é tratado como <strong>medicamento</strong> pelas farmacopeias. É usado em terapia respiratória, ventilação mecânica, anestesia e suporte de vida, e sua qualidade precisa ser comprovada do sistema de produção ao ponto de uso.',
+    normas: ['Farmacopeia Brasileira', 'Farmacopeia Europeia (Ph. Eur.)', 'Farmacopeia Americana (USP)', 'ISO 7396-1 — redes de gases medicinais', 'Regulamentação ANVISA aplicável'],
+    tabela: {
+      rotulo: 'Limites de referência — monografia de ar medicinal da Ph. Eur.',
+      colunas: ['Parâmetro', 'Limite', 'Método de análise'],
+      linhas: [
+        ['Oxigênio (O₂)', '20,4 a 21,4 % v/v', 'Paramagnético'],
+        ['Dióxido de carbono (CO₂)', '≤ 500 ppm v/v', 'Infravermelho (NDIR)'],
+        ['Monóxido de carbono (CO)', '≤ 5 ppm v/v', 'Infravermelho / eletroquímico'],
+        ['Dióxido de enxofre (SO₂)', '≤ 1 ppm v/v', 'Fluorescência UV / tubo indicador'],
+        ['Óxidos de nitrogênio (NO + NO₂)', '≤ 2 ppm v/v', 'Quimioluminescência / tubo indicador'],
+        ['Água', '≤ 67 ppm v/v', 'Higrômetro'],
+        ['Óleo', '≤ 0,1 mg/m³', 'Método da farmacopeia / ISO 8573-2'],
+      ],
+      nota: 'Valores de referência da Ph. Eur. Os limites aplicados são os da farmacopeia exigida para o produto ou serviço de saúde do cliente (Brasileira, Europeia ou USP), na edição vigente.',
+    },
+    ensaios: [
+      { titulo: 'Identidade e composição do gás', texto: 'Confirmação do teor de oxigênio e dos contaminantes por analisadores calibrados, comparados aos limites da farmacopeia aplicável.' },
+      { titulo: 'Partículas e microbiologia nos pontos de uso', texto: 'Verificação de ausência de contaminação na distribuição até salas cirúrgicas, UTIs e farmácias hospitalares.' },
+      { titulo: 'Estanqueidade da rede de distribuição', texto: 'Ensaio de pressão e verificação de vazamentos em tubulação, válvulas e conexões, conforme a ISO 7396-1.' },
+      { titulo: 'Identificação e sinalização', texto: 'Codificação por cor, rotulagem e sinalização das redes e dos postos de consumo.' },
+    ],
+  },
+  {
+    id: 'ar-respiravel',
+    icone: 'i-wind',
+    titulo: 'Ar respirável',
+    subtitulo: 'EN 12021 · Programa de Proteção Respiratória · NR-33',
+    intro: 'Destinado ao uso humano direto em equipamentos de proteção respiratória de linha de ar ou autônomos, em atividades como espaço confinado, jateamento abrasivo, pintura industrial e atmosferas com deficiência de oxigênio ou agentes tóxicos.',
+    aviso: '<strong>Risco à vida:</strong> ar respirável fora de especificação pode causar intoxicação por CO, hipóxia ou asfixia. A verificação analítica periódica faz parte do Programa de Proteção Respiratória da empresa.',
+    normas: ['EN 12021 — ar comprimido respirável', 'Programa de Proteção Respiratória (PPR)', 'NR-6 — EPI', 'NR-33 — espaços confinados', 'ISO 8573-1'],
+    tabela: {
+      rotulo: 'Limites de referência — EN 12021',
+      colunas: ['Parâmetro', 'Limite', 'Método de análise'],
+      linhas: [
+        ['Oxigênio (O₂)', '21 ± 1 % v/v', 'Paramagnético / eletroquímico'],
+        ['Dióxido de carbono (CO₂)', '≤ 500 ppm v/v', 'Infravermelho (NDIR)'],
+        ['Monóxido de carbono (CO)', '≤ 5 ppm v/v', 'Infravermelho / eletroquímico'],
+        ['Óleo', '≤ 0,5 mg/m³', 'Gravimétrico / PID'],
+        ['Água', 'Conforme a pressão de uso ou de armazenamento', 'Higrômetro / ponto de orvalho'],
+        ['Odor e sabor', 'Ausentes', 'Organoléptico'],
+      ],
+      nota: 'Valores de referência da EN 12021. Os critérios de aceitação são confirmados no protocolo, conforme a edição vigente e o tipo de equipamento de proteção respiratória.',
+    },
+    ensaios: [
+      { titulo: 'Composição gasosa no ponto de uso', texto: 'O₂, CO e CO₂ medidos por analisadores calibrados e rastreáveis, diretamente nos pontos de abastecimento de linha ou de cilindro.' },
+      { titulo: 'Integridade da linha e das conexões', texto: 'Estanqueidade de mangueiras, acoplamentos e conexões rápidas usadas nos equipamentos de proteção respiratória.' },
+      { titulo: 'Plano de monitoramento periódico', texto: 'Frequências de análise, pontos de amostragem, critérios de ação e responsabilidades.' },
+    ],
+  },
+  {
+    id: 'cilindros',
+    icone: 'i-flask',
+    titulo: 'Cilindros de gases especiais e medicinais',
+    subtitulo: 'ABNT NBR 12176 · ISO 32 · ISO 11114-1 · ISO 10286',
+    intro: 'Oxigênio medicinal, óxido nitroso, CO₂ medicinal, misturas calibradas e gases para instrumentação analítica exigem verificação que vai além da composição: integridade do recipiente, rastreabilidade de lote, armazenamento e validade de uso.',
+    normas: ['ABNT NBR 12176 — identificação do conteúdo', 'ISO 32 — cores de cilindros medicinais', 'ISO 11114-1 — compatibilidade de materiais', 'ISO 10286 — terminologia', 'NR-20 — inflamáveis e combustíveis'],
+    ensaios: [
+      { titulo: 'Certificado de análise (CoA)', texto: 'Conferência do certificado do fabricante, com rastreabilidade ao lote e comparação com a especificação ou a monografia aplicável.' },
+      { titulo: 'Pureza e composição', texto: 'Análise por cromatografia gasosa ou detector específico (paramagnético para O₂, NDIR para CO₂, eletroquímico para CO), conforme a especificação do gás.' },
+      { titulo: 'Integridade do cilindro', texto: 'Inspeção visual de corrosão e danos mecânicos e verificação da validade do ensaio hidrostático, conforme a norma e a legislação aplicáveis.' },
+      { titulo: 'Identificação e rotulagem', texto: 'Código de cores, rotulagem de segurança GHS/FDS, identificação do conteúdo e data de validade.' },
+      { titulo: 'Armazenamento e manuseio', texto: 'Ventilação, segregação por classe de risco, fixação dos cilindros e temperatura do local.' },
+      { titulo: 'Rastreabilidade de lote', texto: 'Registros de entrada, saída e uso, ligando lote, certificado de análise e ponto de uso para auditorias.' },
+    ],
+  },
+];
+
+const fases = [
+  { tag: 'IQ', titulo: 'Qualificação de instalação', texto: 'Documentação, compressores, tratamento, materiais da rede, identificação e instrumentos do sistema.' },
+  { tag: 'OQ', titulo: 'Qualificação de operação', texto: 'Pressões, alarmes, intertravamentos e ensaios analíticos com o sistema operando nas condições previstas.' },
+  { tag: 'PQ', titulo: 'Qualificação de desempenho', texto: 'Ensaios nos pontos de uso, ao longo do período definido, nas condições reais de demanda.' },
+];
+
+const entregaveis = [
+  'Protocolo de qualificação IQ/OQ/PQ com critérios de aceitação aprovados antes da execução',
+  'Relatório técnico final com dados brutos e conclusão de conformidade',
+  'Certificados de calibração dos instrumentos, rastreáveis à RBC/INMETRO',
+  'Resultados de qualidade do ar ou do gás por ponto de amostragem',
+  'Plano de monitoramento periódico com frequências e critérios de ação',
+  'Recomendações de manutenção e de periodicidade de requalificação',
+];
+
+const whatsapp = 'https://wa.me/5511944744013?text=' + encodeURIComponent('Olá, PharmaUtility! Gostaria de uma proposta para qualificação de ar comprimido e gases.');
+---
+
+<Layout title={`${nomeServico} | PharmaUtility`} description="Qualificação de ar comprimido de processo, ar medicinal, ar respirável e cilindros de gases, com ensaios nos pontos de uso conforme ISO 8573, farmacopeias e EN 12021." canonicalURL="/servicos/qualificacao-ar-comprimido-gases/" image="/assets/og/ar-comprimido.jpg" imageAlt="Ilustração do serviço de qualificação de ar comprimido e gases">
+  <FundoPagina {...servico.fundo} />
+  <div class="page-content util-pagina">
+    <!-- 1. Apresentação -->
+    <section class="page-hero">
+      <div class="container">
+        <nav class="crumbs reveal" aria-label="Você está em">
+          <a href="/">Início</a><span aria-hidden="true">/</span><a href="/servicos/">Serviços</a><span aria-hidden="true">/</span><span>Ar comprimido e gases</span>
+        </nav>
+        <p class="eyebrow reveal">Serviço {servico.numero}</p>
+        <h1 class="reveal" style="margin-top:18px; --d: 0.1s">{nomeServico}</h1>
+        <p class="lead reveal" style="--d: 0.2s">
+          Ar comprimido e gases são utilidades críticas em instalações farmacêuticas, hospitalares e industriais. Qualificamos ar de processo, ar medicinal, ar respirável e cilindros de gases, com ensaios nos pontos de uso e instrumentação calibrada.
+        </p>
+        <div class="btn-row reveal" style="--d: 0.3s">
+          <a class="btn btn--primary" href="/contato/" data-proposta={nomeServico}>
+            <span>Solicitar proposta técnica</span>
+            <span class="btn__icon"><svg class="icon" aria-hidden="true"><use href="#i-arrow" /></svg></span>
+          </a>
+          <a class="btn btn--whatsapp" href={whatsapp} target="_blank" rel="noopener">
+            <svg class="icon" aria-hidden="true"><use href="#i-whatsapp" /></svg>
+            <span>Tire suas dúvidas pelo WhatsApp</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Por que qualificar -->
+    <section class="section" style="padding-top:0" aria-labelledby="necessidade">
+      <div class="container split">
+        <div class="reveal">
+          <p class="eyebrow">Necessidade atendida</p>
+          <h2 id="necessidade" style="margin-top:18px; font-size:clamp(1.4rem, 1rem + 1.2vw, 2rem)">Por que qualificar ar e gases.</h2>
+        </div>
+        <div class="card quote-card reveal" style="--d: 0.1s">
+          <p class="lead" style="margin-top:0">Ar e gases fora de especificação colocam em risco o produto, o operador e o paciente, e são apontados como não conformidade em inspeções regulatórias. A qualificação comprova, com dados por ponto e por parâmetro, que cada sistema entrega a qualidade exigida pelo seu uso.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Frentes -->
+    <section class="section" style="padding-top:0" aria-labelledby="frentes">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">Escopo</p>
+          <h2 id="frentes" style="margin-top:18px">Quatro frentes, um mesmo rigor.</h2>
+          <p>Cada sistema é qualificado conforme as normas da sua aplicação, com critérios de aceitação definidos no protocolo.</p>
+        </header>
+        <div class="stack" style="max-width:980px">
+          {frentes.map((f) => (
+            <article class="card util-frente reveal" id={f.id} aria-labelledby={`${f.id}-titulo`}>
+              <div class="util-frente__head">
+                <span class="card__icon"><svg class="icon" aria-hidden="true"><use href={`#${f.icone}`} /></svg></span>
+                <div>
+                  <h3 id={`${f.id}-titulo`}>{f.titulo}</h3>
+                  <p>{f.subtitulo}</p>
+                </div>
+              </div>
+              {f.intro && <p style="margin-top:20px">{f.intro}</p>}
+              {f.aviso && <p class="util-aviso" set:html={f.aviso} />}
+              <ul class="util-normas" aria-label="Normas de referência">
+                {f.normas.map((n) => <li class="pill">{n}</li>)}
+              </ul>
+              {f.tabela && (
+                <>
+                  <p class="util-rotulo">{f.tabela.rotulo}</p>
+                  <div class="util-tabela">
+                    <table>
+                      <thead><tr>{f.tabela.colunas.map((c) => <th scope="col">{c}</th>)}</tr></thead>
+                      <tbody>
+                        {f.tabela.linhas.map(([parametro, limite, metodo]) => (
+                          <tr><td>{parametro}</td><td class="util-tabela__valor">{limite}</td><td>{metodo}</td></tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  <p class="util-nota">{f.tabela.nota}</p>
+                </>
+              )}
+              <p class="util-rotulo">Ensaios e verificações</p>
+              <ul class="util-ensaios">
+                {f.ensaios.map((e) => (
+                  <li><div><strong>{e.titulo}</strong><span>{e.texto}</span></div></li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Etapas -->
+    <section class="section" style="padding-top:0" aria-labelledby="etapas">
+      <div class="container split">
+        <div class="reveal">
+          <p class="eyebrow">Etapas de qualificação</p>
+          <h2 id="etapas" style="margin-top:18px">Instalação, operação e desempenho.</h2>
+          <p class="lead" style="margin-top:20px">Do compressor ou da central de gases até o último ponto de uso, nos limites definidos pelo plano de qualificação.</p>
+        </div>
+        <div class="stack reveal" style="--d: 0.1s">
+          {fases.map((f) => (
+            <article class="card phase">
+              <span class="phase__tag">{f.tag}</span>
+              <div>
+                <h3>{f.titulo}</h3>
+                <p>{f.texto}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Entregáveis -->
+    <section class="section" style="padding-top:0" aria-labelledby="entregaveis">
+      <div class="container split">
+        <div class="reveal">
+          <p class="eyebrow">Entregáveis</p>
+          <h2 id="entregaveis" style="margin-top:18px">Documentação técnica entregue.</h2>
+          <p class="lead" style="margin-top:20px">Organizada para análise técnica e para consulta em auditorias e inspeções.</p>
+        </div>
+        <div class="card reveal" style="--d: 0.1s">
+          <ul class="checklist">
+            {entregaveis.map((e) => <li>{e}</li>)}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Contato -->
+    <section class="section" style="padding-top:0" aria-labelledby="contato">
+      <div class="container">
+        <div class="cta-dark reveal">
+          <p class="eyebrow" style="color:var(--pu-copper-300)">Contato</p>
+          <h2 id="contato" style="margin-top:16px">Solicite a qualificação dos seus sistemas de ar e gases.</h2>
+          <p>Informe o tipo de sistema, a quantidade de pontos de uso, a localização e o objetivo do trabalho. Nossa equipe retorna com a avaliação da demanda e o escopo proposto.</p>
+          <div class="btn-row">
+            <a class="btn btn--on-dark" href="/contato/" data-proposta={nomeServico}><span>Solicitar proposta técnica</span><span class="btn__icon"><svg class="icon" aria-hidden="true"><use href="#i-arrow" /></svg></span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0" aria-labelledby="outros">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">Outros serviços</p>
+          <h2 id="outros" style="margin-top:18px">Conheça as demais frentes.</h2>
+        </header>
+        <div class="grid grid--3 service-nav">
+          {outros.slice(0, 6).map((s, i) => (
+            <a class="card card--link reveal" href={`/servicos/${s.slug}/`} style={`--d: ${(i % 3) * 0.08}s`}>
+              <span class="card__num">{s.numero}</span>
+              <h3>{s.nome}</h3>
+              <span class="card__more">Ver serviço <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow" /></svg></span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
