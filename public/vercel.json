@@ -2,8 +2,40 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "trailingSlash": true,
   "redirects": [
-    { "source": "/servicos/qualificacao-utilidades-clean/:caminho*", "destination": "/servicos/", "permanent": true },
-    { "source": "/servicos/portfolio-gxp-validacao/", "destination": "/servicos/validacao-gxp/", "permanent": true },
-    { "source": "/servicos/cabines-fluxos-contencao/", "destination": "/servicos/qualificacao-cabines-fluxo-laminar-contencao/", "permanent": true }
+    {
+      "source": "/servicos/qualificacao-utilidades-clean/:caminho*",
+      "destination": "/servicos/",
+      "permanent": true
+    },
+    {
+      "source": "/servicos/portfolio-gxp-validacao/",
+      "destination": "/servicos/validacao-gxp/",
+      "permanent": true
+    },
+    {
+      "source": "/servicos/cabines-fluxos-contencao/",
+      "destination": "/servicos/qualificacao-cabines-fluxo-laminar-contencao/",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/((?!assets/).*)",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "</assets/fonts/NasalizationRg-Regular.woff2>; rel=preload; as=font; type=\"font/woff2\"; crossorigin, </assets/fonts/Montserrat-Regular.woff2>; rel=preload; as=font; type=\"font/woff2\"; crossorigin"
+        }
+      ]
+    },
+    {
+      "source": "/assets/fonts/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=2592000"
+        }
+      ]
+    }
   ]
 }
