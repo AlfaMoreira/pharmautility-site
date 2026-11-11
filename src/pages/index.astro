@@ -54,6 +54,9 @@ const whatsapp = 'https://wa.me/5511944744013?text=' + encodeURIComponent('Olá,
     <div class="scrub__sticky">
       <div class="scrub__frame" data-scrub-frame>
         <video class="scrub__video" data-scrub-video muted playsinline preload="metadata" aria-hidden="true">
+          <!-- Celular/tablet em pé: recorte vertical do mesmo vídeo (608×1080, sem áudio, ~0,25 MB) -
+               mostra a mesma área que o object-fit: cover exibiria, sem baixar os 3,5 MB do 1080p. -->
+          <source src="/assets/video/hero-celular.mp4" type="video/mp4" media="(max-aspect-ratio: 1/1)" />
           <source src="/assets/video/hero.mp4" type="video/mp4" />
         </video>
         <div class="scrub__bar" aria-hidden="true"><span data-scrub-bar></span></div>
