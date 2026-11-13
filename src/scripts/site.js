@@ -111,6 +111,29 @@ document.querySelectorAll('.scribble').forEach((el) => {
   if (reduzirMovimento) el.classList.add('is-in');
 });
 
+/* ---------- Medição (tag do Google → Google Analytics 4 G-NWTJR9VSME) ---------- */
+// Comando gtag('event', ...): a tag do Google envia direto ao GA4, sem configuração extra no painel.
+// Sem a tag carregada (bloqueador, rede), a dataLayer só acumula os itens e nada quebra.
+function medir(evento, parametros = {}) {
+  window.dataLayer = window.dataLayer || [];
+  // eslint-disable-next-line prefer-rest-params
+  (function () { window.dataLayer.push(arguments); })('event', evento, parametros);
+}
+
+// Cliques em qualquer link de WhatsApp, telefone ou e-mail, inclusive os que forem criados depois.
+document.addEventListener('click', (evento) => {
+  const link = evento.target instanceof Element ? evento.target.closest('a[href]') : null;
+  if (!link) return;
+  const href = link.getAttribute('href') || '';
+  const metodo = href.includes('wa.me/') ? 'whatsapp' : href.startsWith('tel:') ? 'telefone' : href.startsWith('mailto:') ? 'email' : null;
+  if (!metodo) return;
+  medir('contact_click', {
+    contact_method: metodo,
+    link_text: (link.textContent || '').trim().replace(/\s+/g, ' ').slice(0, 100),
+    link_location: link.closest('.site-header') ? 'cabecalho' : link.closest('footer') ? 'rodape' : 'conteudo',
+  });
+});
+
 /* ---------- Formulário de contato (monta mensagem para o WhatsApp) ---------- */
 const WHATSAPP = '5511944744013';
 
@@ -144,6 +167,14 @@ document.querySelectorAll('[data-whatsapp-form]').forEach((form) => {
       '',
       String(dados.get('detalhes') || '').trim(),
     ].filter((linha) => linha !== null);
+
+    // Analytics (via GTM): lead gerado pelo formulário. Só o assunto vai junto; nome, telefone e e-mail
+    // nunca são enviados ao Google (dado pessoal, proibido pelas regras do GA4 e pela LGPD).
+    medir('generate_lead', {
+      lead_method: 'formulario_whatsapp',
+      form_id: form.getAttribute('aria-labelledby') || 'formulario',
+      lead_subject: String(dados.get('assunto') || ''),
+    });
 
     const url = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(linhas.join('\n'))}`;
     window.open(url, '_blank', 'noopener');
